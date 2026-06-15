@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SianAI - Analytics Dashboard</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="src/styles/style.css">
+</head>
+<body>
+    <div class="dashboard">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Sian<span>AI</span></div>
+                <div class="logo-sub">Heritage Weaver Pro</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-item"><i class="fa-solid fa-house"></i> Beranda</a></li>
+                <li><a href="#" class="nav-item"><i class="fa-solid fa-building-columns"></i> Laporan Keuangan</a></li>
+                <li><a href="#" class="nav-item"><i class="fa-solid fa-box-open"></i> Stok Ulos</a></li>
+                <li><a href="#" class="nav-item"><i class="fa-solid fa-users"></i> Manajemen Akun</a></li>
+                <li><a href="#" class="nav-item"><i class="fa-solid fa-money-bill-wave"></i> Sales</a></li>
+                <li><a href="#" class="nav-item active"><i class="fa-solid fa-chart-line"></i> Forecasting</a></li>
+                <li><a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item"><i class="fa-regular fa-circle-question"></i> Support</a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <div class="topbar-logo">SianAI</div>
+                    <nav class="topbar-nav">
+                        <a href="#" class="topbar-nav-item">Forecasting</a>
+                        <a href="#" class="topbar-nav-item">Reports</a>
+                        <a href="#" class="topbar-nav-item active">Analytics</a>
+                    </nav>
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Cari data finansial...">
+                    </div>
+                    <button class="btn-export">
+                        <i class="fa-solid fa-download"></i> Export Data
+                    </button>
+                    <div class="topbar-icons">
+                        <i class="fa-regular fa-bell"></i>
+                        <i class="fa-regular fa-user-circle"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="page-content">
+                
+                <div class="page-header">
+                    <h1 class="page-title">Optimalkan Likuiditas Toko</h1>
+                    <p class="page-subtitle">Analisis arus kas untuk persiapan musim produksi mendatang.</p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <!-- Card 1 -->
+                    <div class="stat-card primary">
+                        <div class="stat-card-header">
+                            <span class="stat-title">ESTIMASI MODAL MUSIM DEPAN</span>
+                            <i class="fa-solid fa-wallet stat-icon"></i>
+                        </div>
+                        <div class="stat-value">IDR 65.0M</div>
+                        <div class="stat-subtext">
+                            <i class="fa-regular fa-clock"></i> Berdasarkan tren produksi 2023
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <span class="stat-title">KAS TERSEDIA</span>
+                            <i class="fa-solid fa-piggy-bank stat-icon text-muted"></i>
+                        </div>
+                        <div class="stat-value">IDR 42.5M</div>
+                        <div class="stat-subtext text-green">
+                            <i class="fa-solid fa-arrow-trend-up"></i> +12% dari bulan lalu
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="stat-card danger">
+                        <div class="stat-card-header">
+                            <span class="stat-title">KEKURANGAN / GAP</span>
+                            <i class="fa-solid fa-triangle-exclamation stat-icon"></i>
+                        </div>
+                        <div class="stat-value">IDR 22.5M</div>
+                        <div class="stat-subtext">
+                            Tindakan Diperlukan
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations Section -->
+                <h2 class="section-title">Rekomendasi Strategi</h2>
+                <div class="recom-grid">
+                    <!-- Recom 1 -->
+                    <div class="recom-card">
+                        <div class="recom-img" style="background-image: url('https://images.unsplash.com/photo-1605289982774-9a6fef564df8?q=80&w=400&auto=format&fit=crop');"></div>
+                        <div class="recom-content">
+                            <div class="recom-header">
+                                <h3>Pre-order Pelanggan Setia</h3>
+                                <span class="badge orange">POTENSI TINGGI</span>
+                            </div>
+                            <p class="recom-desc">Tingkatkan likuiditas dengan menawarkan sistem pre-order koleksi eksklusif kepada 50 pelanggan teratas.</p>
+                            <button class="btn-sm btn-maroon">Aktifkan Campaign</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Recom 2 -->
+                    <div class="recom-card">
+                        <div class="recom-img" style="background-image: url('https://images.unsplash.com/photo-1558024225-2b474246830a?q=80&w=400&auto=format&fit=crop');"></div>
+                        <div class="recom-content">
+                            <div class="recom-header">
+                                <h3>Diskon Stok Lama</h3>
+                                <span class="badge gray">CUCI GUDANG</span>
+                            </div>
+                            <p class="recom-desc">Likuidasi stok Ulos Sadum yang tidak bergerak lebih dari 6 bulan untuk menambah kas cepat sebesar IDR 8M.</p>
+                            <button class="btn-sm btn-light">Lihat Inventori</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Grid -->
+                <div class="bottom-grid">
+                    <!-- Data Table -->
+                    <div class="table-card">
+                        <div class="table-header">
+                            <div class="table-title">Rangkuman Proyeksi Likuiditas</div>
+                            <div class="table-date">Periode: Des 2023 - Feb 2024</div>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Komponen Arus Kas</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Nilai Estimasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Penjualan Terproyeksi</td>
+                                    <td class="text-green"><span class="status-dot dot-green"></span> Stabil</td>
+                                    <td class="val-bold" style="text-align: right;">IDR 120.0M</td>
+                                </tr>
+                                <tr>
+                                    <td>Biaya Bahan Baku</td>
+                                    <td class="text-red"><span class="status-dot dot-red"></span> Meningkat</td>
+                                    <td class="val-red" style="text-align: right;">(IDR 45.0M)</td>
+                                </tr>
+                                <tr>
+                                    <td>Upah Penenun</td>
+                                    <td class="text-blue"><span class="status-dot dot-blue"></span> Terjadwal</td>
+                                    <td class="val-bold" style="text-align: right;">(IDR 30.0M)</td>
+                                </tr>
+                                <tr>
+                                    <td>Biaya Operasional Toko</td>
+                                    <td class="text-brown"><span class="status-dot dot-brown"></span> Efisien</td>
+                                    <td class="val-bold" style="text-align: right;">(IDR 22.5M)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <span>Net Cash Flow (Est.)</span>
+                            <span>IDR 22.5M</span>
+                        </div>
+                    </div>
+
+                    <!-- Banner Promo -->
+                    <div class="banner-card">
+                        <div class="banner-overlay"></div>
+                        <div class="banner-content">
+                            <h3>Ambil Pinjaman Modal</h3>
+                            <p>Butuh tambahan modal untuk musim produksi? SianAI bermitra dengan bank terpercaya untuk pembiayaan pengrajin.</p>
+                            <button class="btn-white">Ajukan Sekarang <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,411 @@
+/*SHARED STYLES — digunakan di semua halaman*/
+
+:root {
+    --primary: #791a27;
+    --primary-light: #f5ebea;
+    --primary-dark: #61151f;
+    --bg-main: #fdfbfa;
+    --bg-sidebar: #fefaf9;
+    --text-primary: #1c1c1e;
+    --text-secondary: #6b6b70;
+    --text-muted: #99999b;
+    --white: #ffffff;
+    --green: #2d9f58;
+    --bg-green: #e1f5e8;
+    --red: #c52233;
+    --bg-red: #fbecec;
+    --blue: #2b76b9;
+    --bg-blue: #e1eef9;
+    --border-color: #f0ebe9;
+    --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.03);
+    --radius-md: 12px;
+    --radius-lg: 16px;
+}
+
+/* ---- Reset ---- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+/* ---- Layout Wrapper ---- */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ================================================
+   SIDEBAR
+   ================================================ */
+.sidebar {
+    width: 250px;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding: 0 24px 32px 24px;
+}
+
+.sidebar-logo-img {
+    width: 100%;
+    max-width: 160px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.logo span {
+    font-weight: 500;
+}
+
+.logo-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* ---- Nav Menu ---- */
+.nav-menu {
+    list-style: none;
+    flex: 1;
+    padding: 0;
+}
+
+.nav-menu li {
+    margin-bottom: 2px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 11px 24px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.15s ease, color 0.15s ease, border-left 0.15s ease;
+    border-left: 4px solid transparent;
+    gap: 0;
+}
+
+.nav-item i {
+    width: 20px;
+    font-size: 15px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border-left-color: var(--primary);
+    font-weight: 600;
+}
+
+/* ---- Sidebar Bottom ---- */
+.sidebar-bottom {
+    padding: 16px 24px 0 24px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 8px;
+}
+
+.sidebar-bottom .nav-item {
+    padding: 10px 0;
+    border-left-color: transparent;
+}
+
+.sidebar-bottom .nav-item:hover {
+    background-color: transparent;
+    padding-left: 0;
+    border-left-color: transparent;
+}
+
+/* ---- Foto Nota Button ---- */
+.btn-foto-nota {
+    width: 100%;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    transition: background-color 0.2s;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-foto-nota:hover {
+    background-color: var(--primary-dark);
+}
+
+/* ================================================
+   MAIN CONTENT WRAPPER
+   ================================================ */
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* ================================================
+   SHARED UTILITIES
+   ================================================ */
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-green {
+    color: var(--green) !important;
+}
+
+.text-red {
+    color: var(--red) !important;
+}
+
+.text-blue {
+    color: var(--blue) !important;
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+.fw-bold {
+    font-weight: 600;
+}
+
+.fw-medium {
+    font-weight: 500;
+}
+
+/* ---- Badges ---- */
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.badge-green {
+    background-color: var(--bg-green);
+    color: var(--green);
+}
+
+.badge-blue {
+    background-color: var(--bg-blue);
+    color: var(--blue);
+}
+
+.badge-red {
+    background-color: var(--bg-red);
+    color: var(--red);
+}
+
+/* ================================================
+   SHARED TOPBAR — digunakan di semua halaman
+   ================================================ */
+.topbar {
+    height: 56px;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    height: 100%;
+}
+
+.topbar-logo {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.3px;
+    text-decoration: none;
+}
+
+.topbar-nav {
+    display: flex;
+    gap: 4px;
+    height: 100%;
+}
+
+.topbar-nav-item {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.topbar-nav-item:hover  { color: var(--text-primary); }
+.topbar-nav-item.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Search */
+.topbar-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.topbar-search i {
+    position: absolute;
+    left: 10px;
+    color: var(--text-muted);
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.topbar-search input {
+    padding: 7px 12px 7px 30px;
+    border: 1px solid var(--border-color);
+    background-color: #f7f5f5;
+    border-radius: 8px;
+    font-size: 12px;
+    width: 210px;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.topbar-search input:focus {
+    border-color: var(--primary);
+    background-color: var(--white);
+}
+
+/* Bell */
+.topbar-bell {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 17px;
+    padding: 4px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    position: relative;
+}
+
+.topbar-bell:hover { color: var(--primary); background: var(--primary-light); }
+
+/* User chip */
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.topbar-user:hover { background: #f7f5f5; }
+
+.topbar-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    flex-shrink: 0;
+    letter-spacing: -0.5px;
+}
+
+.topbar-username {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.topbar-chevron {
+    font-size: 9px;
+    color: var(--text-muted);
+}
+
+/* Export button */
+.btn-topbar-export {
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.btn-topbar-export:hover { background-color: var(--primary-dark); }

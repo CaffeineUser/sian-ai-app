@@ -1,0 +1,545 @@
+/* ==============================================
+   STOK ULOS PAGE — Specific Styles
+   ============================================== */
+
+/* ---- Page Wrapper ---- */
+.stok-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* ---- Page Scroll ---- */
+.page-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px 40px;
+    background-color: var(--bg-main);
+}
+
+/* ================================================
+   PAGE HEADER
+   ================================================ */
+.stok-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.stok-page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.stok-page-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.stok-header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-unduh {
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.btn-unduh:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-kelola {
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    background: var(--primary);
+    border: none;
+    color: var(--white);
+    transition: background-color 0.2s;
+}
+
+.btn-kelola:hover {
+    background: var(--primary-dark);
+}
+
+/* ================================================
+   MAIN LAYOUT: Left (2/3) + Right Sidebar (1/3)
+   ================================================ */
+.stok-main-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    align-items: start;
+}
+
+/* ================================================
+   LEFT COLUMN
+   ================================================ */
+.stok-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ---- Total Modal Card ---- */
+.modal-total-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-total-left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.modal-total-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+.modal-total-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -1px;
+}
+
+.modal-total-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 18px;
+}
+
+/* ---- Product Cards Grid ---- */
+.stok-product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.stok-product-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Product Image */
+.stok-product-img-wrap {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+}
+
+.stok-product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.88);
+    transition: transform 0.3s;
+}
+
+.stok-product-card:hover .stok-product-img {
+    transform: scale(1.03);
+}
+
+/* Badges on image */
+.img-badge-top {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--primary);
+    color: var(--white);
+}
+
+.img-badge-bottom {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.90);
+    color: var(--text-secondary);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.img-badge-bottom::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+}
+
+/* Product Info */
+.stok-product-info {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.stok-product-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stok-modal-macet {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.stok-ai-recom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 11px;
+    color: #8a6200;
+}
+
+.stok-ai-recom .ai-label {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #e65100;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.stok-ai-recom .ai-action {
+    font-weight: 600;
+    color: #8a6200;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.btn-aktifkan {
+    width: 100%;
+    padding: 10px;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.2s;
+    margin-top: 4px;
+}
+
+.btn-aktifkan:hover {
+    background: var(--primary-dark);
+}
+
+/* ---- Trend Chart ---- */
+.tren-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+}
+
+.tren-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.tren-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.tren-legend {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.legend-dot.modal {
+    background: var(--primary);
+}
+
+.legend-dot.jual {
+    background: var(--text-muted);
+}
+
+/* SVG Chart */
+.tren-chart-wrap {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.tren-chart-wrap svg {
+    width: 100%;
+    height: 140px;
+    overflow: visible;
+}
+
+.chart-x-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0 0 0;
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Masa Sepi Tooltip */
+.masa-sepi-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+}
+
+.tren-analysis {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #fdf9f8;
+    border-left: 3px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+
+.tren-analysis strong {
+    color: var(--text-primary);
+}
+
+/* ================================================
+   RIGHT SIDEBAR
+   ================================================ */
+.stok-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ---- Insight Mingguan ---- */
+.insight-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.insight-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.insight-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--primary);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.insight-header-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.insight-body {
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.insight-section-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 6px;
+}
+
+.insight-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+
+.insight-saran {
+    background: var(--primary-light);
+    border-radius: 8px;
+    padding: 12px 14px;
+}
+
+/* ---- Aksi Cepat ---- */
+.aksi-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 18px;
+}
+
+.aksi-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+}
+
+.aksi-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.btn-aksi {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    text-align: left;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-aksi:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-light);
+}
+
+.btn-aksi i {
+    width: 16px;
+    text-align: center;
+}
+
+/* AI Prediction chip */
+.ai-predict-chip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 11px;
+    color: #7a5500;
+    line-height: 1.6;
+}
+
+.ai-predict-chip i {
+    color: #e65100;
+    font-size: 13px;
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+
+/* ================================================
+   RESPONSIVE
+   ================================================ */
+@media (max-width: 1100px) {
+    .stok-main-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .stok-product-grid {
+        grid-template-columns: 1fr;
+    }
+}

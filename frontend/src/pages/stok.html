@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SianAI Stok Ulos — Analisis modal macet, inventaris, dan strategi likuiditas tenun Ulos.">
+    <title>SianAI — Stok Ulos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/shared.css">
+    <link rel="stylesheet" href="../styles/stok.css">
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- ==================== SIDEBAR ==================== -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../../assets/sianailogo.png" alt="SianAI Logo" class="sidebar-logo-img">
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="beranda.html" class="nav-item"><i class="fa-solid fa-house"></i> Beranda</a></li>
+                <li><a href="laporan.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Laporan Keuangan</a></li>
+                <li><a href="stok.html" class="nav-item active"><i class="fa-solid fa-box"></i> Stok Ulos</a></li>
+                <li><a href="akun.html" class="nav-item"><i class="fa-regular fa-user"></i> Manajemen Akun</a></li>
+                <li><a href="sales.html" class="nav-item"><i class="fa-solid fa-money-bill-wave"></i> Sales</a></li>
+                <li><a href="forecasting.html" class="nav-item"><i class="fa-solid fa-arrow-trend-up"></i> Forecasting</a></li>
+                <li><a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+
+            <div class="sidebar-bottom">
+                <button class="btn-foto-nota"><i class="fa-solid fa-camera"></i> Foto Nota</button>
+                <a href="support.html" class="nav-item"><i class="fa-regular fa-circle-question"></i> Support</a>
+                <a href="login.html" class="nav-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</a>
+            </div>
+        </aside>
+
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <div class="stok-content">
+
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <a href="beranda.html" class="topbar-logo">SianAI</a>
+                    <nav class="topbar-nav">
+                        <a href="laporan.html" class="topbar-nav-item">Reports</a>
+                        <a href="forecasting.html" class="topbar-nav-item">Analytics</a>
+                        <a href="stok.html" class="topbar-nav-item active">Inventory</a>
+                    </nav>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="topbar-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Cari produk stok...">
+                    </div>
+                    <button class="topbar-bell" title="Notifikasi">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+                    <div class="topbar-user">
+                        <div class="topbar-avatar">P1</div>
+                        <span class="topbar-username">Penenun123</span>
+                        <i class="fa-solid fa-chevron-down topbar-chevron"></i>
+                    </div>
+                    <button class="btn-topbar-export">
+                        <i class="fa-solid fa-download"></i> Export Data
+                    </button>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="page-content">
+
+                <!-- Page Header -->
+                <div class="stok-page-header">
+                    <div>
+                        <h1>Analisis Modal Macet</h1>
+                        <p class="stok-page-sub">Laporan komprehensif inventaris yang tidak bergerak lebih dari 90 hari.</p>
+                    </div>
+                    <div class="stok-header-actions">
+                        <button class="btn-unduh"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</button>
+                        <button class="btn-kelola"><i class="fa-solid fa-boxes-stacked"></i> Kelola Semua Stok</button>
+                    </div>
+                </div>
+
+                <!-- Main Layout -->
+                <div class="stok-main-layout">
+
+                    <!-- ============ LEFT COLUMN ============ -->
+                    <div class="stok-left">
+
+                        <!-- Total Modal Tertahan -->
+                        <div class="modal-total-card">
+                            <div class="modal-total-left">
+                                <div class="modal-total-label">Total Modal Tertahan</div>
+                                <div class="modal-total-value">Rp7.500.000</div>
+                            </div>
+                            <div class="modal-total-icon">
+                                <i class="fa-solid fa-vault"></i>
+                            </div>
+                        </div>
+
+                        <!-- Product Cards -->
+                        <div class="stok-product-grid">
+
+                            <!-- Card 1: Ulos Bintang Maratur -->
+                            <div class="stok-product-card">
+                                <div class="stok-product-img-wrap">
+                                    <img src="../../assets/ulos1.jpg" alt="Ulos Bintang Maratur" class="stok-product-img">
+                                    <span class="img-badge-top">MENGENDAP 90 HARI</span>
+                                    <span class="img-badge-bottom">Authentic</span>
+                                </div>
+                                <div class="stok-product-info">
+                                    <div class="stok-product-name">Ulos Bintang Maratur</div>
+                                    <div class="stok-modal-macet">Modal Macet: Rp3.000.000</div>
+                                    <div class="stok-ai-recom">
+                                        <div>
+                                            <div class="ai-label"><i class="fa-solid fa-robot"></i> REKOMENDASI AI</div>
+                                            <span class="ai-action">Buat Paket Bundling</span>
+                                        </div>
+                                    </div>
+                                    <button class="btn-aktifkan">Aktifkan Strategi Likuiditas</button>
+                                </div>
+                            </div>
+
+                            <!-- Card 2: Ulos Ragidup Premium -->
+                            <div class="stok-product-card">
+                                <div class="stok-product-img-wrap">
+                                    <img src="../../assets/ulos2.jpg" alt="Ulos Ragidup Premium" class="stok-product-img">
+                                    <span class="img-badge-top" style="background:#c52233;">MENGENDAP 120 HARI</span>
+                                    <span class="img-badge-bottom">Authentic</span>
+                                </div>
+                                <div class="stok-product-info">
+                                    <div class="stok-product-name">Ulos Ragidup Premium</div>
+                                    <div class="stok-modal-macet">Modal Macet: Rp4.500.000</div>
+                                    <div class="stok-ai-recom">
+                                        <div>
+                                            <div class="ai-label"><i class="fa-solid fa-robot"></i> REKOMENDASI AI</div>
+                                            <span class="ai-action">Diskon Khusus Media Sosial</span>
+                                        </div>
+                                    </div>
+                                    <button class="btn-aktifkan">Aktifkan Strategi Likuiditas</button>
+                                </div>
+                            </div>
+
+                        </div><!-- /.stok-product-grid -->
+
+                        <!-- Tren Modal Mengendap -->
+                        <div class="tren-card">
+                            <div class="tren-header">
+                                <span class="tren-title">Tren Modal Mengendap</span>
+                                <div class="tren-legend">
+                                    <span><span class="legend-dot modal"></span>Modal</span>
+                                    <span><span class="legend-dot jual"></span>Penjualan</span>
+                                </div>
+                            </div>
+
+                            <!-- SVG Line Chart -->
+                            <div class="tren-chart-wrap">
+                                <svg viewBox="0 0 560 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Grid lines -->
+                                    <line x1="0" y1="30"  x2="560" y2="30"  stroke="#f0ebe9" stroke-width="1"/>
+                                    <line x1="0" y1="70"  x2="560" y2="70"  stroke="#f0ebe9" stroke-width="1"/>
+                                    <line x1="0" y1="110" x2="560" y2="110" stroke="#f0ebe9" stroke-width="1"/>
+
+                                    <!-- Penjualan line (gray, dashed) -->
+                                    <polyline
+                                        points="0,90 80,85 160,80 240,95 320,105 400,90 480,75 560,80"
+                                        fill="none"
+                                        stroke="#bbbbbb"
+                                        stroke-width="2"
+                                        stroke-dasharray="6,4"
+                                    />
+
+                                    <!-- Modal line (primary red, bold) -->
+                                    <polyline
+                                        id="modal-line"
+                                        points="0,100 80,90 160,70 240,40 320,110 400,105 480,95 560,85"
+                                        fill="none"
+                                        stroke="#791a27"
+                                        stroke-width="2.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+
+                                    <!-- Shaded area under modal line -->
+                                    <polygon
+                                        points="0,100 80,90 160,70 240,40 320,110 400,105 480,95 560,85 560,140 0,140"
+                                        fill="#791a27"
+                                        fill-opacity="0.06"
+                                    />
+
+                                    <!-- "Puncak Musim Pesta" annotation -->
+                                    <circle cx="160" cy="70" r="4" fill="#791a27"/>
+                                    <text x="155" y="62" font-size="8" fill="#791a27" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">Puncak Musim Pesta</text>
+
+                                    <!-- "Masa Sepi Adat" annotation box -->
+                                    <rect x="290" y="95" width="70" height="18" rx="4" fill="#791a27"/>
+                                    <text x="325" y="107" font-size="8" fill="white" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">Masa Sepi Adat</text>
+                                    <circle cx="320" cy="110" r="4" fill="#791a27"/>
+                                </svg>
+
+                                <!-- X-axis labels -->
+                                <div class="chart-x-labels">
+                                    <span>OKT</span>
+                                    <span>NOV</span>
+                                    <span>DES</span>
+                                    <span>JAN</span>
+                                    <span>FEB</span>
+                                    <span>MAR</span>
+                                    <span>APR</span>
+                                    <span>MEI</span>
+                                </div>
+                            </div>
+
+                            <!-- Analysis Text -->
+                            <div class="tren-analysis">
+                                <strong>Analisis Siklus:</strong> Penurunan modal tertahan di bulan Desember sejalan dengan tingginya
+                                permintaan untuk upacara adat akhir tahun. Kenaikan tajam di kuartal pertama (Jan–Mar)
+                                merupakan fenomena tahunan "Masa Sepi" setelah siklus pesta adat berakhir.
+                            </div>
+                        </div>
+
+                    </div><!-- /.stok-left -->
+
+                    <!-- ============ RIGHT SIDEBAR ============ -->
+                    <div class="stok-right">
+
+                        <!-- Insight Mingguan -->
+                        <div class="insight-card">
+                            <div class="insight-header">
+                                <div class="insight-icon">
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                </div>
+                                <span class="insight-header-title">Insight Mingguan</span>
+                            </div>
+                            <div class="insight-body">
+                                <!-- Diagnosis -->
+                                <div>
+                                    <div class="insight-section-label">DIAGNOSIS DATA</div>
+                                    <p class="insight-text">
+                                        Peningkatan modal yang mengendap di bulan Maret bersifat konsisten dengan siklus adat lokal.
+                                        Secara historis, likuiditas akan kembali stabil saat memasuki musim pernikahan (Mei–Juni).
+                                    </p>
+                                </div>
+
+                                <!-- Saran Ekspansi -->
+                                <div class="insight-saran">
+                                    <div class="insight-section-label">SARAN EKSPANSI</div>
+                                    <p class="insight-text">
+                                        Untuk memitigasi masa sepi adat lokal, disarankan melakukan
+                                        <strong>Ekspansi Digital</strong> ke pasar luar daerah (Jakarta, Medan) yang tidak terlalu
+                                        bergantung pada siklus adat Toba.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Aksi Cepat -->
+                        <div class="aksi-card">
+                            <div class="aksi-title">Aksi Cepat</div>
+                            <div class="aksi-list">
+                                <button class="btn-aksi">
+                                    <i class="fa-solid fa-globe"></i> Update Katalog Online
+                                </button>
+                                <button class="btn-aksi">
+                                    <i class="fa-brands fa-facebook"></i> Atur Iklan Facebook
+                                </button>
+                                <button class="btn-aksi">
+                                    <i class="fa-solid fa-handshake"></i> Hubungi Mitra Reseller
+                                </button>
+                            </div>
+
+                            <!-- AI Prediction chip -->
+                            <div class="ai-predict-chip">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>
+                                    Prediksi AI menunjukkan peningkatan permintaan sebesar <strong>15%</strong> pada bulan April
+                                    terkait persiapan perayaan Paskah.
+                                </span>
+                            </div>
+                        </div>
+
+                    </div><!-- /.stok-right -->
+
+                </div><!-- /.stok-main-layout -->
+
+            </main>
+        </div><!-- /.stok-content -->
+
+    </div><!-- /.app-layout -->
+</body>
+
+</html>

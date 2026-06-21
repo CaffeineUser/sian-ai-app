@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SianAI Beranda — Dashboard manajemen keuangan dan usaha tenun Ulos Batak.">
+    <title>SianAI — Beranda</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/shared.css">
+    <link rel="stylesheet" href="../styles/beranda.css">
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- ==================== SIDEBAR ==================== -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../../assets/sianailogo.png" alt="SianAI Logo" class="sidebar-logo-img">
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="beranda.html" class="nav-item active"><i class="fa-solid fa-house"></i> Beranda</a></li>
+                <li><a href="laporan.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Laporan Keuangan</a></li>
+                <li><a href="stok.html" class="nav-item"><i class="fa-solid fa-box"></i> Stok Ulos</a></li>
+                <li><a href="akun.html" class="nav-item"><i class="fa-regular fa-user"></i> Manajemen Akun</a></li>
+                <li><a href="sales.html" class="nav-item"><i class="fa-solid fa-money-bill-wave"></i> Sales</a></li>
+                <li><a href="forecasting.html" class="nav-item"><i class="fa-solid fa-arrow-trend-up"></i> Forecasting</a></li>
+                <li><a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+
+            <div class="sidebar-bottom">
+                <button class="btn-foto-nota"><i class="fa-solid fa-camera"></i> Foto Nota</button>
+                <a href="support.html" class="nav-item"><i class="fa-regular fa-circle-question"></i> Support</a>
+                <a href="login.html" class="nav-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</a>
+            </div>
+        </aside>
+
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main class="main-content">
+            <div class="page-wrapper">
+
+                <!-- Header -->
+                <header class="top-header">
+                    <div class="header-left">
+                        <h1>Halo, Penenun 👋</h1>
+                        <p>Selamat datang kembali di dashboard SianAI</p>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn-icon" title="Notifikasi">
+                            <i class="fa-regular fa-bell"></i>
+                        </button>
+                        <div class="user-profile">
+                            <div class="user-info">
+                                <span class="user-name">Penenun123</span>
+                                <span class="user-role">PEMILIK USAHA</span>
+                            </div>
+                            <img src="https://ui-avatars.com/api/?name=Penenun123&background=791a27&color=fff&rounded=true" alt="Avatar Mariana S." class="avatar">
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Saldo Widget -->
+                <section class="top-widget">
+                    <div class="widget-left">
+                        <div class="saldo-label">TOTAL SALDO KAS</div>
+                        <div class="saldo-amount">Rp42.850.000</div>
+                        <div class="saldo-stats">
+                            <div class="stat-item green">
+                                <i class="fa-solid fa-arrow-up"></i> Pemasukan
+                                <div class="stat-val">Rp12.4M</div>
+                            </div>
+                            <div class="stat-item red">
+                                <i class="fa-solid fa-arrow-down"></i> Pengeluaran
+                                <div class="stat-val">Rp5.2M</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-right">
+                        <div class="chart-label">Grafik 7 Hari Terakhir</div>
+                        <div class="chart-container">
+                            <svg viewBox="0 0 400 150" preserveAspectRatio="none" class="chart-svg">
+                                <defs>
+                                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#791a27" stop-opacity="0.25"></stop>
+                                        <stop offset="100%" stop-color="#791a27" stop-opacity="0"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <path class="chart-area" d="M0,120 C50,110 80,130 150,130 C220,130 250,50 300,50 C350,50 380,80 400,30 L400,150 L0,150 Z" fill="url(#chartGradient)">
+                                </path>
+                                <path class="chart-line" d="M0,120 C50,110 80,130 150,130 C220,130 250,50 300,50 C350,50 380,80 400,30" fill="none" stroke="#791a27" stroke-width="3" stroke-linecap="round">
+                                </path>
+                                <circle cx="0" cy="120" r="5" fill="#791a27"></circle>
+                                <circle cx="150" cy="130" r="5" fill="#791a27"></circle>
+                                <circle cx="300" cy="50" r="5" fill="#791a27"></circle>
+                                <circle cx="400" cy="30" r="5" fill="#791a27"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Activity Table -->
+                <section class="activity-section">
+                    <div class="activity-header">
+                        <h2>Aktivitas Terakhir</h2>
+                        <a href="laporan.html" class="link-view-all">Lihat Semua Transaksi &rsaquo;</a>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="activity-table">
+                            <thead>
+                                <tr>
+                                    <th>DESKRIPSI TRANSAKSI</th>
+                                    <th>KATEGORI &amp; WAKTU</th>
+                                    <th>STATUS</th>
+                                    <th class="text-right">NOMINAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="desc-cell">
+                                            <div class="icon-box"><i class="fa-solid fa-bag-shopping"></i></div>
+                                            <span class="desc-text">Ulos Ragidup Silk Grade A</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="cat-cell">
+                                            <span class="cat-name">Penjualan</span>
+                                            <span class="cat-time">Hari ini, 14:20</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-green">SELESAI</span></td>
+                                    <td class="text-right text-green fw-bold">+Rp 3.500.000</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="desc-cell">
+                                            <div class="icon-box red-icon"><i class="fa-solid fa-wallet"></i></div>
+                                            <span class="desc-text">Pembelian Benang Sutra Mas (50 Roll)</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="cat-cell">
+                                            <span class="cat-name">Pembelian Alat</span>
+                                            <span class="cat-time">Hari ini, 10:05</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-blue">DIPROSES</span></td>
+                                    <td class="text-right text-red fw-bold">-Rp 850.000</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="desc-cell">
+                                            <div class="icon-box red-icon"><i class="fa-solid fa-wallet"></i></div>
+                                            <span class="desc-text">Pembelian Benang Katun (100 Roll)</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="cat-cell">
+                                            <span class="cat-name">Pembelian Alat</span>
+                                            <span class="cat-time">Kemarin, 17:05</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-blue">DIPROSES</span></td>
+                                    <td class="text-right text-red fw-bold">-Rp 1.700.000</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="desc-cell">
+                                            <div class="icon-box"><i class="fa-solid fa-bag-shopping"></i></div>
+                                            <span class="desc-text">Ulos Ragihotang Handwoven Custom</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="cat-cell">
+                                            <span class="cat-name">Penjualan</span>
+                                            <span class="cat-time">Kemarin, 16:45</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-green">SELESAI</span></td>
+                                    <td class="text-right text-green fw-bold">+Rp 1.800.000</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="desc-cell">
+                                            <div class="icon-box"><i class="fa-solid fa-bag-shopping"></i></div>
+                                            <span class="desc-text">Ulos Mangiring Handwoven Custom</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="cat-cell">
+                                            <span class="cat-name">Penjualan</span>
+                                            <span class="cat-time">Kemarin, 10:45</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-green">SELESAI</span></td>
+                                    <td class="text-right text-green fw-bold">+Rp 800.000</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="desc-cell">
+                                            <div class="icon-box"><i class="fa-solid fa-bag-shopping"></i></div>
+                                            <span class="desc-text">Ulos Sibolang Handwoven Custom</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="cat-cell">
+                                            <span class="cat-name">Penjualan</span>
+                                            <span class="cat-time">2 Hari lalu, 09:45</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-green">SELESAI</span></td>
+                                    <td class="text-right text-green fw-bold">+Rp 1.200.000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div><!-- /.page-wrapper -->
+        </main>
+
+    </div><!-- /.app-layout -->
+</body>
+
+</html>

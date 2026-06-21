@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SianAI Laporan Keuangan — Pantau arus kas, transaksi, dan ringkasan kategori usaha tenun Ulos.">
+    <title>SianAI — Laporan Keuangan</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/shared.css">
+    <link rel="stylesheet" href="../styles/laporan.css">
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- ==================== SIDEBAR ==================== -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../../assets/sianailogo.png" alt="SianAI Logo" class="sidebar-logo-img">
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="beranda.html" class="nav-item"><i class="fa-solid fa-house"></i> Beranda</a></li>
+                <li><a href="laporan.html" class="nav-item active"><i class="fa-solid fa-chart-simple"></i> Laporan Keuangan</a></li>
+                <li><a href="stok.html" class="nav-item"><i class="fa-solid fa-box"></i> Stok Ulos</a></li>
+                <li><a href="akun.html" class="nav-item"><i class="fa-regular fa-user"></i> Manajemen Akun</a></li>
+                <li><a href="sales.html" class="nav-item"><i class="fa-solid fa-money-bill-wave"></i> Sales</a></li>
+                <li><a href="forecasting.html" class="nav-item"><i class="fa-solid fa-arrow-trend-up"></i> Forecasting</a></li>
+                <li><a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+
+            <div class="sidebar-bottom">
+                <button class="btn-foto-nota"><i class="fa-solid fa-camera"></i> Foto Nota</button>
+                <a href="support.html" class="nav-item"><i class="fa-regular fa-circle-question"></i> Support</a>
+                <a href="login.html" class="nav-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</a>
+            </div>
+        </aside>
+
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <div class="laporan-content">
+
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <a href="beranda.html" class="topbar-logo">SianAI</a>
+                    <nav class="topbar-nav">
+                        <a href="laporan.html" class="topbar-nav-item active">Reports</a>
+                        <a href="forecasting.html" class="topbar-nav-item">Analytics</a>
+                    </nav>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="topbar-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Cari data keuangan...">
+                    </div>
+                    <button class="topbar-bell" title="Notifikasi">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+                    <div class="topbar-user">
+                        <div class="topbar-avatar">P1</div>
+                        <span class="topbar-username">Penenun123</span>
+                        <i class="fa-solid fa-chevron-down topbar-chevron"></i>
+                    </div>
+                    <button class="btn-topbar-export">
+                        <i class="fa-solid fa-download"></i> Export Data
+                    </button>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="page-content">
+
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div class="page-header-left">
+                        <h1>Laporan Keuangan</h1>
+                        <p class="page-header-sub">
+                            <i class="fa-regular fa-calendar"></i>
+                            Data ringkasan untuk periode terpilih
+                        </p>
+                    </div>
+                    <div class="page-header-right">
+                        <button class="period-selector">
+                            Februari 2026 <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i>
+                        </button>
+                        <button class="btn-filter">
+                            <i class="fa-solid fa-sliders"></i> Filter Lanjutan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ---- STAT CARDS ---- -->
+                <div class="stats-grid">
+                    <!-- Card 1: Primary (maroon) -->
+                    <div class="stat-card primary">
+                        <div class="stat-card-header">
+                            <span class="stat-title">TOTAL SALDO KAS</span>
+                            <i class="fa-solid fa-landmark stat-icon"></i>
+                        </div>
+                        <div class="stat-value">Rp42.850.000</div>
+                        <div class="stat-subtext">
+                            <i class="fa-regular fa-clock"></i> Terakhir diperbarui: 2 menit yang lalu
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Pemasukan -->
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <span class="stat-title">TOTAL PEMASUKAN (BULAN INI)</span>
+                            <i class="fa-solid fa-arrow-trend-up stat-icon text-muted"></i>
+                        </div>
+                        <div class="stat-value">Rp12.4M</div>
+                        <div class="stat-subtext text-green">
+                            <i class="fa-solid fa-arrow-trend-up"></i> +8.2% dari bulan lalu
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Pengeluaran (danger) -->
+                    <div class="stat-card danger">
+                        <div class="stat-card-header">
+                            <span class="stat-title">TOTAL PENGELUARAN (BULAN INI)</span>
+                            <i class="fa-solid fa-triangle-exclamation stat-icon"></i>
+                        </div>
+                        <div class="stat-value">Rp5.2M</div>
+                        <div class="stat-subtext">Pantau Pengeluaran</div>
+                    </div>
+                </div>
+
+                <!-- ---- MAIN GRID: Tabel + Kanan ---- -->
+                <div class="main-grid">
+
+                    <!-- Daftar Transaksi -->
+                    <div class="transaksi-card">
+                        <div class="transaksi-header">
+                            <div class="transaksi-title">Daftar Transaksi</div>
+                            <div class="transaksi-actions">
+                                <button class="icon-btn" title="Cari"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                <button class="icon-btn" title="Filter"><i class="fa-solid fa-sliders"></i></button>
+                            </div>
+                        </div>
+
+                        <table class="trans-table">
+                            <thead>
+                                <tr>
+                                    <th>DESKRIPSI TRANSAKSI</th>
+                                    <th>KATEGORI</th>
+                                    <th>STATUS</th>
+                                    <th style="text-align:right;">NOMINAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Row 1 -->
+                                <tr>
+                                    <td>
+                                        <div class="t-desc-cell">
+                                            <div class="t-icon-box income"><i class="fa-solid fa-bag-shopping"></i></div>
+                                            <div class="t-desc-info">
+                                                <span class="t-desc-name">Ulos Ragidup Silk Grade A</span>
+                                                <span class="t-desc-sub">Inv #8991 · 10 Feb 2024</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="cat-badge produk">Penjualan Produk</span></td>
+                                    <td><span class="status-pill selesai">Selesai</span></td>
+                                    <td class="nominal-positive">+Rp3.500.000</td>
+                                </tr>
+                                <!-- Row 2 -->
+                                <tr>
+                                    <td>
+                                        <div class="t-desc-cell">
+                                            <div class="t-icon-box expense"><i class="fa-solid fa-wallet"></i></div>
+                                            <div class="t-desc-info">
+                                                <span class="t-desc-name">Pembelian Benang Sutra Mas</span>
+                                                <span class="t-desc-sub">Inv #8990 · 09 Feb 2024</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="cat-badge bahan">Bahan Baku</span></td>
+                                    <td><span class="status-pill selesai">Selesai</span></td>
+                                    <td class="nominal-negative">-Rp1.250.000</td>
+                                </tr>
+                                <!-- Row 3 -->
+                                <tr>
+                                    <td>
+                                        <div class="t-desc-cell">
+                                            <div class="t-icon-box pending"><i class="fa-solid fa-store"></i></div>
+                                            <div class="t-desc-info">
+                                                <span class="t-desc-name">Sewa Booth Pameran Craftina</span>
+                                                <span class="t-desc-sub">Inv #8990 · 08 Feb 2024</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="cat-badge marketing">Marketing</span></td>
+                                    <td><span class="status-pill diproses">Diproses</span></td>
+                                    <td class="nominal-negative">-Rp5.000.000</td>
+                                </tr>
+                                <!-- Row 4 -->
+                                <tr>
+                                    <td>
+                                        <div class="t-desc-cell">
+                                            <div class="t-icon-box income"><i class="fa-solid fa-bag-shopping"></i></div>
+                                            <div class="t-desc-info">
+                                                <span class="t-desc-name">Ulos Sadum Gold Special Edition</span>
+                                                <span class="t-desc-sub">Inv #8989 · 07 Feb 2024</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="cat-badge produk">Penjualan Produk</span></td>
+                                    <td><span class="status-pill selesai">Selesai</span></td>
+                                    <td class="nominal-positive">+Rp8.200.000</td>
+                                </tr>
+                                <!-- Row 5 -->
+                                <tr>
+                                    <td>
+                                        <div class="t-desc-cell">
+                                            <div class="t-icon-box expense"><i class="fa-solid fa-bolt"></i></div>
+                                            <div class="t-desc-info">
+                                                <span class="t-desc-name">Tagihan Listrik Workshop (Jan)</span>
+                                                <span class="t-desc-sub">Inv #8988 · 05 Feb 2024</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="cat-badge operasional">Operasional</span></td>
+                                    <td><span class="status-pill selesai">Selesai</span></td>
+                                    <td class="nominal-negative">-Rp850.000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="transaksi-footer">
+                            <span class="trans-count">Menampilkan 5 dari 124 transaksi</span>
+                            <div class="pagination">
+                                <button class="btn-page" disabled>Sebelumnya</button>
+                                <button class="btn-page active">Selanjutnya</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="right-col">
+
+                        <!-- Grafik Arus Kas -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <span class="chart-card-title">Grafik Arus Kas</span>
+                                <span class="chart-period-badge">7 Hari Terakhir</span>
+                            </div>
+
+                            <div class="bar-chart">
+                                <div class="bar-day">
+                                    <div class="bar income" style="height:45%;"></div>
+                                    <span class="bar-label">Sen</span>
+                                </div>
+                                <div class="bar-day">
+                                    <div class="bar income" style="height:30%;"></div>
+                                    <span class="bar-label">Sel</span>
+                                </div>
+                                <div class="bar-day">
+                                    <div class="bar income" style="height:55%;"></div>
+                                    <span class="bar-label">Rab</span>
+                                </div>
+                                <div class="bar-day">
+                                    <div class="bar income" style="height:40%;"></div>
+                                    <span class="bar-label">Kam</span>
+                                </div>
+                                <div class="bar-day">
+                                    <div class="bar income" style="height:65%;"></div>
+                                    <span class="bar-label">Jum</span>
+                                </div>
+                                <div class="bar-day">
+                                    <div class="bar active-bar" style="height:85%;"></div>
+                                    <span class="bar-label">Sab</span>
+                                </div>
+                                <div class="bar-day">
+                                    <div class="bar income" style="height:50%;"></div>
+                                    <span class="bar-label">Min</span>
+                                </div>
+                            </div>
+
+                            <div class="chart-footer">
+                                <div class="chart-avg">
+                                    Rata-rata harian<br>
+                                    <strong>Rp3.420.000</strong>
+                                </div>
+                                <span class="chart-trend">↑ +12%</span>
+                            </div>
+                        </div>
+
+                        <!-- Ringkasan Kategori -->
+                        <div class="kategori-card">
+                            <div class="kategori-title">Ringkasan Kategori</div>
+                            <div class="kategori-list">
+                                <div class="kategori-item">
+                                    <div class="kategori-meta">
+                                        <span class="kategori-name">Penjualan Produk</span>
+                                        <span class="kategori-pct">65%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill fill-primary" style="width:65%;"></div>
+                                    </div>
+                                </div>
+                                <div class="kategori-item">
+                                    <div class="kategori-meta">
+                                        <span class="kategori-name">Bahan Baku</span>
+                                        <span class="kategori-pct">20%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill fill-blue" style="width:20%;"></div>
+                                    </div>
+                                </div>
+                                <div class="kategori-item">
+                                    <div class="kategori-meta">
+                                        <span class="kategori-name">Operasional</span>
+                                        <span class="kategori-pct">10%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill fill-purple" style="width:10%;"></div>
+                                    </div>
+                                </div>
+                                <div class="kategori-item">
+                                    <div class="kategori-meta">
+                                        <span class="kategori-name">Pemasaran</span>
+                                        <span class="kategori-pct">5%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill fill-orange" style="width:5%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-kategori">Lihat Semua Kategori</button>
+                        </div>
+
+                    </div><!-- /.right-col -->
+                </div><!-- /.main-grid -->
+
+                <!-- ---- BOTTOM ROW: Produk + AI ---- -->
+                <div class="bottom-row">
+                    <!-- Product Card 1 -->
+                    <div class="product-card">
+                        <img src="../../assets/ulos1.jpg" alt="Ulos Ragidup Silk" class="product-img">
+                        <span class="product-chip certified">✦ CERTIFIED AUTHENTICITY</span>
+                        <div class="product-info">
+                            <div class="product-name">Ulos Ragidup Silk</div>
+                            <div class="product-sub">High-demand item for Forecasting</div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 2 -->
+                    <div class="product-card">
+                        <img src="../../assets/ulos2.jpg" alt="Hand-Woven Process" class="product-img">
+                        <span class="product-chip heritage">🏛 HERITAGE GRADE</span>
+                        <div class="product-info">
+                            <div class="product-name">Hand-Woven Process</div>
+                            <div class="product-sub">Operational cost efficiency tracking</div>
+                        </div>
+                    </div>
+
+                    <!-- AI Suggestion Card -->
+                    <div class="ai-card">
+                        <div class="ai-card-header">
+                            <div class="ai-icon"><i class="fa-solid fa-robot"></i></div>
+                            <span class="ai-card-title">Smart AI Suggestion</span>
+                        </div>
+                        <div class="ai-card-body">
+                            Stok benang sutra hampir habis. Pesan hari ini untuk menghemat <strong>10% biaya logistik</strong> sebelum harga naik menjelang musim Ulaon Unjuk.
+                        </div>
+                    </div>
+                </div><!-- /.bottom-row -->
+
+            </main>
+        </div><!-- /.laporan-content -->
+
+    </div><!-- /.app-layout -->
+</body>
+
+</html>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="SianAI Forecasting — Analisis arus kas dan proyeksi likuiditas usaha tenun Ulos.">
-    <title>SianAI — Forecasting</title>
+    <title>SianAI — Forecasting Web3</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +18,10 @@
 </head>
 
 <body>
+    <!-- Ambient Neon Background Blobs -->
+    <div style="position:fixed; top:-20%; left:-10%; width:50vw; height:50vw; background:radial-gradient(circle, rgba(255,51,75,0.05) 0%, transparent 70%); z-index:-1; pointer-events:none; filter:blur(80px);"></div>
+    <div style="position:fixed; bottom:-20%; right:-10%; width:60vw; height:60vw; background:radial-gradient(circle, rgba(255,193,7,0.03) 0%, transparent 70%); z-index:-1; pointer-events:none; filter:blur(100px);"></div>
+
     <div class="app-layout">
 
         <!-- ==================== SIDEBAR ==================== -->
@@ -29,15 +33,14 @@
             <ul class="nav-menu">
                 <li><a href="beranda.html" class="nav-item"><i class="fa-solid fa-house"></i> Beranda</a></li>
                 <li><a href="laporan.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Laporan Keuangan</a></li>
-                <li><a href="stok.html" class="nav-item"><i class="fa-solid fa-box"></i> Stok Ulos</a></li>
+                <li><a href="stok.html" class="nav-item"><i class="fa-solid fa-box"></i> Inventory</a></li>
                 <li><a href="akun.html" class="nav-item"><i class="fa-regular fa-user"></i> Manajemen Akun</a></li>
-                <li><a href="sales.html" class="nav-item"><i class="fa-solid fa-money-bill-wave"></i> Sales</a></li>
                 <li><a href="forecasting.html" class="nav-item active"><i class="fa-solid fa-arrow-trend-up"></i> Forecasting</a></li>
                 <li><a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
             </ul>
 
             <div class="sidebar-bottom">
-                <button class="btn-foto-nota"><i class="fa-solid fa-camera"></i> Foto Nota</button>
+                <button class="btn-foto-nota" onclick="window.location.href='laporan.html?open_camera=true'"><i class="fa-solid fa-camera"></i> Foto Nota</button>
                 <a href="support.html" class="nav-item"><i class="fa-regular fa-circle-question"></i> Support</a>
                 <a href="login.html" class="nav-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</a>
             </div>
@@ -50,13 +53,13 @@
             <header class="topbar">
                 <div class="topbar-left">
                     <a href="beranda.html" class="topbar-logo">SianAI</a>
-                    <nav class="topbar-nav">
-                        <a href="laporan.html" class="topbar-nav-item">Reports</a>
-                        <a href="forecasting.html" class="topbar-nav-item active">Analytics</a>
-                    </nav>
                 </div>
 
                 <div class="topbar-right">
+                    <!-- Connect Wallet Button -->
+                    <button id="btnConnectWallet" class="btn-wallet-connect">
+                        <i class="fa-solid fa-wallet"></i> Hubungkan Dompet
+                    </button>
                     <div class="topbar-search">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" placeholder="Cari data finansial...">
@@ -92,7 +95,7 @@
                         </div>
                         <div class="stat-value">IDR 65.0M</div>
                         <div class="stat-subtext">
-                            <i class="fa-regular fa-clock"></i> Berdasarkan Proyeksi Musim Pesta Adat (Sasi Baik) Telu Bulan ke Depan
+                            <i class="fa-regular fa-clock"></i> Berdasarkan Proyeksi Musim Pesta Adat (Sasi Baik) Tiga Bulan ke Depan
                         </div>
                     </div>
 
@@ -101,7 +104,7 @@
                             <span class="stat-title">KAS TERSEDIA</span>
                             <i class="fa-solid fa-piggy-bank stat-icon text-muted"></i>
                         </div>
-                        <div class="stat-value">IDR 42.5M</div>
+                        <div class="stat-value" id="statKasTersedia">IDR 42.5M</div>
                         <div class="stat-subtext text-green">
                             <i class="fa-solid fa-arrow-trend-up"></i> +12% dari bulan lalu
                         </div>
@@ -112,7 +115,7 @@
                             <span class="stat-title">KEKURANGAN / GAP</span>
                             <i class="fa-solid fa-triangle-exclamation stat-icon"></i>
                         </div>
-                        <div class="stat-value">IDR 22.5M</div>
+                        <div class="stat-value" id="statGap">IDR 22.5M</div>
                         <div class="stat-subtext">Tindakan Diperlukan</div>
                     </div>
                 </div>
@@ -128,7 +131,7 @@
                                 <span class="badge orange">POTENSI TINGGI</span>
                             </div>
                             <p class="recom-desc">Tingkatkan likuiditas dengan menawarkan sistem pre-order koleksi eksklusif kepada 50 pelanggan teratas.</p>
-                            <button class="btn-sm btn-maroon">Aktifkan Campaign</button>
+                            <button class="btn-sm btn-maroon" onclick="alert('Kampanye Pre-Order Diaktifkan! SMS/WA broadcast telah dikirimkan ke pelanggan teratas.')">Aktifkan Campaign</button>
                         </div>
                     </div>
 
@@ -140,7 +143,7 @@
                                 <span class="badge gray">CUCI GUDANG</span>
                             </div>
                             <p class="recom-desc">Likuidasi stok Ulos Sadum yang tidak bergerak lebih dari 6 bulan untuk menambah kas cepat sebesar IDR 8M.</p>
-                            <button class="btn-sm btn-light">Lihat Inventori</button>
+                            <button class="btn-sm btn-light" onclick="window.location.href='stok.html'">Lihat Inventori</button>
                         </div>
                     </div>
                 </div>
@@ -196,12 +199,12 @@
                     </div>
 
                     <!-- Banner Promo -->
-                    <div class="banner-card">
+                    <div class="banner-card" style="background-image: url('../../assets/bri.png');">
                         <div class="banner-overlay"></div>
                         <div class="banner-content">
-                            <h3>Ambil Pinjaman Modal</h3>
-                            <p>Butuh tambahan modal untuk musim produksi? SianAI bermitra dengan bank terpercaya untuk pembiayaan pengrajin.</p>
-                            <button class="btn-white">Ajukan Sekarang <i class="fa-solid fa-arrow-right"></i></button>
+                            <h3>Kredit Usaha Rakyat (KUR)</h3>
+                            <p>Ajukan pinjaman modal usaha tenun Ulos langsung di SianAI. Proses instan dengan jaminan verifikasi blockchain ledger keuangan Anda!</p>
+                            <button class="btn-white" onclick="alert('Pengajuan KUR Berhasil Dikirim! Bank BRI akan memverifikasi Laporan Keuangan terenskripsi Anda di blockchain.')">Ajukan Sekarang <i class="fa-solid fa-arrow-right"></i></button>
                         </div>
                     </div>
                 </div>
@@ -210,6 +213,84 @@
         </div><!-- /.forecasting-content -->
 
     </div><!-- /.app-layout -->
+
+    <!-- Web3 Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="../services/blockchain.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnConnect = document.getElementById('btnConnectWallet');
+            const statKasTersedia = document.getElementById('statKasTersedia');
+            const statGap = document.getElementById('statGap');
+
+            // Render Wallet State
+            function updateWalletUI() {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    const shortAddress = state.address.substring(0, 6) + '...' + state.address.substring(state.address.length - 4);
+                    btnConnect.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--green);"></i> ${shortAddress} (${state.network})`;
+                    btnConnect.classList.add('connected');
+                } else {
+                    btnConnect.innerHTML = `<i class="fa-solid fa-wallet"></i> Hubungkan Dompet`;
+                    btnConnect.classList.remove('connected');
+                }
+                
+                calculateKas();
+            }
+
+            // Hitung sisa kas dinamis berdasarkan transaksi riil
+            function calculateKas() {
+                const txs = window.SianAIBlockchainInstance.getTransactions();
+                let startingKas = 42500000; // IDR 42.5M
+                let netChange = 0;
+
+                txs.forEach(tx => {
+                    if (tx.type === 'income') {
+                        netChange += tx.amount;
+                    } else {
+                        netChange -= tx.amount;
+                    }
+                });
+
+                const currentKas = startingKas + netChange;
+                const kasJutaan = (currentKas / 1000000).toFixed(1);
+                statKasTersedia.textContent = `IDR ${kasJutaan}M`;
+
+                // Hitung Gap (Estimasi modal 65M)
+                const gap = 65000000 - currentKas;
+                const gapJutaan = (gap / 1000000).toFixed(1);
+                
+                if (gap > 0) {
+                    statGap.textContent = `IDR ${gapJutaan}M`;
+                } else {
+                    statGap.textContent = `IDR 0.0M`;
+                }
+            }
+
+            // Wallet button click handler
+            btnConnect.addEventListener('click', async () => {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    window.SianAIBlockchainInstance.disconnectWallet();
+                } else {
+                    try {
+                        btnConnect.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menghubungkan...`;
+                        await window.SianAIBlockchainInstance.connectWallet();
+                    } catch (err) {
+                        alert("Koneksi dompet gagal: " + err.message);
+                        updateWalletUI();
+                    }
+                }
+            });
+
+            // Listen updates
+            window.addEventListener('sianai_wallet_updated', updateWalletUI);
+            window.addEventListener('sianai_transactions_updated', calculateKas);
+
+            // Initial load
+            updateWalletUI();
+        });
+    </script>
 </body>
 
 </html>

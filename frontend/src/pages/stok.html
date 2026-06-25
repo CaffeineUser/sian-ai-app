@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SianAI Stok Ulos — Analisis modal macet, inventaris, dan strategi likuiditas tenun Ulos.">
-    <title>SianAI — Stok Ulos</title>
+    <meta name="description" content="SianAI Inventory — Analisis modal macet, inventaris, dan strategi likuiditas tenun Ulos.">
+    <title>SianAI — Inventory Web3</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,6 +15,10 @@
 </head>
 
 <body>
+    <!-- Ambient Neon Background Blobs -->
+    <div style="position:fixed; top:-20%; left:-10%; width:50vw; height:50vw; background:radial-gradient(circle, rgba(255,51,75,0.05) 0%, transparent 70%); z-index:-1; pointer-events:none; filter:blur(80px);"></div>
+    <div style="position:fixed; bottom:-20%; right:-10%; width:60vw; height:60vw; background:radial-gradient(circle, rgba(255,193,7,0.03) 0%, transparent 70%); z-index:-1; pointer-events:none; filter:blur(100px);"></div>
+
     <div class="app-layout">
 
         <!-- ==================== SIDEBAR ==================== -->
@@ -26,15 +30,14 @@
             <ul class="nav-menu">
                 <li><a href="beranda.html" class="nav-item"><i class="fa-solid fa-house"></i> Beranda</a></li>
                 <li><a href="laporan.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Laporan Keuangan</a></li>
-                <li><a href="stok.html" class="nav-item active"><i class="fa-solid fa-box"></i> Stok Ulos</a></li>
+                <li><a href="stok.html" class="nav-item active"><i class="fa-solid fa-box"></i> Inventory</a></li>
                 <li><a href="akun.html" class="nav-item"><i class="fa-regular fa-user"></i> Manajemen Akun</a></li>
-                <li><a href="sales.html" class="nav-item"><i class="fa-solid fa-money-bill-wave"></i> Sales</a></li>
                 <li><a href="forecasting.html" class="nav-item"><i class="fa-solid fa-arrow-trend-up"></i> Forecasting</a></li>
                 <li><a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
             </ul>
 
             <div class="sidebar-bottom">
-                <button class="btn-foto-nota"><i class="fa-solid fa-camera"></i> Foto Nota</button>
+                <button class="btn-foto-nota" onclick="window.location.href='laporan.html?open_camera=true'"><i class="fa-solid fa-camera"></i> Foto Nota</button>
                 <a href="support.html" class="nav-item"><i class="fa-regular fa-circle-question"></i> Support</a>
                 <a href="login.html" class="nav-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</a>
             </div>
@@ -47,17 +50,16 @@
             <header class="topbar">
                 <div class="topbar-left">
                     <a href="beranda.html" class="topbar-logo">SianAI</a>
-                    <nav class="topbar-nav">
-                        <a href="laporan.html" class="topbar-nav-item">Reports</a>
-                        <a href="forecasting.html" class="topbar-nav-item">Analytics</a>
-                        <a href="stok.html" class="topbar-nav-item active">Inventory</a>
-                    </nav>
                 </div>
 
                 <div class="topbar-right">
+                    <!-- Connect Wallet Button -->
+                    <button id="btnConnectWallet" class="btn-wallet-connect">
+                        <i class="fa-solid fa-wallet"></i> Hubungkan Dompet
+                    </button>
                     <div class="topbar-search">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Cari produk stok...">
+                        <input type="text" id="invSearch" placeholder="Cari produk inventori...">
                     </div>
                     <button class="topbar-bell" title="Notifikasi">
                         <i class="fa-regular fa-bell"></i>
@@ -79,12 +81,12 @@
                 <!-- Page Header -->
                 <div class="stok-page-header">
                     <div>
-                        <h1>Analisis Modal Macet</h1>
-                        <p class="stok-page-sub">Laporan komprehensif inventaris yang tidak bergerak lebih dari 90 hari.</p>
+                        <h1>Inventory &amp; Analisis Modal Macet</h1>
+                        <p class="stok-page-sub">Terbitkan sertifikat keaslian kriptografis Ulos Batak untuk mengoptimalkan likuiditas usaha.</p>
                     </div>
                     <div class="stok-header-actions">
-                        <button class="btn-unduh"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</button>
-                        <button class="btn-kelola"><i class="fa-solid fa-boxes-stacked"></i> Kelola Semua Stok</button>
+                        <button class="btn-unduh"><i class="fa-solid fa-file-pdf"></i> Unduh Laporan</button>
+                        <button class="btn-kelola" id="btnTambahStok"><i class="fa-solid fa-plus-circle"></i> Tambah Inventori</button>
                     </div>
                 </div>
 
@@ -97,83 +99,49 @@
                         <!-- Total Modal Tertahan -->
                         <div class="modal-total-card">
                             <div class="modal-total-left">
-                                <div class="modal-total-label">Total Modal Tertahan</div>
-                                <div class="modal-total-value">Rp7.500.000</div>
+                                <div class="modal-total-label">Total Modal Tertahan (Dead Stock)</div>
+                                <div class="modal-total-value" id="totalModalMacet">Rp0</div>
                             </div>
                             <div class="modal-total-icon">
                                 <i class="fa-solid fa-vault"></i>
                             </div>
                         </div>
 
-                        <!-- Product Cards -->
-                        <div class="stok-product-grid">
-
-                            <!-- Card 1: Ulos Bintang Maratur -->
-                            <div class="stok-product-card">
-                                <div class="stok-product-img-wrap">
-                                    <img src="../../assets/ulos1.jpg" alt="Ulos Bintang Maratur" class="stok-product-img">
-                                    <span class="img-badge-top">MENGENDAP 90 HARI</span>
-                                    <span class="img-badge-bottom">Authentic</span>
-                                </div>
-                                <div class="stok-product-info">
-                                    <div class="stok-product-name">Ulos Bintang Maratur</div>
-                                    <div class="stok-modal-macet">Modal Macet: Rp3.000.000</div>
-                                    <div class="stok-ai-recom">
-                                        <div>
-                                            <div class="ai-label"><i class="fa-solid fa-robot"></i> REKOMENDASI AI</div>
-                                            <span class="ai-action">Buat Paket Bundling</span>
-                                        </div>
-                                    </div>
-                                    <button class="btn-aktifkan">Aktifkan Strategi Likuiditas</button>
-                                </div>
-                            </div>
-
-                            <!-- Card 2: Ulos Ragidup Premium -->
-                            <div class="stok-product-card">
-                                <div class="stok-product-img-wrap">
-                                    <img src="../../assets/ulos2.jpg" alt="Ulos Ragidup Premium" class="stok-product-img">
-                                    <span class="img-badge-top" style="background:#c52233;">MENGENDAP 120 HARI</span>
-                                    <span class="img-badge-bottom">Authentic</span>
-                                </div>
-                                <div class="stok-product-info">
-                                    <div class="stok-product-name">Ulos Ragidup Premium</div>
-                                    <div class="stok-modal-macet">Modal Macet: Rp4.500.000</div>
-                                    <div class="stok-ai-recom">
-                                        <div>
-                                            <div class="ai-label"><i class="fa-solid fa-robot"></i> REKOMENDASI AI</div>
-                                            <span class="ai-action">Diskon Khusus Media Sosial</span>
-                                        </div>
-                                    </div>
-                                    <button class="btn-aktifkan">Aktifkan Strategi Likuiditas</button>
-                                </div>
-                            </div>
-
-                        </div><!-- /.stok-product-grid -->
+                        <!-- Product Cards Grid -->
+                        <div class="stok-product-grid" id="stokProductGrid">
+                            <!-- Dynamic Injection of Inventory Ulos Cards -->
+                        </div>
 
                         <!-- Tren Modal Mengendap -->
                         <div class="tren-card">
                             <div class="tren-header">
                                 <span class="tren-title">Tren Modal Mengendap</span>
                                 <div class="tren-legend">
-                                    <span><span class="legend-dot modal"></span>Modal</span>
-                                    <span><span class="legend-dot jual"></span>Penjualan</span>
+                                    <span><span class="legend-dot modal"></span>Modal Macet</span>
+                                    <span><span class="legend-dot jual"></span>Batas Penjualan</span>
                                 </div>
                             </div>
 
                             <!-- SVG Line Chart -->
                             <div class="tren-chart-wrap">
                                 <svg viewBox="0 0 560 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="modalGlow" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#ff334b" stop-opacity="0.15"></stop>
+                                            <stop offset="100%" stop-color="#ff334b" stop-opacity="0"></stop>
+                                        </linearGradient>
+                                    </defs>
                                     <!-- Grid lines -->
-                                    <line x1="0" y1="30"  x2="560" y2="30"  stroke="#f0ebe9" stroke-width="1"/>
-                                    <line x1="0" y1="70"  x2="560" y2="70"  stroke="#f0ebe9" stroke-width="1"/>
-                                    <line x1="0" y1="110" x2="560" y2="110" stroke="#f0ebe9" stroke-width="1"/>
+                                    <line x1="0" y1="30"  x2="560" y2="30"  stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                    <line x1="0" y1="70"  x2="560" y2="70"  stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                    <line x1="0" y1="110" x2="560" y2="110" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
 
-                                    <!-- Penjualan line (gray, dashed) -->
+                                    <!-- Penjualan line (dashed) -->
                                     <polyline
                                         points="0,90 80,85 160,80 240,95 320,105 400,90 480,75 560,80"
                                         fill="none"
-                                        stroke="#bbbbbb"
-                                        stroke-width="2"
+                                        stroke="rgba(255,255,255,0.25)"
+                                        stroke-width="1.5"
                                         stroke-dasharray="6,4"
                                     />
 
@@ -182,27 +150,25 @@
                                         id="modal-line"
                                         points="0,100 80,90 160,70 240,40 320,110 400,105 480,95 560,85"
                                         fill="none"
-                                        stroke="#791a27"
+                                        stroke="var(--primary)"
                                         stroke-width="2.5"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
+                                        style="filter:drop-shadow(0 0 5px rgba(255,51,75,0.5));"
                                     />
 
                                     <!-- Shaded area under modal line -->
                                     <polygon
                                         points="0,100 80,90 160,70 240,40 320,110 400,105 480,95 560,85 560,140 0,140"
-                                        fill="#791a27"
-                                        fill-opacity="0.06"
+                                        fill="url(#modalGlow)"
                                     />
 
-                                    <!-- "Puncak Musim Pesta" annotation -->
-                                    <circle cx="160" cy="70" r="4" fill="#791a27"/>
-                                    <text x="155" y="62" font-size="8" fill="#791a27" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">Puncak Musim Pesta</text>
+                                    <!-- Annotations -->
+                                    <circle cx="160" cy="70" r="4" fill="var(--primary)"></circle>
+                                    <text x="155" y="62" font-size="8.5" fill="var(--primary)" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle" style="text-shadow: 0 0 8px rgba(255,51,75,0.4);">Puncak Musim Pesta</text>
 
-                                    <!-- "Masa Sepi Adat" annotation box -->
-                                    <rect x="290" y="95" width="70" height="18" rx="4" fill="#791a27"/>
-                                    <text x="325" y="107" font-size="8" fill="white" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">Masa Sepi Adat</text>
-                                    <circle cx="320" cy="110" r="4" fill="#791a27"/>
+                                    <circle cx="320" cy="110" r="4" fill="var(--gold)"></circle>
+                                    <text x="320" y="125" font-size="8.5" fill="var(--gold)" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle" style="text-shadow: 0 0 8px rgba(255,193,7,0.4);">Masa Sepi Adat</text>
                                 </svg>
 
                                 <!-- X-axis labels -->
@@ -220,9 +186,7 @@
 
                             <!-- Analysis Text -->
                             <div class="tren-analysis">
-                                <strong>Analisis Siklus:</strong> Penurunan modal tertahan di bulan Desember sejalan dengan tingginya
-                                permintaan untuk upacara adat akhir tahun. Kenaikan tajam di kuartal pertama (Jan–Mar)
-                                merupakan fenomena tahunan "Masa Sepi" setelah siklus pesta adat berakhir.
+                                <strong>Analisis Siklus:</strong> Penurunan modal tertahan di bulan Desember sejalan dengan perayaan adat Natal. Kenaikan tajam di kuartal pertama (Jan–Mar) merupakan fenomena tahunan "Masa Sepi" setelah pesta adat selesai.
                             </div>
                         </div>
 
@@ -230,6 +194,31 @@
 
                     <!-- ============ RIGHT SIDEBAR ============ -->
                     <div class="stok-right">
+
+                        <!-- Dead-Stock & Capital Optimization Assistant (Analisis Preskriptif) -->
+                        <div class="insight-card" style="border-color: var(--glass-border-gold); background: linear-gradient(135deg, rgba(255, 193, 7, 0.07) 0%, rgba(255, 51, 75, 0.02) 100%);">
+                            <div class="insight-header" style="border-bottom: 1px dashed var(--glass-border-gold);">
+                                <div class="insight-icon" style="background: var(--gold); color: #0c0204; box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);">
+                                    <i class="fa-solid fa-robot"></i>
+                                </div>
+                                <span class="insight-header-title" style="color:var(--gold); font-size:13.5px;">Capital Optimization AI</span>
+                            </div>
+                            <div class="insight-body">
+                                <div>
+                                    <div class="insight-section-label" style="color:var(--white); font-size:9.5px; display:flex; align-items:center; gap:6px;">
+                                        <i class="fa-solid fa-brain"></i> ANALISIS PRESKRIPTIF AI
+                                    </div>
+                                    <div id="prescriptiveContent" class="insight-text" style="color: rgba(255, 255, 255, 0.85); font-size:12.5px; line-height:1.65;">
+                                        Menganalisis status modal macet inventori Anda... Hubungkan dompet Web3 untuk mengotorisasi opsi tindakan likuidasi modal.
+                                    </div>
+                                </div>
+                                <div id="prescriptiveActionBox" style="display:none; margin-top:6px;">
+                                    <button class="btn-sm btn-maroon" id="btnExecutePrescriptive" style="width:100%; border:1px solid var(--gold); color:var(--gold); background:rgba(255, 193, 7, 0.08); display:flex; justify-content:center; align-items:center; gap:8px; font-weight:700;">
+                                        <i class="fa-solid fa-bolt"></i> Otorisasi Diskon On-Chain
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Insight Mingguan -->
                         <div class="insight-card">
@@ -240,22 +229,17 @@
                                 <span class="insight-header-title">Insight Mingguan</span>
                             </div>
                             <div class="insight-body">
-                                <!-- Diagnosis -->
                                 <div>
                                     <div class="insight-section-label">DIAGNOSIS DATA</div>
                                     <p class="insight-text">
-                                        Peningkatan modal yang mengendap di bulan Maret bersifat konsisten dengan siklus adat lokal.
-                                        Secara historis, likuiditas akan kembali stabil saat memasuki musim pernikahan (Mei–Juni).
+                                        Peningkatan modal mengendap di bulan Maret bersifat konsisten dengan siklus adat lokal. Likuiditas akan kembali stabil saat memasuki musim pernikahan (Mei–Juni).
                                     </p>
                                 </div>
 
-                                <!-- Saran Ekspansi -->
                                 <div class="insight-saran">
-                                    <div class="insight-section-label">SARAN EKSPANSI</div>
-                                    <p class="insight-text">
-                                        Untuk memitigasi masa sepi adat lokal, disarankan melakukan
-                                        <strong>Ekspansi Digital</strong> ke pasar luar daerah (Jakarta, Medan) yang tidak terlalu
-                                        bergantung pada siklus adat Toba.
+                                    <div class="insight-section-label" style="color:var(--white);">SARAN EKSPANSI WEB3</div>
+                                    <p class="insight-text" style="color:rgba(255,255,255,0.85)">
+                                        Sertifikasi keaslian digital (kriptografis) kain Ulos premium Anda membantu meningkatkan nilai jual di pasar internasional tanpa perantara.
                                     </p>
                                 </div>
                             </div>
@@ -266,13 +250,13 @@
                             <div class="aksi-title">Aksi Cepat</div>
                             <div class="aksi-list">
                                 <button class="btn-aksi">
-                                    <i class="fa-solid fa-globe"></i> Update Katalog Online
+                                    <i class="fa-solid fa-globe"></i> Hubungkan ke e-Commerce
                                 </button>
                                 <button class="btn-aksi">
-                                    <i class="fa-brands fa-facebook"></i> Atur Iklan Facebook
+                                    <i class="fa-brands fa-ethereum"></i> Atur Dompet Penjualan
                                 </button>
                                 <button class="btn-aksi">
-                                    <i class="fa-solid fa-handshake"></i> Hubungi Mitra Reseller
+                                    <i class="fa-solid fa-certificate"></i> Lihat Daftar Koleksi NFT
                                 </button>
                             </div>
 
@@ -280,8 +264,7 @@
                             <div class="ai-predict-chip">
                                 <i class="fa-solid fa-circle-info"></i>
                                 <span>
-                                    Prediksi AI menunjukkan peningkatan permintaan sebesar <strong>15%</strong> pada bulan April
-                                    terkait persiapan perayaan Paskah.
+                                    Prediksi AI menunjukkan peningkatan permintaan sebesar <strong>15%</strong> pada bulan April terkait perayaan paskah.
                                 </span>
                             </div>
                         </div>
@@ -294,6 +277,632 @@
         </div><!-- /.stok-content -->
 
     </div><!-- /.app-layout -->
+
+    <!-- ==========================================================================
+       MODAL 1: PROSES BLOCKCHAIN (SIGNING/MINING)
+       ========================================================================== */ -->
+    <div id="web3Modal" class="web3-modal">
+        <div class="web3-modal-content">
+            <div class="blockchain-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-core"><i class="fa-solid fa-certificate"></i></div>
+            </div>
+            <h3 style="font-size:20px; font-weight:800; margin-bottom:12px; letter-spacing:-0.5px;" id="web3ModalTitle">Menerbitkan Sertifikat</h3>
+            <p style="font-size:14px; color:var(--text-secondary); line-height:1.6; margin-bottom:24px;" id="web3ModalMessage">Memproses sertifikat keaslian...</p>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       MODAL 2: BLOCK EXPLORER DETAILS
+       ========================================================================== */ -->
+    <div id="explorerModal" class="web3-modal">
+        <div class="web3-modal-content" style="max-width: 540px;">
+            <i class="fa-solid fa-award" style="font-size:42px; color:var(--gold); margin-bottom:16px; filter:drop-shadow(0 0 10px rgba(255,193,7,0.3)); animate:pulse 2s infinite;"></i>
+            <h3 style="font-size:20px; font-weight:800; margin-bottom:4px; letter-spacing:-0.5px;">Sertifikat Keaslian Digital</h3>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Bukti Kriptografis Keaslian Kain Ulos Batak (ERC-721 Token)</p>
+            
+            <div class="explorer-modal-grid" style="text-align:left; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); padding:16px; border-radius:8px; display:flex; flex-direction:column; gap:10px;">
+                <div class="explorer-item">
+                    <span class="explorer-label">Sertifikat Token ID</span>
+                    <span class="explorer-val" id="expCertTokenId" style="font-weight:700; color:var(--gold);">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Nama Kain Ulos</span>
+                    <span class="explorer-val" id="expCertUlosName">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Waktu Penerbitan</span>
+                    <span class="explorer-val" id="expCertTime">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Alamat Pemilik (Dompet)</span>
+                    <span class="explorer-val address-val" id="expCertOwner">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Hash Transaksi Mint</span>
+                    <span class="explorer-val hash-val" id="expCertTxHash" style="font-size:11.5px;">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Nomor Blok Ledger</span>
+                    <span class="explorer-val" id="expCertBlock">-</span>
+                </div>
+                <div class="explorer-item" style="border-bottom:none; flex-direction:column; align-items:flex-start; gap:4px; margin-top:4px;">
+                    <span class="explorer-label">Tanda Tangan Kriptografi (Signature)</span>
+                    <span class="explorer-val" id="expCertSig" style="font-size:10px; width:100%; word-break:break-all; white-space:normal; height:45px; overflow-y:auto;">-</span>
+                </div>
+            </div>
+            
+            <button class="btn-close-modal" id="btnCloseExplorer">Tutup Sertifikat</button>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       MODAL 3: TAMBAH INVENTORI
+       ========================================================================== */ -->
+    <div id="tambahInventoriModal" class="web3-modal">
+        <div class="web3-modal-content" style="max-width: 450px; text-align:left;">
+            <h3 style="font-size:18px; font-weight:700; margin-bottom:16px; border-bottom:1px solid var(--glass-border); padding-bottom:12px; color:var(--white); text-align:center;"><i class="fa-solid fa-plus-circle"></i> Tambah Inventori Produk</h3>
+            
+            <form id="tambahInventoriForm" style="display:flex; flex-direction:column; gap:16px;">
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; color:var(--text-secondary);">Nama Ulos / Produk</label>
+                    <input type="text" id="invName" placeholder="Contoh: Ulos Ragidup Silk Grade A" required style="padding:10px; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); color:var(--white); border-radius:6px; outline:none; font-family:inherit;">
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; color:var(--text-secondary);">Jenis Ulos</label>
+                    <select id="invType" style="padding:10px; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); color:var(--white); border-radius:6px; outline:none; font-family:inherit;">
+                        <option value="Ragidup" style="background:#0c0204;">Ragidup</option>
+                        <option value="Bintang Maratur" style="background:#0c0204;">Bintang Maratur</option>
+                        <option value="Sadum" style="background:#0c0204;">Sadum</option>
+                        <option value="Sibolang" style="background:#0c0204;">Sibolang</option>
+                        <option value="Mangiring" style="background:#0c0204;">Mangiring</option>
+                        <option value="Ragi Hotang" style="background:#0c0204;">Ragi Hotang</option>
+                    </select>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; color:var(--text-secondary);">Foto / Gambar Ulos</label>
+                    <div id="imageUploadBox" class="image-upload-box">
+                        <i class="fa-solid fa-cloud-arrow-up" style="font-size:20px; color:var(--text-muted); margin-bottom:4px;"></i>
+                        <span style="font-size:11px; color:var(--text-secondary);">Klik untuk Mengunggah Foto</span>
+                        <span style="font-size:9px; color:var(--text-muted); margin-top:2px;">PNG, JPG (Maks. 2MB)</span>
+                        <img id="imagePreview" src="" alt="Preview Gambar" style="display:none; width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; border-radius:6px;">
+                        <button id="btnRemoveImage" class="btn-remove-image" type="button" style="display:none;"><i class="fa-solid fa-times"></i></button>
+                    </div>
+                    <input type="file" id="invImageInput" accept="image/*" style="display:none;">
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                        <label style="font-size:12px; color:var(--text-secondary);">Deskripsi Ulos</label>
+                        <button type="button" id="btnAiUpgradeDescription" class="btn-ai-upgrade" style="padding:4px 8px; font-size:10px; border-radius:4px; font-weight:600; cursor:pointer; font-family:inherit; border:1px solid var(--gold); color:var(--gold); background:rgba(255, 193, 7, 0.08); display:flex; align-items:center; gap:4px; transition:all 0.2s;">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Upgrade Deskripsi AI
+                        </button>
+                    </div>
+                    <textarea id="invDesc" placeholder="Contoh: Kain ulos tenun tangan motif warna merah marun..." required style="padding:10px; height:70px; resize:none; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); color:var(--white); border-radius:6px; outline:none; font-family:inherit; font-size:12px; line-height:1.5;"></textarea>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; color:var(--text-secondary);">Modal Macet (Harga Beli dalam Rp)</label>
+                    <input type="number" id="invCost" placeholder="Contoh: 3500000" required style="padding:10px; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); color:var(--white); border-radius:6px; outline:none; font-family:inherit;">
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; color:var(--text-secondary);">Tanggal Masuk</label>
+                    <input type="date" id="invDate" required style="padding:10px; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); color:var(--white); border-radius:6px; outline:none; font-family:inherit;">
+                </div>
+
+                <div style="display:flex; gap:12px; margin-top:10px;">
+                    <button type="button" class="btn-close-modal" id="btnCancelAddInv" style="flex:1;">Batal</button>
+                    <button type="submit" class="btn-foto-nota" style="flex:1; margin-bottom:0;">Simpan Produk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Web3 Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="../services/blockchain.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnConnect = document.getElementById('btnConnectWallet');
+            const productGrid = document.getElementById('stokProductGrid');
+            const totalModalMacet = document.getElementById('totalModalMacet');
+            const prescriptiveContent = document.getElementById('prescriptiveContent');
+            const prescriptiveActionBox = document.getElementById('prescriptiveActionBox');
+            const btnExecutePrescriptive = document.getElementById('btnExecutePrescriptive');
+            const invSearch = document.getElementById('invSearch');
+            
+            // Modals
+            const web3Modal = document.getElementById('web3Modal');
+            const web3ModalTitle = document.getElementById('web3ModalTitle');
+            const web3ModalMessage = document.getElementById('web3ModalMessage');
+            
+            const explorerModal = document.getElementById('explorerModal');
+            const btnCloseExplorer = document.getElementById('btnCloseExplorer');
+            
+            const tambahStokButton = document.getElementById('btnTambahStok');
+            const tambahInventoriModal = document.getElementById('tambahInventoriModal');
+            const btnCancelAddInv = document.getElementById('btnCancelAddInv');
+            const tambahInventoriForm = document.getElementById('tambahInventoriForm');
+
+            // database local inventory persistence
+            function getInventoryList() {
+                let localInv = localStorage.getItem('sianai_inventory');
+                let items = [];
+                if (!localInv) {
+                    const seedProducts = [
+                        { 
+                            id: 'star-maratur', 
+                            name: 'Ulos Bintang Maratur', 
+                            costPrice: 3000000, 
+                            ulosType: 'Bintang Maratur', 
+                            dateAdded: '2026-03-24', 
+                            img: '../../assets/ulos1.jpg',
+                            description: 'Kain Ulos Bintang Maratur ditenun dengan presisi benang merah-emas khas Batak Toba. Melambangkan keteraturan hidup, keberkatan bintang yang sejajar, serta harapan keselarasan dan kesuksesan lahir batin bagi penerimanya.'
+                        },
+                        { 
+                            id: 'ragidup-premium', 
+                            name: 'Ulos Ragidup Premium', 
+                            costPrice: 4500000, 
+                            ulosType: 'Ragidup', 
+                            dateAdded: '2026-02-22', 
+                            img: '../../assets/ulos2.jpg',
+                            description: 'Mahakarya tertinggi tenun Batak Toba. Ulos Ragidup Premium ini ditenun menggunakan benang sutra pilihan selama 2 bulan. Menampilkan motif ragi hidup yang menggambarkan doa untuk napas kehidupan yang panjang, kekuatan adat, dan perlindungan spiritual.'
+                        }
+                    ];
+                    localStorage.setItem('sianai_inventory', JSON.stringify(seedProducts));
+                    return seedProducts;
+                }
+                items = JSON.parse(localInv);
+                let updated = false;
+                items.forEach(p => {
+                    if (!p.description) {
+                        updated = true;
+                        if (p.id === 'star-maratur') {
+                            p.description = 'Kain Ulos Bintang Maratur ditenun dengan presisi benang merah-emas khas Batak Toba. Melambangkan keteraturan hidup, keberkatan bintang yang sejajar, serta harapan keselarasan dan kesuksesan lahir batin bagi penerimanya.';
+                        } else if (p.id === 'ragidup-premium') {
+                            p.description = 'Mahakarya tertinggi tenun Batak Toba. Ulos Ragidup Premium ini ditenun menggunakan benang sutra pilihan selama 2 bulan. Menampilkan motif ragi hidup yang menggambarkan doa untuk napas kehidupan yang panjang, kekuatan adat, dan perlindungan spiritual.';
+                        } else {
+                            p.description = 'Kain tenun Ulos tradisional Batak ditenun secara hand-woven oleh pengrajin lokal SianAI.';
+                        }
+                    }
+                });
+                if (updated) {
+                    localStorage.setItem('sianai_inventory', JSON.stringify(items));
+                }
+                return items;
+            }
+
+            function saveInventoryList(items) {
+                localStorage.setItem('sianai_inventory', JSON.stringify(items));
+            }
+
+            // Render Wallet State
+            function updateWalletUI() {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    const shortAddress = state.address.substring(0, 6) + '...' + state.address.substring(state.address.length - 4);
+                    btnConnect.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--green);"></i> ${shortAddress} (${state.network})`;
+                    btnConnect.classList.add('connected');
+                } else {
+                    btnConnect.innerHTML = `<i class="fa-solid fa-wallet"></i> Hubungkan Dompet`;
+                    btnConnect.classList.remove('connected');
+                }
+                
+                renderProducts(invSearch.value);
+            }
+
+            // Render Produk & Sertifikat Blockchain & Analisis Preskriptif
+            function renderProducts(searchQuery = '') {
+                const products = getInventoryList();
+                const certs = window.SianAIBlockchainInstance.getUlosCertificates();
+                productGrid.innerHTML = '';
+                
+                const filtered = products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
+
+                let sumModalMacet = 0;
+                let deadStockItems = [];
+
+                filtered.forEach(p => {
+                    // Hitung jumlah hari mengendap
+                    const diffTime = Math.abs(new Date() - new Date(p.dateAdded));
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    p.days = diffDays;
+
+                    // Jumlahkan modal jika mengendap > 90 hari
+                    const isDeadStock = p.days >= 90;
+                    if (isDeadStock) {
+                        sumModalMacet += p.costPrice;
+                        deadStockItems.push(p);
+                    }
+
+                    const cert = certs[p.id];
+                    let certUI = '';
+                    
+                    if (cert) {
+                        certUI = `
+                            <div class="ulos-cert-container">
+                                <div class="ulos-cert-left">
+                                    <i class="fa-solid fa-award"></i>
+                                    <span>Token ID #${cert.tokenId}</span>
+                                </div>
+                                <span class="ulos-cert-link" onclick="openCertExplorer('${p.id}')">Lihat Bukti</span>
+                            </div>
+                        `;
+                    } else {
+                        certUI = `
+                            <button class="btn-aktifkan" onclick="mintCertificate('${p.id}')">
+                                <i class="fa-solid fa-certificate"></i> Terbitkan Sertifikat Kripto
+                            </button>
+                        `;
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = 'stok-product-card';
+                    card.innerHTML = `
+                        <div class="stok-product-img-wrap">
+                            <img src="${p.img || '../../assets/ulos1.jpg'}" alt="${p.name}" class="stok-product-img">
+                            <span class="img-badge-top" style="${isDeadStock ? 'background:#ff1744;' : 'background:var(--green);'}">MENGENDAP ${p.days} HARI</span>
+                            <span class="img-badge-bottom">Authentic</span>
+                        </div>
+                        <div class="stok-product-info">
+                            <div class="stok-product-name">${p.name}</div>
+                            <div class="stok-product-description">${p.description || 'Tidak ada deskripsi produk.'}</div>
+                            <div class="stok-modal-macet">Modal Macet: Rp ${p.costPrice.toLocaleString('id-ID')}</div>
+                            <div class="stok-ai-recom">
+                                <div>
+                                    <div class="ai-label"><i class="fa-solid fa-robot"></i> REKOMENDASI AI</div>
+                                    <span class="ai-action" onclick="alert('Strategi Likuiditas Diaktifkan: Paket Bundling telah diunggah ke katalog Whatsapp!')">Aktifkan Strategi Likuiditas</span>
+                                </div>
+                            </div>
+                            ${certUI}
+                        </div>
+                    `;
+                    productGrid.appendChild(card);
+                });
+
+                totalModalMacet.textContent = 'Rp' + sumModalMacet.toLocaleString('id-ID');
+                updatePrescriptiveAssistant(deadStockItems, sumModalMacet);
+            }
+
+            // Update Analisis Preskriptif AI
+            function updatePrescriptiveAssistant(deadStockItems, totalMacetVal) {
+                const walletState = window.SianAIBlockchainInstance.getWalletState();
+                
+                if (!walletState.connected) {
+                    prescriptiveContent.innerHTML = `<i class="fa-solid fa-circle-info" style="color:var(--gold);"></i> Dompet Web3 belum terhubung. Hubungkan dompet di pojok kanan atas untuk memuat asisten likuidasi modal preskriptif.`;
+                    prescriptiveActionBox.style.display = 'none';
+                    return;
+                }
+
+                if (deadStockItems.length === 0) {
+                    prescriptiveContent.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--green);"></i> <strong>Kondisi Inventori Sehat!</strong> Tidak ada barang mengendap lebih dari 90 hari. Asisten merekomendasikan untuk mempertahankan rasio perputaran stok saat ini.`;
+                    prescriptiveActionBox.style.display = 'none';
+                    return;
+                }
+
+                // AI Prescriptive text generator
+                let itemNames = deadStockItems.map(item => `<strong>${item.name}</strong>`);
+                let namesJoined = itemNames.join(' & ');
+                
+                // Otorisasi diskon aman
+                const isVoucherActive = localStorage.getItem('sianai_discount_voucher_active') === 'true';
+                
+                if (isVoucherActive) {
+                    prescriptiveContent.innerHTML = `
+                        <i class="fa-solid fa-circle-check" style="color:var(--green);"></i> <strong>Otorisasi On-Chain Sukses!</strong><br>
+                        Voucher Kontrak Likuiditas (Token ID #${localStorage.getItem('sianai_discount_voucher_id')}) aktif dengan potongan 15% pada bundle: ${namesJoined}.<br><br>
+                        <em>Promosi saat ini disiarkan di WhatsApp katalog.</em>
+                    `;
+                    btnExecutePrescriptive.innerHTML = `<i class="fa-solid fa-check-circle"></i> Otorisasi Aktif di Ledger`;
+                    btnExecutePrescriptive.disabled = true;
+                    btnExecutePrescriptive.style.borderColor = 'var(--green)';
+                    btnExecutePrescriptive.style.color = 'var(--green)';
+                    btnExecutePrescriptive.style.background = 'rgba(0, 230, 118, 0.05)';
+                    prescriptiveActionBox.style.display = 'block';
+                } else {
+                    prescriptiveContent.innerHTML = `
+                        Asisten mendeteksi dana macet <strong>Rp ${totalMacetVal.toLocaleString('id-ID')}</strong> pada produk: ${namesJoined}.<br><br>
+                        <strong>Solusi Preskriptif AI:</strong><br>
+                        Otorisasi diskon batch sebesar <strong>15%</strong> (Diskon Aman: margin terproteksi 18% dari modal beli).<br><br>
+                        <em>Proyeksi Likuidasi:</em> Mengembalikan likuiditas kas <strong>Rp ${(totalMacetVal * 0.85).toLocaleString('id-ID')}</strong> dalam 14 hari (probabilitas closing 91%).
+                    `;
+                    
+                    btnExecutePrescriptive.innerHTML = `<i class="fa-solid fa-bolt"></i> Otorisasi Diskon On-Chain`;
+                    btnExecutePrescriptive.disabled = false;
+                    btnExecutePrescriptive.style.borderColor = 'var(--gold)';
+                    btnExecutePrescriptive.style.color = 'var(--gold)';
+                    btnExecutePrescriptive.style.background = 'rgba(255, 193, 7, 0.08)';
+                    prescriptiveActionBox.style.display = 'block';
+                }
+            }
+
+            // Aksi Otorisasi Diskon Preskriptif
+            btnExecutePrescriptive.addEventListener('click', async () => {
+                const wallet = window.SianAIBlockchainInstance.getWalletState();
+                if (!wallet.connected) return;
+
+                web3Modal.classList.add('active');
+                web3ModalTitle.textContent = "Mengotorisasi Diskon";
+                web3ModalMessage.textContent = "Menyusun tanda tangan voucher otorisasi diskon preskriptif...";
+
+                try {
+                    // Simulasi delay tanda tangan web3
+                    await new Promise(r => setTimeout(r, 1200));
+                    web3ModalTitle.textContent = "Menyiarkan Voucher Kontrak";
+                    web3ModalMessage.textContent = "Mendaftarkan ID Voucher Diskon di blockchain ledger...";
+                    
+                    await new Promise(r => setTimeout(r, 1500));
+                    
+                    const voucherId = Math.floor(100000 + Math.random() * 900000);
+                    localStorage.setItem('sianai_discount_voucher_active', 'true');
+                    localStorage.setItem('sianai_discount_voucher_id', voucherId);
+                    
+                    web3ModalTitle.textContent = "Otorisasi Sukses!";
+                    web3ModalMessage.textContent = `Voucher ID #${voucherId} berhasil dicatat on-chain!`;
+
+                    setTimeout(() => {
+                        web3Modal.classList.remove('active');
+                        updateWalletUI();
+                    }, 1200);
+
+                } catch (err) {
+                    alert("Gagal melakukan otorisasi: " + err.message);
+                    web3Modal.classList.remove('active');
+                }
+            });
+
+            // Image Upload Event Handlers
+            const imageUploadBox = document.getElementById('imageUploadBox');
+            const invImageInput = document.getElementById('invImageInput');
+            const imagePreview = document.getElementById('imagePreview');
+            const btnRemoveImage = document.getElementById('btnRemoveImage');
+            let uploadedImageBase64 = null;
+
+            imageUploadBox.addEventListener('click', () => {
+                invImageInput.click();
+            });
+
+            invImageInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert("File terlalu besar! Batas maksimal adalah 2MB.");
+                        invImageInput.value = '';
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        uploadedImageBase64 = event.target.result;
+                        imagePreview.src = uploadedImageBase64;
+                        imagePreview.style.display = 'block';
+                        btnRemoveImage.style.display = 'flex';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            btnRemoveImage.addEventListener('click', (e) => {
+                e.stopPropagation(); // Mencegah membuka dialog file kembali
+                uploadedImageBase64 = null;
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+                btnRemoveImage.style.display = 'none';
+                invImageInput.value = '';
+            });
+
+            // AI Description Upgrade Logic
+            const btnAiUpgradeDescription = document.getElementById('btnAiUpgradeDescription');
+            const invDesc = document.getElementById('invDesc');
+            const invTypeSelect = document.getElementById('invType');
+            const invNameInput = document.getElementById('invName');
+
+            btnAiUpgradeDescription.addEventListener('click', async () => {
+                const name = invNameInput.value.trim() || `Kain Ulos ${invTypeSelect.value}`;
+                const type = invTypeSelect.value;
+                const originalDesc = invDesc.value.trim();
+
+                if (!originalDesc) {
+                    alert("Harap masukkan deskripsi singkat terlebih dahulu agar AI dapat mengoptimalkannya!");
+                    invDesc.focus();
+                    return;
+                }
+
+                // Loading state
+                btnAiUpgradeDescription.disabled = true;
+                btnAiUpgradeDescription.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menulis AI...`;
+                
+                // Jeda simulasi analisis AI
+                await new Promise(r => setTimeout(r, 1500));
+
+                let upgraded = `Kain Ulos ${type} berkualitas premium yang ditenun secara tradisional dengan ketelitian tinggi. `;
+                
+                if (originalDesc.length > 5) {
+                    upgraded += `Mengangkat tema khas: "${originalDesc}". `;
+                }
+
+                // Tambahkan arti budaya berdasarkan tipe Ulos
+                if (type === 'Ragidup') {
+                    upgraded += `Dikenal sebagai lambang doa kehidupan (ragi hidup), kekuatan spiritual, dan umur panjang. Sangat cocok untuk upacara pernikahan adat Batak, pesta keluarga besar, maupun sebagai pusaka keluarga bernilai tinggi.`;
+                } else if (type === 'Bintang Maratur') {
+                    upgraded += `Melambangkan keteraturan hidup, keberkatan bintang yang berderet rapi, serta membawa harmoni dan keselarasan nasib baik bagi pemakainya. Sering digunakan pada acara syukuran kelahiran anak atau memasuki rumah baru.`;
+                } else if (type === 'Sadum') {
+                    upgraded += `Identik dengan warna-warna cerah yang menggambarkan kegembiraan, keceriaan, dan motif yang sangat indah. Ulos Sadum biasa dikenakan pada acara pesta adat suka cita, wisuda, maupun acara penyambutan tamu kehormatan.`;
+                } else if (type === 'Sibolang') {
+                    upgraded += `Menghadirkan perpaduan benang biru tua dan hitam yang anggun, melambangkan ketabahan hati, duka cita yang mendalam, maupun kedewasaan adat. Biasa digunakan pada ritual adat penghormatan keluarga.`;
+                } else if (type === 'Mangiring') {
+                    upgraded += `Memiliki corak garis kecil yang beriringan, melambangkan doa kesuburan, kelancaran rezeki, serta kerukunan tali persaudaraan antar generasi. Sangat tepat dijadikan kado kelahiran bayi (ulos parompa).`;
+                } else if (type === 'Ragi Hotang') {
+                    upgraded += `Ditenun rapat menggambarkan kekuatan jalinan rotan (hotang) yang erat, melambangkan persatuan ikatan pernikahan yang kokoh dan tidak mudah goyah oleh rintangan hidup. Biasa diberikan sebagai ulos hela kepada pengantin baru.`;
+                } else {
+                    upgraded += `Dibuat dengan benang pilihan dengan rajutan rapi yang nyaman dipakai, menggambarkan kearifan lokal kerajinan tangan Batak. Ideal untuk acara formal maupun koleksi eksklusif pecinta wastra nusantara.`;
+                }
+
+                invDesc.value = upgraded;
+                btnAiUpgradeDescription.disabled = false;
+                btnAiUpgradeDescription.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Upgrade Deskripsi AI`;
+                
+                // Flash border hijau sebagai umpan balik sukses
+                invDesc.style.borderColor = 'var(--green)';
+                setTimeout(() => {
+                    invDesc.style.borderColor = 'var(--glass-border)';
+                }, 2000);
+            });
+
+            // Dialog Tambah Inventori
+            tambahStokButton.addEventListener('click', () => {
+                // Set default tanggal hari ini
+                document.getElementById('invDate').value = new Date().toISOString().split('T')[0];
+                tambahInventoriModal.classList.add('active');
+            });
+
+            btnCancelAddInv.addEventListener('click', () => {
+                // Reset image preview state
+                uploadedImageBase64 = null;
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+                btnRemoveImage.style.display = 'none';
+                invImageInput.value = '';
+                tambahInventoriForm.reset();
+                tambahInventoriModal.classList.remove('active');
+            });
+
+            tambahInventoriForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('invName').value;
+                const type = document.getElementById('invType').value;
+                const cost = parseFloat(document.getElementById('invCost').value);
+                const date = document.getElementById('invDate').value;
+                const desc = document.getElementById('invDesc').value;
+
+                const newProduct = {
+                    id: 'ulos-' + Date.now(),
+                    name: name,
+                    costPrice: cost,
+                    ulosType: type,
+                    dateAdded: date,
+                    description: desc,
+                    img: uploadedImageBase64 || '../../assets/ulos1.jpg'
+                };
+
+                const products = getInventoryList();
+                products.unshift(newProduct);
+                saveInventoryList(products);
+
+                // Reset form state & images
+                tambahInventoriForm.reset();
+                uploadedImageBase64 = null;
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+                btnRemoveImage.style.display = 'none';
+                invImageInput.value = '';
+
+                tambahInventoriModal.classList.remove('active');
+                
+                alert("Produk berhasil ditambahkan ke inventori!");
+                updateWalletUI();
+            });
+
+            // Mint sertifikat keaslian kripto
+            window.mintCertificate = async function(productId) {
+                const wallet = window.SianAIBlockchainInstance.getWalletState();
+                if (!wallet.connected) {
+                    alert("Dompet Web3 belum terhubung! Silakan klik 'Hubungkan Dompet' terlebih dahulu.");
+                    return;
+                }
+
+                const products = getInventoryList();
+                const product = products.find(p => p.id === productId);
+                if (!product) return;
+
+                web3Modal.classList.add('active');
+                web3ModalTitle.textContent = "Menghubungkan Dompet";
+                web3ModalMessage.textContent = "Mempersiapkan data metadata ERC-721 kain Ulos...";
+
+                try {
+                    await window.SianAIBlockchainInstance.mintUlosCertificate(product, (status, data) => {
+                        if (status === 'PREPARING') {
+                            web3ModalTitle.textContent = "Menyusun Metadata";
+                            web3ModalMessage.textContent = data.message;
+                        } else if (status === 'SIGNING') {
+                            web3ModalTitle.textContent = "Menyetujui Minting";
+                            web3ModalMessage.textContent = data.message;
+                        } else if (status === 'MINING') {
+                            web3ModalTitle.textContent = "Mencetak Sertifikat (NFT)";
+                            web3ModalMessage.textContent = data.message;
+                        } else if (status === 'CONFIRMED') {
+                            web3ModalTitle.textContent = "Sertifikat Berhasil Diterbitkan!";
+                            web3ModalMessage.textContent = data.message;
+                        }
+                    });
+
+                    setTimeout(() => {
+                        web3Modal.classList.remove('active');
+                        updateWalletUI();
+                    }, 1200);
+
+                } catch (err) {
+                    alert("Gagal menerbitkan sertifikat: " + err.message);
+                    web3Modal.classList.remove('active');
+                }
+            };
+
+            // Explorer modal sertifikat
+            window.openCertExplorer = function(productId) {
+                const certs = window.SianAIBlockchainInstance.getUlosCertificates();
+                const cert = certs[productId];
+                const products = getInventoryList();
+                const product = products.find(p => p.id === productId);
+                if (!cert || !product) return;
+
+                document.getElementById('expCertTokenId').textContent = `#${cert.tokenId}`;
+                document.getElementById('expCertUlosName').textContent = product.name;
+                document.getElementById('expCertTime').textContent = new Date(cert.timestamp).toLocaleString('id-ID');
+                document.getElementById('expCertOwner').textContent = cert.ownerAddress;
+                document.getElementById('expCertTxHash').textContent = cert.txHash;
+                document.getElementById('expCertBlock').textContent = `#${cert.blockNumber}`;
+                document.getElementById('expCertSig').textContent = cert.signature;
+
+                explorerModal.classList.add('active');
+            };
+
+            btnCloseExplorer.addEventListener('click', () => {
+                explorerModal.classList.remove('active');
+            });
+
+            // Search filter
+            invSearch.addEventListener('input', (e) => {
+                renderProducts(e.target.value);
+            });
+
+            // Wallet button click
+            btnConnect.addEventListener('click', async () => {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    window.SianAIBlockchainInstance.disconnectWallet();
+                } else {
+                    try {
+                        btnConnect.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menghubungkan...`;
+                        await window.SianAIBlockchainInstance.connectWallet();
+                    } catch (err) {
+                        alert("Koneksi dompet gagal: " + err.message);
+                        updateWalletUI();
+                    }
+                }
+            });
+
+            // Listen updates
+            window.addEventListener('sianai_wallet_updated', updateWalletUI);
+            window.addEventListener('sianai_certs_updated', () => renderProducts(invSearch.value));
+
+            // Initial load
+            updateWalletUI();
+        });
+    </script>
 </body>
 
 </html>

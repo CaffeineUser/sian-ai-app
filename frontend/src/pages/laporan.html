@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="SianAI Laporan Keuangan — Pantau arus kas, transaksi, dan ringkasan kategori usaha tenun Ulos.">
-    <title>SianAI — Laporan Keuangan</title>
+    <title>SianAI — Laporan Keuangan Web3</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +18,10 @@
 </head>
 
 <body>
+    <!-- Ambient Neon Background Blobs -->
+    <div style="position:fixed; top:-20%; left:-10%; width:50vw; height:50vw; background:radial-gradient(circle, rgba(255,51,75,0.05) 0%, transparent 70%); z-index:-1; pointer-events:none; filter:blur(80px);"></div>
+    <div style="position:fixed; bottom:-20%; right:-10%; width:60vw; height:60vw; background:radial-gradient(circle, rgba(255,193,7,0.03) 0%, transparent 70%); z-index:-1; pointer-events:none; filter:blur(100px);"></div>
+
     <div class="app-layout">
 
         <!-- ==================== SIDEBAR ==================== -->
@@ -29,15 +33,14 @@
             <ul class="nav-menu">
                 <li><a href="beranda.html" class="nav-item"><i class="fa-solid fa-house"></i> Beranda</a></li>
                 <li><a href="laporan.html" class="nav-item active"><i class="fa-solid fa-chart-simple"></i> Laporan Keuangan</a></li>
-                <li><a href="stok.html" class="nav-item"><i class="fa-solid fa-box"></i> Stok Ulos</a></li>
+                <li><a href="stok.html" class="nav-item"><i class="fa-solid fa-box"></i> Inventory</a></li>
                 <li><a href="akun.html" class="nav-item"><i class="fa-regular fa-user"></i> Manajemen Akun</a></li>
-                <li><a href="sales.html" class="nav-item"><i class="fa-solid fa-money-bill-wave"></i> Sales</a></li>
                 <li><a href="forecasting.html" class="nav-item"><i class="fa-solid fa-arrow-trend-up"></i> Forecasting</a></li>
                 <li><a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
             </ul>
 
             <div class="sidebar-bottom">
-                <button class="btn-foto-nota"><i class="fa-solid fa-camera"></i> Foto Nota</button>
+                <button class="btn-foto-nota" id="btnFotoNota"><i class="fa-solid fa-camera"></i> Foto Nota</button>
                 <a href="support.html" class="nav-item"><i class="fa-regular fa-circle-question"></i> Support</a>
                 <a href="login.html" class="nav-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</a>
             </div>
@@ -50,16 +53,16 @@
             <header class="topbar">
                 <div class="topbar-left">
                     <a href="beranda.html" class="topbar-logo">SianAI</a>
-                    <nav class="topbar-nav">
-                        <a href="laporan.html" class="topbar-nav-item active">Reports</a>
-                        <a href="forecasting.html" class="topbar-nav-item">Analytics</a>
-                    </nav>
                 </div>
 
                 <div class="topbar-right">
+                    <!-- Connect Wallet Button -->
+                    <button id="btnConnectWallet" class="btn-wallet-connect">
+                        <i class="fa-solid fa-wallet"></i> Hubungkan Dompet
+                    </button>
                     <div class="topbar-search">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Cari data keuangan...">
+                        <input type="text" id="txSearch" placeholder="Cari data keuangan...">
                     </div>
                     <button class="topbar-bell" title="Notifikasi">
                         <i class="fa-regular fa-bell"></i>
@@ -69,7 +72,7 @@
                         <span class="topbar-username">Penenun123</span>
                         <i class="fa-solid fa-chevron-down topbar-chevron"></i>
                     </div>
-                    <button class="btn-topbar-export">
+                    <button class="btn-topbar-export" id="btnExportData">
                         <i class="fa-solid fa-download"></i> Export Data
                     </button>
                 </div>
@@ -81,56 +84,58 @@
                 <!-- Page Header -->
                 <div class="page-header">
                     <div class="page-header-left">
-                        <h1>Laporan Keuangan</h1>
+                        <h1>Laporan Keuangan &amp; Blockchain Ledger</h1>
                         <p class="page-header-sub">
                             <i class="fa-regular fa-calendar"></i>
-                            Data ringkasan untuk periode terpilih
+                            Pencatatan keuangan aman, terverifikasi kriptografi on-chain.
                         </p>
                     </div>
                     <div class="page-header-right">
                         <button class="period-selector">
-                            Februari 2026 <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i>
+                            Juni 2026 <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i>
                         </button>
-                        <button class="btn-filter">
-                            <i class="fa-solid fa-sliders"></i> Filter Lanjutan
+                        <button class="btn-filter" id="btnManualInput">
+                            <i class="fa-solid fa-plus"></i> Transaksi Manual
                         </button>
                     </div>
                 </div>
 
                 <!-- ---- STAT CARDS ---- -->
                 <div class="stats-grid">
-                    <!-- Card 1: Primary (maroon) -->
+                    <!-- Card 1: Balance -->
                     <div class="stat-card primary">
                         <div class="stat-card-header">
-                            <span class="stat-title">TOTAL SALDO KAS</span>
-                            <i class="fa-solid fa-landmark stat-icon"></i>
+                            <span class="stat-title">SALDO KAS SAAT INI</span>
+                            <i class="fa-solid fa-vault stat-icon"></i>
                         </div>
-                        <div class="stat-value">Rp42.850.000</div>
+                        <div class="stat-value" id="statBalance">Rp42.850.000</div>
                         <div class="stat-subtext">
-                            <i class="fa-regular fa-clock"></i> Terakhir diperbarui: 2 menit yang lalu
+                            <i class="fa-solid fa-shield-halved"></i> Sinkron dengan Local Ledger
                         </div>
                     </div>
 
                     <!-- Card 2: Pemasukan -->
                     <div class="stat-card">
                         <div class="stat-card-header">
-                            <span class="stat-title">TOTAL PEMASUKAN (BULAN INI)</span>
+                            <span class="stat-title">TOTAL PEMASUKAN</span>
                             <i class="fa-solid fa-arrow-trend-up stat-icon text-muted"></i>
                         </div>
-                        <div class="stat-value">Rp12.4M</div>
+                        <div class="stat-value" id="statIncome">Rp0</div>
                         <div class="stat-subtext text-green">
-                            <i class="fa-solid fa-arrow-trend-up"></i> +8.2% dari bulan lalu
+                            <i class="fa-solid fa-circle-check"></i> Dari hasil penjualan produk Ulos
                         </div>
                     </div>
 
-                    <!-- Card 3: Pengeluaran (danger) -->
+                    <!-- Card 3: Pengeluaran -->
                     <div class="stat-card danger">
                         <div class="stat-card-header">
-                            <span class="stat-title">TOTAL PENGELUARAN (BULAN INI)</span>
-                            <i class="fa-solid fa-triangle-exclamation stat-icon"></i>
+                            <span class="stat-title">TOTAL PENGELUARAN</span>
+                            <i class="fa-solid fa-circle-nodes stat-icon"></i>
                         </div>
-                        <div class="stat-value">Rp5.2M</div>
-                        <div class="stat-subtext">Pantau Pengeluaran</div>
+                        <div class="stat-value" id="statExpense">Rp0</div>
+                        <div class="stat-subtext">
+                            Fokus pada efisiensi modal benang
+                        </div>
                     </div>
                 </div>
 
@@ -140,9 +145,14 @@
                     <!-- Daftar Transaksi -->
                     <div class="transaksi-card">
                         <div class="transaksi-header">
-                            <div class="transaksi-title">Daftar Transaksi</div>
+                            <div class="transaksi-title">
+                                <i class="fa-solid fa-list-check"></i> Jurnal Keuangan Laporan
+                            </div>
                             <div class="transaksi-actions">
-                                <button class="icon-btn" title="Cari"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                <!-- Sync all button -->
+                                <button id="btnSyncAll" class="icon-btn" style="color:var(--gold); border-color:var(--glass-border-gold); display:flex; align-items:center; gap:6px; font-weight:600; padding:6px 12px;" title="Amankan semua transaksi ke blockchain">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Sinkronkan Semua
+                                </button>
                                 <button class="icon-btn" title="Filter"><i class="fa-solid fa-sliders"></i></button>
                             </div>
                         </div>
@@ -152,94 +162,20 @@
                                 <tr>
                                     <th>DESKRIPSI TRANSAKSI</th>
                                     <th>KATEGORI</th>
-                                    <th>STATUS</th>
+                                    <th>STATUS LEDGER BLOCKCHAIN</th>
                                     <th style="text-align:right;">NOMINAL</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <!-- Row 1 -->
-                                <tr>
-                                    <td>
-                                        <div class="t-desc-cell">
-                                            <div class="t-icon-box income"><i class="fa-solid fa-bag-shopping"></i></div>
-                                            <div class="t-desc-info">
-                                                <span class="t-desc-name">Ulos Ragidup Silk Grade A</span>
-                                                <span class="t-desc-sub">Inv #8991 · 10 Feb 2024</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="cat-badge produk">Penjualan Produk</span></td>
-                                    <td><span class="status-pill selesai">Selesai</span></td>
-                                    <td class="nominal-positive">+Rp3.500.000</td>
-                                </tr>
-                                <!-- Row 2 -->
-                                <tr>
-                                    <td>
-                                        <div class="t-desc-cell">
-                                            <div class="t-icon-box expense"><i class="fa-solid fa-wallet"></i></div>
-                                            <div class="t-desc-info">
-                                                <span class="t-desc-name">Pembelian Benang Sutra Mas</span>
-                                                <span class="t-desc-sub">Inv #8990 · 09 Feb 2024</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="cat-badge bahan">Bahan Baku</span></td>
-                                    <td><span class="status-pill selesai">Selesai</span></td>
-                                    <td class="nominal-negative">-Rp1.250.000</td>
-                                </tr>
-                                <!-- Row 3 -->
-                                <tr>
-                                    <td>
-                                        <div class="t-desc-cell">
-                                            <div class="t-icon-box pending"><i class="fa-solid fa-store"></i></div>
-                                            <div class="t-desc-info">
-                                                <span class="t-desc-name">Sewa Booth Pameran Craftina</span>
-                                                <span class="t-desc-sub">Inv #8990 · 08 Feb 2024</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="cat-badge marketing">Marketing</span></td>
-                                    <td><span class="status-pill diproses">Diproses</span></td>
-                                    <td class="nominal-negative">-Rp5.000.000</td>
-                                </tr>
-                                <!-- Row 4 -->
-                                <tr>
-                                    <td>
-                                        <div class="t-desc-cell">
-                                            <div class="t-icon-box income"><i class="fa-solid fa-bag-shopping"></i></div>
-                                            <div class="t-desc-info">
-                                                <span class="t-desc-name">Ulos Sadum Gold Special Edition</span>
-                                                <span class="t-desc-sub">Inv #8989 · 07 Feb 2024</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="cat-badge produk">Penjualan Produk</span></td>
-                                    <td><span class="status-pill selesai">Selesai</span></td>
-                                    <td class="nominal-positive">+Rp8.200.000</td>
-                                </tr>
-                                <!-- Row 5 -->
-                                <tr>
-                                    <td>
-                                        <div class="t-desc-cell">
-                                            <div class="t-icon-box expense"><i class="fa-solid fa-bolt"></i></div>
-                                            <div class="t-desc-info">
-                                                <span class="t-desc-name">Tagihan Listrik Workshop (Jan)</span>
-                                                <span class="t-desc-sub">Inv #8988 · 05 Feb 2024</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="cat-badge operasional">Operasional</span></td>
-                                    <td><span class="status-pill selesai">Selesai</span></td>
-                                    <td class="nominal-negative">-Rp850.000</td>
-                                </tr>
+                            <tbody id="transactionTableBody">
+                                <!-- Dynamic JS injection -->
                             </tbody>
                         </table>
 
                         <div class="transaksi-footer">
-                            <span class="trans-count">Menampilkan 5 dari 124 transaksi</span>
+                            <span class="trans-count" id="transCount">Menampilkan 0 transaksi</span>
                             <div class="pagination">
                                 <button class="btn-page" disabled>Sebelumnya</button>
-                                <button class="btn-page active">Selanjutnya</button>
+                                <button class="btn-page" disabled>Selanjutnya</button>
                             </div>
                         </div>
                     </div>
@@ -250,8 +186,8 @@
                         <!-- Grafik Arus Kas -->
                         <div class="chart-card">
                             <div class="chart-card-header">
-                                <span class="chart-card-title">Grafik Arus Kas</span>
-                                <span class="chart-period-badge">7 Hari Terakhir</span>
+                                <span class="chart-card-title">Struktur Arus Kas</span>
+                                <span class="chart-period-badge">Bulan Ini</span>
                             </div>
 
                             <div class="bar-chart">
@@ -287,8 +223,8 @@
 
                             <div class="chart-footer">
                                 <div class="chart-avg">
-                                    Rata-rata harian<br>
-                                    <strong>Rp3.420.000</strong>
+                                    Rata-rata Harian<br>
+                                    <strong id="avgDailyText">Rp0</strong>
                                 </div>
                                 <span class="chart-trend">↑ +12%</span>
                             </div>
@@ -296,7 +232,7 @@
 
                         <!-- Ringkasan Kategori -->
                         <div class="kategori-card">
-                            <div class="kategori-title">Ringkasan Kategori</div>
+                            <div class="kategori-title">Kategori Keuangan</div>
                             <div class="kategori-list">
                                 <div class="kategori-item">
                                     <div class="kategori-meta">
@@ -335,31 +271,62 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn-kategori">Lihat Semua Kategori</button>
+                            <button class="btn-kategori">Lihat Distribusi Kas</button>
                         </div>
 
                     </div><!-- /.right-col -->
                 </div><!-- /.main-grid -->
 
-                <!-- ---- BOTTOM ROW: Produk + AI ---- -->
+                <!-- ==================== BLOCKCHAIN LEDGER REGISTRY (AUDIT TRAIL) ==================== -->
+                <section class="transaksi-card" style="margin-bottom:32px;">
+                    <div class="transaksi-header" style="border-bottom:1px dashed var(--glass-border-gold); background:rgba(255,193,7,0.01);">
+                        <div class="transaksi-title" style="color:var(--gold);">
+                            <i class="fa-solid fa-database"></i> Blockchain Ledger Registry (SianAI DevNet Sandbox)
+                        </div>
+                        <div class="transaksi-actions">
+                            <span class="badge badge-green" style="background:rgba(0,230,118,0.08); color:var(--green); border-color:rgba(0,230,118,0.2);">
+                                <i class="fa-solid fa-server"></i> NODE OPERASIONAL
+                            </span>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="trans-table">
+                            <thead>
+                                <tr>
+                                    <th>BLOK INDEX</th>
+                                    <th>WAKTU BLOK</th>
+                                    <th>TRANSAKSI HASH (TXHASH)</th>
+                                    <th>PREVIEW DATA MUATAN</th>
+                                    <th>GAS FEE</th>
+                                    <th style="text-align:right;">BUKTI KRIPTOGRAFI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="blockchainLedgerBody">
+                                <!-- Dynamic block records -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ---- BOTTOM ROW: AI Suggestion & Heritage info ---- -->
                 <div class="bottom-row">
                     <!-- Product Card 1 -->
                     <div class="product-card">
                         <img src="../../assets/ulos1.jpg" alt="Ulos Ragidup Silk" class="product-img">
-                        <span class="product-chip certified">✦ CERTIFIED AUTHENTICITY</span>
+                        <span class="product-chip certified">✦ DIGITAL AUTHENTICITY CERTIFICATE</span>
                         <div class="product-info">
                             <div class="product-name">Ulos Ragidup Silk</div>
-                            <div class="product-sub">High-demand item for Forecasting</div>
+                            <div class="product-sub">Metadata digital tercatat pada blockchain ERC-721.</div>
                         </div>
                     </div>
 
                     <!-- Product Card 2 -->
                     <div class="product-card">
                         <img src="../../assets/ulos2.jpg" alt="Hand-Woven Process" class="product-img">
-                        <span class="product-chip heritage">🏛 HERITAGE GRADE</span>
+                        <span class="product-chip heritage">🏛 WARISAN BUDAYA BATAK</span>
                         <div class="product-info">
                             <div class="product-name">Hand-Woven Process</div>
-                            <div class="product-sub">Operational cost efficiency tracking</div>
+                            <div class="product-sub">Melindungi kerajinan tenun tradisional lewat desentralisasi.</div>
                         </div>
                     </div>
 
@@ -367,18 +334,596 @@
                     <div class="ai-card">
                         <div class="ai-card-header">
                             <div class="ai-icon"><i class="fa-solid fa-robot"></i></div>
-                            <span class="ai-card-title">Smart AI Suggestion</span>
+                            <span class="ai-card-title">Rekomendasi Blockchain SianAI</span>
                         </div>
                         <div class="ai-card-body">
-                            Stok benang sutra hampir habis. Pesan hari ini untuk menghemat <strong>10% biaya logistik</strong> sebelum harga naik menjelang musim Ulaon Unjuk.
+                            Simpan data transaksi mingguan Anda secara kolektif ke blockchain. Keabsahan pembukuan terenkripsi memudahkan verifikasi pengajuan kredit bank!
                         </div>
                     </div>
-                </div><!-- /.bottom-row -->
+                </div>
 
             </main>
         </div><!-- /.laporan-content -->
 
     </div><!-- /.app-layout -->
+
+    <!-- ==========================================================================
+       MODAL 1: PROSES TRANSAKSI BLOCKCHAIN (SIGNING/MINING)
+       ========================================================================== */ -->
+    <div id="web3Modal" class="web3-modal">
+        <div class="web3-modal-content">
+            <div class="blockchain-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-core"><i class="fa-solid fa-link"></i></div>
+            </div>
+            <h3 style="font-size:20px; font-weight:800; margin-bottom:12px; letter-spacing:-0.5px;" id="web3ModalTitle">Mengamankan Transaksi</h3>
+            <p style="font-size:14px; color:var(--text-secondary); line-height:1.6; margin-bottom:24px;" id="web3ModalMessage">Menghubungkan ke jaringan blockchain...</p>
+            
+            <div id="web3ModalPayload" style="display:none; text-align:left; background:rgba(0,0,0,0.3); border-radius:6px; padding:12px; font-family:monospace; font-size:11px; margin-bottom:16px; border:1px solid var(--glass-border); max-height:120px; overflow-y:auto; color:var(--text-secondary);">
+                <!-- JSON data preview -->
+            </div>
+            
+            <div id="web3ModalStats" style="display:none; justify-content:space-between; font-size:12px; color:var(--text-muted); border-top:1px solid var(--glass-border); padding-top:12px;">
+                <span>Limit Gas: <strong id="gasLimitText" style="color:var(--gold);">21000</strong></span>
+                <span>Gas Price: <strong style="color:var(--primary);">Gwei 45</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       MODAL 2: BLOCK EXPLORER DETAILS
+       ========================================================================== */ -->
+    <div id="explorerModal" class="web3-modal">
+        <div class="web3-modal-content" style="max-width: 580px;">
+            <i class="fa-solid fa-circle-nodes" style="font-size:36px; color:var(--gold); margin-bottom:16px; filter:drop-shadow(0 0 10px rgba(255,193,7,0.3));"></i>
+            <h3 style="font-size:20px; font-weight:800; margin-bottom:4px; letter-spacing:-0.5px;">SianAI Block Explorer</h3>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Kriptografi Transaksi Terverifikasi di Blok Ledger</p>
+            
+            <div class="explorer-modal-grid">
+                <div class="explorer-item">
+                    <span class="explorer-label">Blok Index</span>
+                    <span class="explorer-val" id="expBlockIndex">#0</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Waktu Blok</span>
+                    <span class="explorer-val" id="expBlockTime">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Hash Transaksi (TxHash)</span>
+                    <span class="explorer-val hash-val" id="expTxHash" style="cursor:pointer;" onclick="navigator.clipboard.writeText(this.innerText); alert('Hash disalin!')">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Hash Blok Sebelumnya</span>
+                    <span class="explorer-val" id="expPrevHash">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Hash Blok Saat Ini</span>
+                    <span class="explorer-val" id="expBlockHash">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Alamat Penenun (Wallet)</span>
+                    <span class="explorer-val address-val" id="expWallet">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Tanda Tangan Digital (Signature)</span>
+                    <span class="explorer-val" id="expSig" style="font-size:10px;">-</span>
+                </div>
+                <div class="explorer-item">
+                    <span class="explorer-label">Gas yang Digunakan</span>
+                    <span class="explorer-val" id="expGasUsed">-</span>
+                </div>
+                <div class="explorer-item" style="border-bottom:none; flex-direction:column; align-items:flex-start; gap:6px; margin-top:8px;">
+                    <span class="explorer-label">Payload Data Transaksi Keuangan</span>
+                    <pre id="expPayload" style="width:100%; text-align:left; background:rgba(0,0,0,0.4); border-radius:6px; padding:12px; font-family:monospace; font-size:11px; overflow-x:auto; border:1px solid var(--glass-border); color:var(--text-secondary); max-height: 100px; overflow-y:auto;"></pre>
+                </div>
+            </div>
+            
+            <button class="btn-close-modal" id="btnCloseExplorer">Tutup Blok Explorer</button>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       MODAL 3: INPUT TRANSAKSI MANUAL
+       ========================================================================== */ -->
+    <div id="manualInputModal" class="web3-modal">
+        <div class="web3-modal-content" style="max-width: 450px; text-align:left;">
+            <h3 style="font-size:18px; font-weight:700; margin-bottom:16px; border-bottom:1px solid var(--glass-border); padding-bottom:12px; color:var(--white); text-align:center;"><i class="fa-solid fa-plus-circle"></i> Tambah Transaksi Keuangan</h3>
+            
+            <form id="manualTxForm" style="display:flex; flex-direction:column; gap:16px;">
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; color:var(--text-secondary);">Tipe Transaksi</label>
+                    <select id="txType" style="padding:10px; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); color:var(--white); border-radius:6px; outline:none; font-family:inherit;">
+                        <option value="income" style="background:#0c0204;">Pemasukan (+)</option>
+                        <option value="expense" style="background:#0c0204;">Pengeluaran (-)</option>
+                    </select>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; color:var(--text-secondary);">Nama / Deskripsi Transaksi</label>
+                    <input type="text" id="txName" placeholder="Contoh: Penjualan Ulos Bintang Maratur" required style="padding:10px; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); color:var(--white); border-radius:6px; outline:none; font-family:inherit;">
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; color:var(--text-secondary);">Kategori</label>
+                    <select id="txCategory" style="padding:10px; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); color:var(--white); border-radius:6px; outline:none; font-family:inherit;">
+                        <option value="Penjualan Produk" style="background:#0c0204;">Penjualan Produk</option>
+                        <option value="Bahan Baku" style="background:#0c0204;">Bahan Baku</option>
+                        <option value="Operasional" style="background:#0c0204;">Operasional</option>
+                        <option value="Marketing" style="background:#0c0204;">Marketing</option>
+                    </select>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; color:var(--text-secondary);">Nominal Transaksi (Rp)</label>
+                    <input type="number" id="txAmount" placeholder="Contoh: 1500000" required style="padding:10px; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); color:var(--white); border-radius:6px; outline:none; font-family:inherit;">
+                </div>
+
+                <div style="display:flex; gap:12px; margin-top:10px;">
+                    <button type="button" class="btn-close-modal" id="btnCancelManual" style="flex:1;">Batal</button>
+                    <button type="submit" class="btn-foto-nota" style="flex:1; margin-bottom:0;">Simpan Transaksi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       MODAL 4: FOTO NOTA (SIMULASI OCR AI)
+       ========================================================================== */ -->
+    <div id="ocrSimulationModal" class="web3-modal">
+        <div class="web3-modal-content" style="max-width: 480px; text-align:center;">
+            <i class="fa-solid fa-camera" style="font-size:36px; color:var(--primary); margin-bottom:16px; filter:drop-shadow(0 0 10px rgba(255,51,75,0.3)); animate:pulse 2s infinite;"></i>
+            <h3 style="font-size:18px; font-weight:700; margin-bottom:12px;">Pindai Nota dengan AI</h3>
+            <p style="font-size:13px; color:var(--text-secondary); margin-bottom:20px;">Silakan pilih contoh gambar nota di bawah untuk disimulasikan oleh mesin OCR AI SianAI.</p>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+                <button class="btn-page" onclick="simulateOcr('benang')" style="height:90px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-receipt" style="font-size:24px; color:var(--primary);"></i>
+                    <span>Nota Benang Sutra (Rp 1.250.000)</span>
+                </button>
+                <button class="btn-page" onclick="simulateOcr('ulos')" style="height:90px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-receipt" style="font-size:24px; color:var(--gold);"></i>
+                    <span>Nota Penjualan Ulos (Rp 3.500.000)</span>
+                </button>
+            </div>
+            
+            <button class="btn-close-modal" id="btnCancelOcr">Batal</button>
+        </div>
+    </div>
+
+    <!-- Web3 Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="../services/blockchain.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnConnect = document.getElementById('btnConnectWallet');
+            const tbody = document.getElementById('transactionTableBody');
+            const ledgerBody = document.getElementById('blockchainLedgerBody');
+            const transCount = document.getElementById('transCount');
+            const txSearch = document.getElementById('txSearch');
+            
+            // Stats
+            const statBalance = document.getElementById('statBalance');
+            const statIncome = document.getElementById('statIncome');
+            const statExpense = document.getElementById('statExpense');
+            const avgDailyText = document.getElementById('avgDailyText');
+            
+            // Buttons
+            const btnSyncAll = document.getElementById('btnSyncAll');
+            const btnManualInput = document.getElementById('btnManualInput');
+            const btnFotoNota = document.getElementById('btnFotoNota');
+            const btnExportData = document.getElementById('btnExportData');
+            
+            // Modals
+            const web3Modal = document.getElementById('web3Modal');
+            const web3ModalTitle = document.getElementById('web3ModalTitle');
+            const web3ModalMessage = document.getElementById('web3ModalMessage');
+            const web3ModalPayload = document.getElementById('web3ModalPayload');
+            const web3ModalStats = document.getElementById('web3ModalStats');
+            const gasLimitText = document.getElementById('gasLimitText');
+
+            const explorerModal = document.getElementById('explorerModal');
+            const btnCloseExplorer = document.getElementById('btnCloseExplorer');
+            
+            const manualInputModal = document.getElementById('manualInputModal');
+            const btnCancelManual = document.getElementById('btnCancelManual');
+            const manualTxForm = document.getElementById('manualTxForm');
+            
+            const ocrSimulationModal = document.getElementById('ocrSimulationModal');
+            const btnCancelOcr = document.getElementById('btnCancelOcr');
+
+            // Cek URL params untuk membuka kamera simulasi otomatis
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('open_camera') === 'true') {
+                ocrSimulationModal.classList.add('active');
+            }
+
+            // Render Wallet State
+            function updateWalletUI() {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    const shortAddress = state.address.substring(0, 6) + '...' + state.address.substring(state.address.length - 4);
+                    btnConnect.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--green);"></i> ${shortAddress} (${state.network})`;
+                    btnConnect.classList.add('connected');
+                } else {
+                    btnConnect.innerHTML = `<i class="fa-solid fa-wallet"></i> Hubungkan Dompet`;
+                    btnConnect.classList.remove('connected');
+                }
+                
+                calculateStats();
+                renderTransactions();
+                renderLedger();
+            }
+
+            // Hitung ringkasan statistik
+            function calculateStats() {
+                const txs = window.SianAIBlockchainInstance.getTransactions();
+                let balance = 42850000; // Base balance
+                let incSum = 0;
+                let expSum = 0;
+
+                txs.forEach(tx => {
+                    if (tx.type === 'income') {
+                        incSum += tx.amount;
+                    } else {
+                        expSum += tx.amount;
+                    }
+                });
+
+                statBalance.textContent = 'Rp' + (balance + incSum - expSum).toLocaleString('id-ID');
+                statIncome.textContent = 'Rp' + incSum.toLocaleString('id-ID');
+                statExpense.textContent = 'Rp' + expSum.toLocaleString('id-ID');
+                
+                // Rata-rata harian
+                const avg = txs.length > 0 ? Math.floor(incSum / 7) : 0;
+                avgDailyText.textContent = 'Rp' + avg.toLocaleString('id-ID');
+            }
+
+            // Render Transaksi Jurnal
+            function renderTransactions(filterQuery = '') {
+                const txs = window.SianAIBlockchainInstance.getTransactions();
+                tbody.innerHTML = '';
+                
+                const filtered = txs.filter(tx => {
+                    return tx.name.toLowerCase().includes(filterQuery.toLowerCase()) || 
+                           tx.category.toLowerCase().includes(filterQuery.toLowerCase());
+                });
+
+                transCount.textContent = `Menampilkan ${filtered.length} dari ${txs.length} transaksi`;
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted" style="padding:24px;">Tidak ada transaksi yang cocok.</td></tr>`;
+                    return;
+                }
+
+                filtered.forEach(tx => {
+                    const blockReceipt = window.SianAIBlockchainInstance.isTransactionSynced(tx.id);
+                    const isExpense = tx.type === 'expense';
+                    const iconClass = isExpense ? 'fa-wallet' : 'fa-bag-shopping';
+                    const iconColor = isExpense ? 'expense' : 'income';
+                    const nominalSign = isExpense ? '-' : '+';
+                    const nominalClass = isExpense ? 'nominal-negative' : 'nominal-positive';
+                    
+                    // Category Badge styling
+                    let catClass = 'produk';
+                    if (tx.category.includes('Bahan')) catClass = 'bahan';
+                    else if (tx.category.includes('Operasional')) catClass = 'operasional';
+                    else if (tx.category.includes('Marketing')) catClass = 'marketing';
+                    
+                    let blockchainBadge = '';
+                    if (blockReceipt) {
+                        blockchainBadge = `
+                            <button class="status-pill selesai" style="border:none; cursor:pointer; font-family:inherit;" onclick="openBlockExplorer(${blockReceipt.index})">
+                                <i class="fa-solid fa-shield-halved"></i> Terverifikasi On-Chain
+                            </button>
+                        `;
+                    } else {
+                        blockchainBadge = `
+                            <button class="btn-wallet-connect" style="padding:4px 8px; font-size:10px; background:rgba(255, 51, 75, 0.06); border-color:rgba(255, 51, 75, 0.2); color:var(--primary);" onclick="syncIndividualTransaction('${tx.id}')">
+                                <i class="fa-solid fa-lock"></i> Amankan ke Chain
+                            </button>
+                        `;
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>
+                            <div class="t-desc-cell">
+                                <div class="t-icon-box ${iconColor}"><i class="fa-solid ${iconClass}"></i></div>
+                                <div class="t-desc-info">
+                                    <span class="t-desc-name">${tx.name}</span>
+                                    <span class="t-desc-sub">${tx.id.toUpperCase()} · ${tx.date}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="cat-badge ${catClass}">${tx.category}</span></td>
+                        <td>${blockchainBadge}</td>
+                        <td class="${nominalClass}">${nominalSign}Rp ${tx.amount.toLocaleString('id-ID')}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Render Blockchain Ledger (Audit Trail)
+            function renderLedger() {
+                const ledger = window.SianAIBlockchainInstance.getRawLedger();
+                ledgerBody.innerHTML = '';
+
+                // Tampilkan secara terbalik (blok terbaru di atas)
+                const sortedLedger = [...ledger].reverse();
+
+                sortedLedger.forEach(block => {
+                    const blockDate = new Date(block.timestamp).toLocaleString('id-ID');
+                    const shortTxHash = block.txHash.substring(0, 10) + '...' + block.txHash.substring(block.txHash.length - 8);
+                    
+                    let preview = '';
+                    if (block.index === 0) {
+                        preview = block.payload.message;
+                    } else {
+                        preview = `${block.payload.description} (Rp ${block.payload.amount.toLocaleString('id-ID')})`;
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.style.cursor = 'pointer';
+                    tr.onclick = () => openBlockExplorer(block.index);
+                    tr.innerHTML = `
+                        <td style="font-weight:700; color:var(--gold);">#${block.index}</td>
+                        <td style="font-size:12px; color:var(--text-muted);">${blockDate}</td>
+                        <td style="font-family:monospace; color:var(--primary); font-size:12.5px;">${shortTxHash}</td>
+                        <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12.5px;">${preview}</td>
+                        <td style="font-family:monospace; color:var(--text-muted); font-size:12px;">${block.gasUsed.toLocaleString()} gas</td>
+                        <td style="text-align:right;">
+                            <span class="badge badge-green"><i class="fa-solid fa-circle-check"></i> PROVED</span>
+                        </td>
+                    `;
+                    ledgerBody.appendChild(tr);
+                });
+            }
+
+            // Sinkronisasi transaksi tunggal
+            window.syncIndividualTransaction = async function(txId) {
+                const wallet = window.SianAIBlockchainInstance.getWalletState();
+                if (!wallet.connected) {
+                    alert("Dompet Web3 belum terhubung! Klik tombol 'Hubungkan Dompet' terlebih dahulu.");
+                    return;
+                }
+
+                const txs = window.SianAIBlockchainInstance.getTransactions();
+                const tx = txs.find(t => t.id === txId);
+                if (!tx) return;
+
+                // Tampilkan modal progress
+                web3Modal.classList.add('active');
+                web3ModalPayload.style.display = 'none';
+                web3ModalStats.style.display = 'none';
+
+                try {
+                    await window.SianAIBlockchainInstance.writeTransaction(tx, (status, data) => {
+                        if (status === 'PREPARING') {
+                            web3ModalTitle.textContent = "Menghitung Gas Transaksi";
+                            web3ModalMessage.textContent = data.message;
+                        } else if (status === 'SIGNING') {
+                            web3ModalTitle.textContent = "Menunggu Tanda Tangan";
+                            web3ModalMessage.textContent = data.message;
+                            web3ModalPayload.style.display = 'block';
+                            web3ModalPayload.textContent = JSON.stringify(data.payload, null, 2);
+                        } else if (status === 'BROADCASTING') {
+                            web3ModalTitle.textContent = "Menyiarkan ke Jaringan";
+                            web3ModalMessage.textContent = data.message;
+                            web3ModalStats.style.display = 'flex';
+                            gasLimitText.textContent = data.gasLimit;
+                        } else if (status === 'MINING') {
+                            web3ModalTitle.textContent = "Menambang Blok Baru";
+                            web3ModalMessage.textContent = data.message;
+                        } else if (status === 'CONFIRMED') {
+                            web3ModalTitle.textContent = "Ledger Sukses Diamankan!";
+                            web3ModalMessage.textContent = data.message;
+                        }
+                    });
+
+                    setTimeout(() => {
+                        web3Modal.classList.remove('active');
+                        updateWalletUI();
+                    }, 1200);
+
+                } catch (err) {
+                    alert("Gagal sinkronisasi blockchain: " + err.message);
+                    web3Modal.classList.remove('active');
+                }
+            };
+
+            // Sinkronkan semua transaksi yang belum aman
+            btnSyncAll.addEventListener('click', async () => {
+                const wallet = window.SianAIBlockchainInstance.getWalletState();
+                if (!wallet.connected) {
+                    alert("Hubungkan dompet Web3 Anda terlebih dahulu!");
+                    return;
+                }
+
+                const txs = window.SianAIBlockchainInstance.getTransactions();
+                const unsynced = txs.filter(tx => !window.SianAIBlockchainInstance.isTransactionSynced(tx.id));
+
+                if (unsynced.length === 0) {
+                    alert("Semua transaksi dalam jurnal sudah aman di blockchain! 🎉");
+                    return;
+                }
+
+                if (!confirm(`Terdapat ${unsynced.length} transaksi belum tersinkronisasi. Apakah Anda ingin mengamankan semuanya secara batch?`)) {
+                    return;
+                }
+
+                // Jalankan sinkronisasi sekuensial
+                for (let tx of unsynced) {
+                    await syncIndividualTransaction(tx.id);
+                    // Tunggu jeda antar blok
+                    await new Promise(r => setTimeout(r, 600));
+                }
+            });
+
+            // Dialog Block Explorer
+            window.openBlockExplorer = function(blockIndex) {
+                const ledger = window.SianAIBlockchainInstance.getRawLedger();
+                const block = ledger.find(b => b.index === blockIndex);
+                if (!block) return;
+
+                document.getElementById('expBlockIndex').textContent = `#${block.index}`;
+                document.getElementById('expBlockTime').textContent = new Date(block.timestamp).toLocaleString('id-ID');
+                document.getElementById('expTxHash').textContent = block.txHash;
+                document.getElementById('expPrevHash').textContent = block.previousHash;
+                document.getElementById('expBlockHash').textContent = block.hash;
+                document.getElementById('expWallet').textContent = block.payload.merchantAddress || '0x0000000000000000000000000000000000000000';
+                document.getElementById('expSig').textContent = block.signature || 'GENESIS_BYPASS';
+                document.getElementById('expGasUsed').textContent = `${block.gasUsed.toLocaleString()} Gas Unit`;
+                document.getElementById('expPayload').textContent = JSON.stringify(block.payload, null, 2);
+
+                explorerModal.classList.add('active');
+            };
+
+            btnCloseExplorer.addEventListener('click', () => {
+                explorerModal.classList.remove('active');
+            });
+
+            // Form manual input
+            btnManualInput.addEventListener('click', () => {
+                manualInputModal.classList.add('active');
+            });
+
+            btnCancelManual.addEventListener('click', () => {
+                manualInputModal.classList.remove('active');
+            });
+
+            manualTxForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const type = document.getElementById('txType').value;
+                const name = document.getElementById('txName').value;
+                const category = document.getElementById('txCategory').value;
+                const amount = parseFloat(document.getElementById('txAmount').value);
+                
+                const newTx = {
+                    id: 'tx-' + Date.now(),
+                    name: name,
+                    type: type,
+                    category: category,
+                    amount: amount,
+                    date: new Date().toISOString().split('T')[0],
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':')
+                };
+
+                const txs = window.SianAIBlockchainInstance.getTransactions();
+                txs.unshift(newTx);
+                window.SianAIBlockchainInstance.saveTransactions(txs);
+                
+                manualTxForm.reset();
+                manualInputModal.classList.remove('active');
+                
+                alert("Transaksi berhasil ditambahkan ke jurnal lokal! Klik 'Amankan ke Chain' untuk menyimpannya ke blockchain.");
+                updateWalletUI();
+            });
+
+            // Simulasi OCR Nota
+            btnFotoNota.addEventListener('click', () => {
+                ocrSimulationModal.classList.add('active');
+            });
+
+            btnCancelOcr.addEventListener('click', () => {
+                ocrSimulationModal.classList.remove('active');
+            });
+
+            window.simulateOcr = async function(type) {
+                ocrSimulationModal.classList.remove('active');
+                
+                // Tampilkan modal loading scanning
+                web3Modal.classList.add('active');
+                web3ModalTitle.textContent = "AI OCR Scanner";
+                web3ModalMessage.textContent = "Sedang mengunggah dan menganalisis foto nota via Vision AI...";
+                web3ModalPayload.style.display = 'none';
+                web3ModalStats.style.display = 'none';
+                
+                await new Promise(r => setTimeout(r, 2200));
+                
+                let mockOcrTx = {};
+                if (type === 'benang') {
+                    mockOcrTx = {
+                        id: 'ocr-' + Math.floor(Math.random() * 10000),
+                        name: 'Pembelian Benang Sutra Mas (Premium)',
+                        type: 'expense',
+                        category: 'Bahan Baku',
+                        amount: 1250000,
+                        date: new Date().toISOString().split('T')[0],
+                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':')
+                    };
+                } else {
+                    mockOcrTx = {
+                        id: 'ocr-' + Math.floor(Math.random() * 10000),
+                        name: 'Penjualan Kain Ulos Ragidup Silk',
+                        type: 'income',
+                        category: 'Penjualan Produk',
+                        amount: 3500000,
+                        date: new Date().toISOString().split('T')[0],
+                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':')
+                    };
+                }
+
+                const txs = window.SianAIBlockchainInstance.getTransactions();
+                txs.unshift(mockOcrTx);
+                window.SianAIBlockchainInstance.saveTransactions(txs);
+                
+                web3ModalTitle.textContent = "OCR Selesai!";
+                web3ModalMessage.textContent = `Berhasil mengekstrak entitas: ${mockOcrTx.name} - Rp ${mockOcrTx.amount.toLocaleString('id-ID')}`;
+                
+                await new Promise(r => setTimeout(r, 1200));
+                web3Modal.classList.remove('active');
+                updateWalletUI();
+            };
+
+            // Search Filter
+            txSearch.addEventListener('input', (e) => {
+                renderTransactions(e.target.value);
+            });
+
+            // Export Data
+            btnExportData.addEventListener('click', () => {
+                const ledger = window.SianAIBlockchainInstance.getRawLedger();
+                const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(ledger, null, 2))}`;
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", jsonString);
+                downloadAnchor.setAttribute("download", "blockchain_financial_report.json");
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+            });
+
+            // Wallet button click handler
+            btnConnect.addEventListener('click', async () => {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    window.SianAIBlockchainInstance.disconnectWallet();
+                } else {
+                    try {
+                        btnConnect.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menghubungkan...`;
+                        await window.SianAIBlockchainInstance.connectWallet();
+                    } catch (err) {
+                        alert("Koneksi gagal: " + err.message);
+                        updateWalletUI();
+                    }
+                }
+            });
+
+            // Listen to updates
+            window.addEventListener('sianai_wallet_updated', updateWalletUI);
+            window.addEventListener('sianai_blockchain_updated', () => {
+                renderTransactions(txSearch.value);
+                renderLedger();
+            });
+            window.addEventListener('sianai_transactions_updated', () => {
+                calculateStats();
+                renderTransactions(txSearch.value);
+            });
+
+            // Initial UI load
+            updateWalletUI();
+        });
+    </script>
 </body>
 
 </html>

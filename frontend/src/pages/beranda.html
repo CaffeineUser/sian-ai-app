@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="SianAI Beranda — Dashboard manajemen keuangan dan usaha tenun Ulos Batak.">
-    <title>SianAI — Beranda</title>
+    <title>SianAI — Beranda Web3</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +18,10 @@
 </head>
 
 <body>
+    <!-- Ambient Neon Blobs for Glassmorphism Background -->
+    <div style="position:fixed; top:-20%; left:-10%; width:50vw; height:50vw; background:radial-gradient(circle, rgba(255,51,75,0.06) 0%, transparent 70%); z-index:-1; pointer-events:none; filter:blur(80px);"></div>
+    <div style="position:fixed; bottom:-20%; right:-10%; width:60vw; height:60vw; background:radial-gradient(circle, rgba(255,193,7,0.04) 0%, transparent 70%); z-index:-1; pointer-events:none; filter:blur(100px);"></div>
+
     <div class="app-layout">
 
         <!-- ==================== SIDEBAR ==================== -->
@@ -29,15 +33,14 @@
             <ul class="nav-menu">
                 <li><a href="beranda.html" class="nav-item active"><i class="fa-solid fa-house"></i> Beranda</a></li>
                 <li><a href="laporan.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Laporan Keuangan</a></li>
-                <li><a href="stok.html" class="nav-item"><i class="fa-solid fa-box"></i> Stok Ulos</a></li>
+                <li><a href="stok.html" class="nav-item"><i class="fa-solid fa-box"></i> Inventory</a></li>
                 <li><a href="akun.html" class="nav-item"><i class="fa-regular fa-user"></i> Manajemen Akun</a></li>
-                <li><a href="sales.html" class="nav-item"><i class="fa-solid fa-money-bill-wave"></i> Sales</a></li>
                 <li><a href="forecasting.html" class="nav-item"><i class="fa-solid fa-arrow-trend-up"></i> Forecasting</a></li>
                 <li><a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
             </ul>
 
             <div class="sidebar-bottom">
-                <button class="btn-foto-nota"><i class="fa-solid fa-camera"></i> Foto Nota</button>
+                <button class="btn-foto-nota" onclick="window.location.href='laporan.html?open_camera=true'"><i class="fa-solid fa-camera"></i> Foto Nota</button>
                 <a href="support.html" class="nav-item"><i class="fa-regular fa-circle-question"></i> Support</a>
                 <a href="login.html" class="nav-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</a>
             </div>
@@ -51,9 +54,14 @@
                 <header class="top-header">
                     <div class="header-left">
                         <h1>Halo, Penenun 👋</h1>
-                        <p>Selamat datang kembali di dashboard SianAI</p>
+                        <p>Selamat datang kembali di dashboard SianAI Web3</p>
                     </div>
                     <div class="header-right">
+                        <!-- Connect Wallet Button -->
+                        <button id="btnConnectWallet" class="btn-wallet-connect">
+                            <i class="fa-solid fa-wallet"></i> Hubungkan Dompet
+                        </button>
+                        
                         <button class="btn-icon" title="Notifikasi">
                             <i class="fa-regular fa-bell"></i>
                         </button>
@@ -62,7 +70,7 @@
                                 <span class="user-name">Penenun123</span>
                                 <span class="user-role">PEMILIK USAHA</span>
                             </div>
-                            <img src="https://ui-avatars.com/api/?name=Penenun123&background=791a27&color=fff&rounded=true" alt="Avatar Mariana S." class="avatar">
+                            <img src="https://ui-avatars.com/api/?name=Penenun123&background=ff334b&color=fff&rounded=true" alt="Avatar" class="avatar">
                         </div>
                     </div>
                 </header>
@@ -71,37 +79,42 @@
                 <section class="top-widget">
                     <div class="widget-left">
                         <div class="saldo-label">TOTAL SALDO KAS</div>
-                        <div class="saldo-amount">Rp42.850.000</div>
+                        <div class="saldo-amount" id="totalSaldo">Rp42.850.000</div>
+                        
+                        <!-- Blockchain Sync Status Indicator -->
+                        <div class="blockchain-sync-badge" style="display: flex; align-items: center; gap: 8px; margin-top: -12px; margin-bottom: 20px;">
+                            <i class="fa-solid fa-link-slash text-muted" id="syncIcon" style="font-size:11px;"></i>
+                            <span id="syncStatusText" class="text-muted" style="font-size:11px; font-weight:600; letter-spacing:0.3px;">Ledger tidak terhubung</span>
+                        </div>
+
                         <div class="saldo-stats">
                             <div class="stat-item green">
                                 <i class="fa-solid fa-arrow-up"></i> Pemasukan
-                                <div class="stat-val">Rp12.4M</div>
+                                <div class="stat-val" id="totalIncome">Rp12.4M</div>
                             </div>
                             <div class="stat-item red">
                                 <i class="fa-solid fa-arrow-down"></i> Pengeluaran
-                                <div class="stat-val">Rp5.2M</div>
+                                <div class="stat-val" id="totalExpense">Rp5.2M</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="widget-right">
-                        <div class="chart-label">Grafik 7 Hari Terakhir</div>
+                        <div class="chart-label">Grafik Arus Kas Sandbox</div>
                         <div class="chart-container">
                             <svg viewBox="0 0 400 150" preserveAspectRatio="none" class="chart-svg">
                                 <defs>
-                                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stop-color="#791a27" stop-opacity="0.25"></stop>
-                                        <stop offset="100%" stop-color="#791a27" stop-opacity="0"></stop>
+                                    <linearGradient id="chartGradientDark" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#ff334b" stop-opacity="0.3"></stop>
+                                        <stop offset="100%" stop-color="#ff334b" stop-opacity="0"></stop>
                                     </linearGradient>
                                 </defs>
-                                <path class="chart-area" d="M0,120 C50,110 80,130 150,130 C220,130 250,50 300,50 C350,50 380,80 400,30 L400,150 L0,150 Z" fill="url(#chartGradient)">
-                                </path>
-                                <path class="chart-line" d="M0,120 C50,110 80,130 150,130 C220,130 250,50 300,50 C350,50 380,80 400,30" fill="none" stroke="#791a27" stroke-width="3" stroke-linecap="round">
-                                </path>
-                                <circle cx="0" cy="120" r="5" fill="#791a27"></circle>
-                                <circle cx="150" cy="130" r="5" fill="#791a27"></circle>
-                                <circle cx="300" cy="50" r="5" fill="#791a27"></circle>
-                                <circle cx="400" cy="30" r="5" fill="#791a27"></circle>
+                                <path class="chart-area" d="M0,120 C50,110 80,130 150,130 C220,130 250,50 300,50 C350,50 380,80 400,30 L400,150 L0,150 Z"></path>
+                                <path class="chart-line" d="M0,120 C50,110 80,130 150,130 C220,130 250,50 300,50 C350,50 380,80 400,30" fill="none" stroke-width="2.5" stroke-linecap="round"></path>
+                                <circle cx="0" cy="120" r="4" fill="var(--primary)"></circle>
+                                <circle cx="150" cy="130" r="4" fill="var(--primary)"></circle>
+                                <circle cx="300" cy="50" r="4" fill="var(--primary)"></circle>
+                                <circle cx="400" cy="30" r="4" fill="var(--primary)"></circle>
                             </svg>
                         </div>
                     </div>
@@ -110,8 +123,8 @@
                 <!-- Activity Table -->
                 <section class="activity-section">
                     <div class="activity-header">
-                        <h2>Aktivitas Terakhir</h2>
-                        <a href="laporan.html" class="link-view-all">Lihat Semua Transaksi &rsaquo;</a>
+                        <h2>Aktivitas Transaksi Terkini</h2>
+                        <a href="laporan.html" class="link-view-all">Lihat Semua Ledger &rsaquo;</a>
                     </div>
 
                     <div class="table-container">
@@ -120,107 +133,12 @@
                                 <tr>
                                     <th>DESKRIPSI TRANSAKSI</th>
                                     <th>KATEGORI &amp; WAKTU</th>
-                                    <th>STATUS</th>
+                                    <th>STATUS BLOCKCHAIN</th>
                                     <th class="text-right">NOMINAL</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="desc-cell">
-                                            <div class="icon-box"><i class="fa-solid fa-bag-shopping"></i></div>
-                                            <span class="desc-text">Ulos Ragidup Silk Grade A</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="cat-cell">
-                                            <span class="cat-name">Penjualan</span>
-                                            <span class="cat-time">Hari ini, 14:20</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-green">SELESAI</span></td>
-                                    <td class="text-right text-green fw-bold">+Rp 3.500.000</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="desc-cell">
-                                            <div class="icon-box red-icon"><i class="fa-solid fa-wallet"></i></div>
-                                            <span class="desc-text">Pembelian Benang Sutra Mas (50 Roll)</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="cat-cell">
-                                            <span class="cat-name">Pembelian Alat</span>
-                                            <span class="cat-time">Hari ini, 10:05</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-blue">DIPROSES</span></td>
-                                    <td class="text-right text-red fw-bold">-Rp 850.000</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="desc-cell">
-                                            <div class="icon-box red-icon"><i class="fa-solid fa-wallet"></i></div>
-                                            <span class="desc-text">Pembelian Benang Katun (100 Roll)</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="cat-cell">
-                                            <span class="cat-name">Pembelian Alat</span>
-                                            <span class="cat-time">Kemarin, 17:05</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-blue">DIPROSES</span></td>
-                                    <td class="text-right text-red fw-bold">-Rp 1.700.000</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="desc-cell">
-                                            <div class="icon-box"><i class="fa-solid fa-bag-shopping"></i></div>
-                                            <span class="desc-text">Ulos Ragihotang Handwoven Custom</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="cat-cell">
-                                            <span class="cat-name">Penjualan</span>
-                                            <span class="cat-time">Kemarin, 16:45</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-green">SELESAI</span></td>
-                                    <td class="text-right text-green fw-bold">+Rp 1.800.000</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="desc-cell">
-                                            <div class="icon-box"><i class="fa-solid fa-bag-shopping"></i></div>
-                                            <span class="desc-text">Ulos Mangiring Handwoven Custom</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="cat-cell">
-                                            <span class="cat-name">Penjualan</span>
-                                            <span class="cat-time">Kemarin, 10:45</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-green">SELESAI</span></td>
-                                    <td class="text-right text-green fw-bold">+Rp 800.000</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="desc-cell">
-                                            <div class="icon-box"><i class="fa-solid fa-bag-shopping"></i></div>
-                                            <span class="desc-text">Ulos Sibolang Handwoven Custom</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="cat-cell">
-                                            <span class="cat-name">Penjualan</span>
-                                            <span class="cat-time">2 Hari lalu, 09:45</span>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-green">SELESAI</span></td>
-                                    <td class="text-right text-green fw-bold">+Rp 1.200.000</td>
-                                </tr>
+                            <tbody id="activityTableBody">
+                                <!-- Dynamic JS injection -->
                             </tbody>
                         </table>
                     </div>
@@ -230,6 +148,150 @@
         </main>
 
     </div><!-- /.app-layout -->
+
+    <!-- Web3 Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="../services/blockchain.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnConnect = document.getElementById('btnConnectWallet');
+            const syncIcon = document.getElementById('syncIcon');
+            const syncStatusText = document.getElementById('syncStatusText');
+            const totalSaldo = document.getElementById('totalSaldo');
+            const totalIncome = document.getElementById('totalIncome');
+            const totalExpense = document.getElementById('totalExpense');
+            
+            // Render wallet state
+            function updateWalletUI() {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    const shortAddress = state.address.substring(0, 6) + '...' + state.address.substring(state.address.length - 4);
+                    btnConnect.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--green);"></i> ${shortAddress} (${state.network})`;
+                    btnConnect.classList.add('connected');
+                    
+                    // Update sync status text
+                    syncIcon.className = 'fa-solid fa-link text-green';
+                    syncStatusText.innerHTML = `Terhubung ke <span class="text-green" style="text-shadow: 0 0 6px var(--green);">${state.network}</span> (${state.balance})`;
+                } else {
+                    btnConnect.innerHTML = `<i class="fa-solid fa-wallet"></i> Hubungkan Dompet`;
+                    btnConnect.classList.remove('connected');
+                    
+                    syncIcon.className = 'fa-solid fa-link-slash text-muted';
+                    syncStatusText.innerHTML = `Ledger tidak terhubung (Gunakan Dompet Kripto)`;
+                    syncStatusText.className = 'text-muted';
+                }
+                
+                // Recalculate summary stats from shared transactions
+                calculateStats();
+                renderTransactions();
+            }
+
+            // Hitung statistik saldo
+            function calculateStats() {
+                const txs = window.SianAIBlockchainInstance.getTransactions();
+                let balance = 42850000; // base starting balance
+                let incSum = 0;
+                let expSum = 0;
+
+                txs.forEach(tx => {
+                    if (tx.type === 'income') {
+                        incSum += tx.amount;
+                    } else {
+                        expSum += tx.amount;
+                    }
+                });
+
+                // Update UI values
+                totalSaldo.textContent = 'Rp' + (balance + incSum - expSum).toLocaleString('id-ID');
+                totalIncome.textContent = 'Rp' + incSum.toLocaleString('id-ID');
+                totalExpense.textContent = 'Rp' + expSum.toLocaleString('id-ID');
+            }
+
+            // Render daftar aktivitas
+            function renderTransactions() {
+                const txs = window.SianAIBlockchainInstance.getTransactions();
+                const tbody = document.getElementById('activityTableBody');
+                tbody.innerHTML = '';
+
+                // Ambil 6 transaksi terbaru
+                const recentTxs = txs.slice(0, 6);
+
+                if (recentTxs.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Belum ada transaksi tercatat.</td></tr>`;
+                    return;
+                }
+
+                recentTxs.forEach(tx => {
+                    const isSynced = window.SianAIBlockchainInstance.isTransactionSynced(tx.id);
+                    
+                    // Kategori styling
+                    const isExpense = tx.type === 'expense';
+                    const iconClass = isExpense ? 'fa-wallet red-icon' : 'fa-bag-shopping';
+                    const nominalSign = isExpense ? '-' : '+';
+                    const nominalClass = isExpense ? 'text-red' : 'text-green';
+                    
+                    let blockchainBadge = '';
+                    if (isSynced) {
+                        blockchainBadge = `<span class="badge badge-green" title="Detail blok: #${isSynced.index}"><i class="fa-solid fa-shield-halved"></i> SECURE ON-CHAIN</span>`;
+                    } else {
+                        blockchainBadge = `<span class="badge badge-red" title="Memerlukan Dompet Kripto untuk verifikasi ledger"><i class="fa-solid fa-triangle-exclamation"></i> OFFLINE LEDGER</span>`;
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>
+                            <div class="desc-cell">
+                                <div class="icon-box ${isExpense ? 'red-icon' : ''}"><i class="fa-solid ${iconClass}"></i></div>
+                                <span class="desc-text">${tx.name}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cat-cell">
+                                <span class="cat-name">${tx.category}</span>
+                                <span class="cat-time">${tx.date}, ${tx.time || '00:00'}</span>
+                            </div>
+                        </td>
+                        <td>
+                            ${blockchainBadge}
+                        </td>
+                        <td class="text-right ${nominalClass} fw-bold">
+                            ${nominalSign}Rp ${tx.amount.toLocaleString('id-ID')}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Wallet button click handler
+            btnConnect.addEventListener('click', async () => {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    // Disconnect
+                    window.SianAIBlockchainInstance.disconnectWallet();
+                } else {
+                    // Connect
+                    try {
+                        btnConnect.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menghubungkan...`;
+                        await window.SianAIBlockchainInstance.connectWallet();
+                    } catch (err) {
+                        alert("Koneksi gagal: " + err.message);
+                        updateWalletUI();
+                    }
+                }
+            });
+
+            // Listen to updates
+            window.addEventListener('sianai_wallet_updated', updateWalletUI);
+            window.addEventListener('sianai_blockchain_updated', renderTransactions);
+            window.addEventListener('sianai_transactions_updated', () => {
+                calculateStats();
+                renderTransactions();
+            });
+
+            // Initial UI load
+            updateWalletUI();
+        });
+    </script>
 </body>
 
 </html>

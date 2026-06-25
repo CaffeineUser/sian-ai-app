@@ -1,4 +1,6 @@
-/* FORECASTING PAGE — Specific Styles */
+/* ==========================================================================
+   FORECASTING PAGE — Glassmorphic Styles
+   ========================================================================== */
 
 /* ---- Page Layout ---- */
 .forecasting-content {
@@ -9,9 +11,7 @@
     height: 100vh;
 }
 
-/* ================================================
-   PAGE CONTENT
-   ================================================ */
+/* PAGE CONTENT */
 .page-content {
     flex: 1;
     overflow-y: auto;
@@ -25,8 +25,9 @@
 .page-title {
     font-size: 26px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--white);
     margin-bottom: 6px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .page-subtitle {
@@ -34,9 +35,7 @@
     color: var(--text-muted);
 }
 
-/* ================================================
-   STATS GRID
-   ================================================ */
+/* STATS GRID */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -47,16 +46,37 @@
 .stat-card {
     padding: 24px;
     border-radius: var(--radius-md);
-    border: 1px solid var(--border-color);
-    background-color: var(--white);
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     display: flex;
     flex-direction: column;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
 }
 
 .stat-card.primary {
-    background-color: var(--primary);
-    color: var(--white);
-    border: none;
+    border-color: var(--glass-border-accent);
+    box-shadow: 0 8px 32px 0 rgba(255, 51, 75, 0.08);
+}
+.stat-card.primary:hover {
+    border-color: var(--primary);
+    box-shadow: 0 12px 40px 0 rgba(255, 51, 75, 0.25);
+}
+
+.stat-card.danger {
+    border-color: rgba(255, 23, 68, 0.2);
+}
+.stat-card.danger:hover {
+    border-color: var(--red);
+    box-shadow: 0 12px 40px 0 rgba(255, 23, 68, 0.25);
 }
 
 .stat-card-header {
@@ -70,47 +90,41 @@
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.8px;
+    color: var(--text-muted);
     text-transform: uppercase;
 }
 
 .stat-icon {
     font-size: 18px;
+    color: var(--text-muted);
 }
+
+.stat-card.primary .stat-icon { color: var(--primary); filter: drop-shadow(0 0 5px var(--primary)); }
+.stat-card.danger .stat-icon { color: var(--red); filter: drop-shadow(0 0 5px var(--red)); }
 
 .stat-value {
     font-size: 30px;
     font-weight: 800;
+    color: var(--white);
     margin-bottom: 10px;
     letter-spacing: -0.5px;
 }
 
 .stat-subtext {
     font-size: 12px;
+    color: var(--text-secondary);
     display: flex;
     align-items: center;
     gap: 6px;
     margin-top: auto;
 }
 
-.stat-card.danger {
-    border-color: #ffcdd2;
-}
-
-.stat-card.danger .stat-title,
-.stat-card.danger .stat-icon,
-.stat-card.danger .stat-value,
-.stat-card.danger .stat-subtext {
-    color: var(--red);
-}
-
-/* ================================================
-   RECOMMENDATIONS
-   ================================================ */
+/* RECOMMENDATIONS */
 .section-title {
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 16px;
-    color: var(--text-primary);
+    color: var(--white);
 }
 
 .recom-grid {
@@ -122,15 +136,19 @@
 
 .recom-card {
     display: flex;
-    background: var(--white);
-    border: 1px solid var(--border-color);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-md);
     overflow: hidden;
-    transition: box-shadow 0.2s;
+    transition: all 0.3s;
 }
 
 .recom-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    transform: translateY(-1px);
 }
 
 .recom-img {
@@ -138,6 +156,7 @@
     background-size: cover;
     background-position: center;
     flex-shrink: 0;
+    opacity: 0.85;
 }
 
 .recom-content {
@@ -158,23 +177,25 @@
 .recom-header h3 {
     font-size: 16px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--white);
     line-height: 1.3;
 }
 
 .badge.orange {
-    background-color: #ffe0b2;
-    color: #e65100;
+    background-color: rgba(255, 193, 7, 0.15);
+    color: var(--gold);
+    border: 1px solid rgba(255, 193, 7, 0.3);
 }
 
 .badge.gray {
-    background-color: #e0e0e0;
-    color: #424242;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid var(--glass-border);
 }
 
 .recom-desc {
     font-size: 13px;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 20px;
     flex: 1;
@@ -188,31 +209,33 @@
     border: none;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
-    transition: background-color 0.2s;
+    transition: all 0.3s;
     align-self: flex-start;
 }
 
 .btn-maroon {
     background-color: var(--primary);
     color: var(--white);
+    box-shadow: 0 4px 10px rgba(255, 51, 75, 0.2);
 }
 
 .btn-maroon:hover {
     background-color: var(--primary-dark);
+    box-shadow: 0 6px 15px rgba(255, 51, 75, 0.4);
 }
 
 .btn-light {
-    background-color: #eeeeee;
-    color: var(--text-primary);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--white);
 }
 
 .btn-light:hover {
-    background-color: #e0e0e0;
+    background-color: var(--glass-bg-hover);
+    border-color: rgba(255,255,255,0.2);
 }
 
-/* ================================================
-   BOTTOM GRID — Table & Banner
-   ================================================ */
+/* BOTTOM GRID — Table & Banner */
 .bottom-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -220,14 +243,21 @@
     margin-bottom: 40px;
 }
 
-/* ---- Data Table Card ---- */
+/* Data Table Card */
 .table-card {
-    background: var(--white);
-    border: 1px solid var(--border-color);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-md);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    transition: all 0.3s;
+}
+
+.table-card:hover {
+    border-color: rgba(255,255,255,0.12);
 }
 
 .table-header {
@@ -235,12 +265,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--glass-border);
 }
 
 .table-title {
     font-size: 16px;
     font-weight: 700;
+    color: var(--white);
 }
 
 .table-date {
@@ -248,7 +279,7 @@
     color: var(--text-muted);
 }
 
-/* ---- Season Badge (di samping Periode) ---- */
+/* Season Badge */
 .table-meta {
     display: flex;
     flex-direction: column;
@@ -260,9 +291,9 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    background-color: #fff8e1;
-    color: #8a6200;
-    border: 1px solid #ffe082;
+    background-color: rgba(255, 193, 7, 0.08);
+    color: var(--gold);
+    border: 1px solid rgba(255, 193, 7, 0.25);
     border-radius: 20px;
     padding: 4px 12px;
     font-size: 11px;
@@ -283,15 +314,16 @@
     font-weight: 700;
     letter-spacing: 0.5px;
     color: var(--text-muted);
-    background-color: #fafafa;
-    border-bottom: 1px solid var(--border-color);
+    background-color: rgba(255,255,255,0.01);
+    border-bottom: 1px solid var(--glass-border);
     text-transform: uppercase;
 }
 
 .data-table td {
     padding: 14px 24px;
     font-size: 14px;
-    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--glass-border);
 }
 
 .data-table tr:last-child td {
@@ -299,11 +331,12 @@
 }
 
 .text-brown {
-    color: #795548;
+    color: #ff9800 !important;
 }
 
 .val-bold {
     font-weight: 600;
+    color: var(--white);
 }
 
 .val-red {
@@ -319,21 +352,10 @@
     margin-right: 7px;
 }
 
-.dot-green {
-    background-color: var(--green);
-}
-
-.dot-red {
-    background-color: var(--red);
-}
-
-.dot-blue {
-    background-color: var(--blue);
-}
-
-.dot-brown {
-    background-color: #795548;
-}
+.dot-green { background-color: var(--green); box-shadow: 0 0 6px var(--green); }
+.dot-red { background-color: var(--red); box-shadow: 0 0 6px var(--red); }
+.dot-blue { background-color: var(--blue); box-shadow: 0 0 6px var(--blue); }
+.dot-brown { background-color: #ff9800; box-shadow: 0 0 6px #ff9800; }
 
 .table-footer {
     background-color: var(--primary);
@@ -344,28 +366,28 @@
     font-size: 15px;
     font-weight: 700;
     margin-top: auto;
+    box-shadow: 0 -4px 15px rgba(255, 51, 75, 0.2);
 }
 
-/* ---- Banner Card ---- */
+/* Banner Card */
 .banner-card {
     border-radius: var(--radius-md);
     overflow: hidden;
     position: relative;
-    background-image: url('../../../assets/bri.png');
-    background-size: cover;
-    background-position: center;
     color: var(--white);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 28px;
     min-height: 280px;
+    border: 1px solid var(--glass-border);
 }
 
 .banner-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(121, 26, 39, 0.95) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(12, 3, 5, 0.95) 100%);
+    z-index: 0;
 }
 
 .banner-content {
@@ -388,7 +410,7 @@
 
 .btn-white {
     background: var(--white);
-    color: var(--primary);
+    color: var(--primary-dark);
     padding: 10px 20px;
     border-radius: 8px;
     font-size: 13px;
@@ -399,16 +421,16 @@
     align-items: center;
     gap: 8px;
     font-family: 'Inter', sans-serif;
-    transition: background-color 0.2s;
+    transition: all 0.3s;
 }
 
 .btn-white:hover {
     background-color: #f5f5f5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(255,255,255,0.25);
 }
 
-/* ================================================
-   RESPONSIVENESS
-   ================================================ */
+/* RESPONSIVENESS */
 @media (max-width: 1024px) {
     .stats-grid {
         grid-template-columns: 1fr;

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SianAI Configuration Hub — Pengaturan preferensi studio tenun digital, protokol keamanan blockchain, dan AI.">
+    <title>SianAI — Configuration Hub</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/shared.css">
+    <link rel="stylesheet" href="../styles/settings.css">
+</head>
+
+<body>
+    <!-- Ambient Neon Background Blobs -->
+    <div style="position:fixed; top:-20%; left:-10%; width:50vw; height:50vw; background:radial-gradient(circle, rgba(255,51,75,0.05) 0%, transparent 70%); z-index:-1; pointer-events:none; filter:blur(80px);"></div>
+    <div style="position:fixed; bottom:-20%; right:-10%; width:60vw; height:60vw; background:radial-gradient(circle, rgba(255,193,7,0.03) 0%, transparent 70%); z-index:-1; pointer-events:none; filter:blur(100px);"></div>
+
+    <div class="app-layout">
+
+        <!-- ==================== SIDEBAR ==================== -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../../assets/sianailogo.png" alt="SianAI Logo" class="sidebar-logo-img">
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="beranda.html" class="nav-item"><i class="fa-solid fa-house"></i> Beranda</a></li>
+                <li><a href="laporan.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Laporan Keuangan</a></li>
+                <li><a href="stok.html" class="nav-item"><i class="fa-solid fa-box"></i> Inventory</a></li>
+                <li><a href="akun.html" class="nav-item"><i class="fa-regular fa-user"></i> Manajemen Akun</a></li>
+                <li><a href="forecasting.html" class="nav-item"><i class="fa-solid fa-arrow-trend-up"></i> Forecasting</a></li>
+                <li><a href="settings.html" class="nav-item active"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+
+            <div class="sidebar-bottom">
+                <button class="btn-foto-nota" onclick="window.location.href='laporan.html?open_camera=true'"><i class="fa-solid fa-camera"></i> Foto Nota</button>
+                <a href="support.html" class="nav-item"><i class="fa-regular fa-circle-question"></i> Support</a>
+                <a href="login.html" class="nav-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</a>
+            </div>
+        </aside>
+
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <div class="settings-content">
+
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <a href="beranda.html" class="topbar-logo">SianAI</a>
+                </div>
+
+                <div class="topbar-right">
+                    <!-- Connect Wallet Button -->
+                    <button id="btnConnectWallet" class="btn-wallet-connect">
+                        <i class="fa-solid fa-wallet"></i> Hubungkan Dompet
+                    </button>
+                    <div class="topbar-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Cari konfigurasi...">
+                    </div>
+                    <button class="topbar-bell" title="Notifikasi">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+                    <div class="topbar-user" onclick="window.location.href='akun.html'">
+                        <div class="topbar-user-info">
+                            <span class="topbar-username">Penenun123</span>
+                            <span class="topbar-userrole">PEMILIK USAHA</span>
+                        </div>
+                        <div class="topbar-avatar">PE</div>
+                        <i class="fa-solid fa-chevron-down topbar-chevron"></i>
+                    </div>
+                    <button class="btn-topbar-export" id="btnExportConfigHeader">
+                        <i class="fa-solid fa-download"></i> Export Data
+                    </button>
+                </div>
+            </header>
+
+            <!-- Page Content (consistent with forecasting & laporan) -->
+            <main class="page-content">
+
+                <!-- Header -->
+                <div class="page-header">
+                    <h1 class="page-title">Configuration Hub</h1>
+                    <p class="page-subtitle">Manage your digital weaving studio preferences, security protocols, and artificial intelligence parameters for optimal blockchain performance.</p>
+                </div>
+
+                <!-- 2x2 Cards Grid -->
+                <div class="settings-grid">
+
+                    <!-- CARD 1: APP PREFERENCES -->
+                    <div class="config-card">
+                        <div class="card-top">
+                            <div class="card-title-group">
+                                <i class="fa-solid fa-sliders"></i>
+                                <h2 class="card-title">App Preferences</h2>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="setting-item">
+                                <label class="setting-label">INTERFACE LANGUAGE</label>
+                                <div class="select-wrapper">
+                                    <select id="selectLanguage" class="custom-select">
+                                        <option value="id" selected>Bahasa Indonesia</option>
+                                        <option value="en">English (US)</option>
+                                        <option value="btk">Bahasa Batak Toba</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                            </div>
+
+                            <div class="setting-item" style="margin-top: 24px;">
+                                <div class="toggle-item">
+                                    <div class="toggle-info">
+                                        <h4>Dark Mode</h4>
+                                        <p>Optimize for low light environments</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="toggleDarkMode" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2: BLOCKCHAIN SECURITY -->
+                    <div class="config-card">
+                        <div class="card-top">
+                            <div class="card-title-group">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <h2 class="card-title">Blockchain Security</h2>
+                            </div>
+                            <span class="badge-verified-node">VERIFIED NODE</span>
+                        </div>
+
+                        <div class="security-content-grid">
+                            <div class="security-options">
+                                <div class="sec-option-card">
+                                    <div class="sec-option-text">
+                                        <h4>Smart Contract Alerts</h4>
+                                        <p>Real-time notifications for transaction confirmations and ledger updates.</p>
+                                    </div>
+                                    <input type="checkbox" class="custom-checkbox" id="chkSmartContractAlerts" checked>
+                                </div>
+
+                                <div class="sec-option-card">
+                                    <div class="sec-option-text">
+                                        <h4>Stealth Privacy Mode</h4>
+                                        <p>Obfuscate public wallet address from analytics reports and third-party exports.</p>
+                                    </div>
+                                    <input type="checkbox" class="custom-checkbox" id="chkStealthPrivacy">
+                                </div>
+                            </div>
+
+                            <div class="security-banner">
+                                <img src="../../assets/ulos1.jpg" alt="Ulos Weaving Texture" class="security-banner-bg">
+                                <div class="security-banner-overlay"></div>
+                                <div class="security-banner-badge">
+                                    Security Score: 98% Optimal
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 3: AI ASSISTANCE -->
+                    <div class="config-card">
+                        <div class="card-top">
+                            <div class="card-title-group">
+                                <i class="fa-solid fa-robot"></i>
+                                <h2 class="card-title">AI Assistance</h2>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="ai-feature-row">
+                                <div class="ai-icon-square">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                </div>
+                                <div class="ai-feature-text">
+                                    <h4>Forecasting Chatbot Integration</h4>
+                                    <p>Enable conversational AI to provide insights on market trends and weaving demand.</p>
+                                </div>
+                            </div>
+
+                            <div class="ai-status-alert">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <p>AI model v4.2 'Haris' is currently active and processing historical weaving data.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 4: CRITICAL ACTIONS -->
+                    <div class="config-card">
+                        <div class="card-top">
+                            <div class="card-title-group">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <h2 class="card-title">Critical Actions</h2>
+                            </div>
+                        </div>
+
+                        <div class="card-body" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+                            <p class="critical-desc">Disconnecting your wallet will pause all real-time blockchain syncs and local node validations.</p>
+
+                            <div class="critical-actions-group">
+                                <button id="btnDisconnectWalletCard" class="btn-disconnect-wallet">
+                                    <i class="fa-solid fa-link-slash"></i> Disconnect Wallet
+                                </button>
+                                <button id="btnExportSystemLogs" class="btn-export-logs">
+                                    Export System Logs
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.settings-grid -->
+
+                <!-- Footer Status Bar -->
+                <div class="settings-footer-bar">
+                    <div class="status-col-item">
+                        <span class="status-col-label">SERVER STATUS</span>
+                        <div class="status-col-val" id="valServerStatus">
+                            <span class="status-dot-active"></span> Operational
+                        </div>
+                    </div>
+
+                    <div class="status-col-item">
+                        <span class="status-col-label">LAST SYNC</span>
+                        <div class="status-col-val" id="valLastSync">
+                            2 mins ago
+                        </div>
+                    </div>
+
+                    <div class="status-col-item">
+                        <span class="status-col-label">VERSION</span>
+                        <div class="status-col-val">
+                            v2.0.4-beta
+                        </div>
+                    </div>
+
+                    <div class="status-col-item">
+                        <span class="status-col-label">CONNECTED TO</span>
+                        <div class="status-col-val" id="valConnectedNetwork">
+                            Ethereum Mainnet
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div><!-- /.settings-content -->
+
+    </div><!-- /.app-layout -->
+
+    <!-- Web3 Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="../services/blockchain.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnConnect = document.getElementById('btnConnectWallet');
+            const btnDisconnectWalletCard = document.getElementById('btnDisconnectWalletCard');
+            const btnExportSystemLogs = document.getElementById('btnExportSystemLogs');
+            const btnExportConfigHeader = document.getElementById('btnExportConfigHeader');
+            const valConnectedNetwork = document.getElementById('valConnectedNetwork');
+            const valLastSync = document.getElementById('valLastSync');
+            const toggleDarkMode = document.getElementById('toggleDarkMode');
+            const selectLanguage = document.getElementById('selectLanguage');
+
+            // 1. Dark Mode Toggle Persistence & Theme Application
+            const savedTheme = localStorage.getItem('sianai_theme_preference');
+            if (savedTheme === 'light') {
+                toggleDarkMode.checked = false;
+                document.body.classList.add('light-theme');
+            } else {
+                toggleDarkMode.checked = true;
+                document.body.classList.remove('light-theme');
+            }
+
+            toggleDarkMode.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    document.body.classList.remove('light-theme');
+                    localStorage.setItem('sianai_theme_preference', 'dark');
+                } else {
+                    document.body.classList.add('light-theme');
+                    localStorage.setItem('sianai_theme_preference', 'light');
+                }
+            });
+
+            // 2. Language Preference Persistence
+            const savedLang = localStorage.getItem('sianai_language_preference');
+            if (savedLang) {
+                selectLanguage.value = savedLang;
+            }
+            selectLanguage.addEventListener('change', (e) => {
+                localStorage.setItem('sianai_language_preference', e.target.value);
+            });
+
+            // 3. Update Web3 Wallet UI & Status Bar
+            function updateWalletUI() {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    const shortAddress = state.address.substring(0, 6) + '...' + state.address.substring(state.address.length - 4);
+                    btnConnect.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--green, #00e676);"></i> ${shortAddress} (${state.network})`;
+                    btnConnect.classList.add('connected');
+                    
+                    btnDisconnectWalletCard.innerHTML = `<i class="fa-solid fa-link-slash"></i> Disconnect Wallet`;
+                    btnDisconnectWalletCard.style.opacity = '1';
+                    btnDisconnectWalletCard.disabled = false;
+
+                    valConnectedNetwork.textContent = state.network || 'Ethereum Mainnet';
+                } else {
+                    btnConnect.innerHTML = `<i class="fa-solid fa-wallet"></i> Hubungkan Dompet`;
+                    btnConnect.classList.remove('connected');
+
+                    btnDisconnectWalletCard.innerHTML = `<i class="fa-solid fa-link-slash"></i> Wallet Disconnected`;
+                    btnDisconnectWalletCard.style.opacity = '0.6';
+                    btnDisconnectWalletCard.disabled = true;
+
+                    valConnectedNetwork.textContent = 'Ethereum Mainnet';
+                }
+            }
+
+            // Wallet Button Topbar Click
+            btnConnect.addEventListener('click', async () => {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    window.SianAIBlockchainInstance.disconnectWallet();
+                } else {
+                    try {
+                        btnConnect.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menghubungkan...`;
+                        await window.SianAIBlockchainInstance.connectWallet();
+                    } catch (err) {
+                        alert("Koneksi dompet gagal: " + err.message);
+                        updateWalletUI();
+                    }
+                }
+            });
+
+            // Disconnect Wallet Button from Critical Actions Card
+            btnDisconnectWalletCard.addEventListener('click', () => {
+                const state = window.SianAIBlockchainInstance.getWalletState();
+                if (state.connected) {
+                    if (confirm("Apakah Anda yakin ingin memutus koneksi dompet Web3? Prosedur ini akan menghentikan sinkronisasi ledger real-time.")) {
+                        window.SianAIBlockchainInstance.disconnectWallet();
+                    }
+                }
+            });
+
+            // Export Logs functionality
+            function exportLogs() {
+                const logs = {
+                    timestamp: new Date().toISOString(),
+                    app: "SianAI Web3 Weaving Studio",
+                    version: "v2.0.4-beta",
+                    serverStatus: "Operational",
+                    walletState: window.SianAIBlockchainInstance.getWalletState(),
+                    preferences: {
+                        theme: localStorage.getItem('sianai_theme_preference') || 'dark',
+                        language: selectLanguage.value,
+                        smartContractAlerts: document.getElementById('chkSmartContractAlerts').checked,
+                        stealthPrivacy: document.getElementById('chkStealthPrivacy').checked
+                    }
+                };
+
+                const blob = new Blob([JSON.stringify(logs, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `sianai-system-logs-${Date.now()}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            btnExportSystemLogs.addEventListener('click', exportLogs);
+            btnExportConfigHeader.addEventListener('click', exportLogs);
+
+            // Dynamic Last Sync Counter Simulation
+            let minutesAgo = 2;
+            setInterval(() => {
+                minutesAgo++;
+                valLastSync.textContent = `${minutesAgo} mins ago`;
+            }, 60000);
+
+            // Listen for events
+            window.addEventListener('sianai_wallet_updated', updateWalletUI);
+
+            // Initial UI Load
+            updateWalletUI();
+        });
+    </script>
+</body>
+
+</html>

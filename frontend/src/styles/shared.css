@@ -1,6 +1,3 @@
-/*SHARED STYLES — SianAI Dark Glassmorphism Design System
-  Mengintegrasikan Estetika Web3 & Budaya Batak (Crimson Red, Gold, & Charcoal)*/
-
 :root {
     /* Brand Colors (Ulos Batak & Web3 Neon) */
     --primary: #ff334b;
@@ -12,11 +9,11 @@
     --gold-light: rgba(255, 193, 7, 0.15);
     --gold-dark: #b8860b;
 
-    /* Dark Theme Neutrals */
+    /* Dark Theme Neutrals — Ultra High Contrast White Text */
     --bg-main: #0c0204;
     --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-muted: rgba(255, 255, 255, 0.45);
+    --text-secondary: #ffffff;
+    --text-muted: #f0f4f8;
     --white: #ffffff;
 
     /* Glassmorphism Specs */
@@ -446,41 +443,58 @@ body {
 }
 
 /* User chip / Wallet indicator */
-.topbar-user {
+.topbar-user, .user-profile {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     cursor: pointer;
-    padding: 6px 12px;
+    padding: 6px 14px;
     border: 1px solid var(--glass-border);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--glass-bg);
     transition: all 0.3s;
 }
 
-.topbar-user:hover {
-    background: rgba(255, 255, 255, 0.08);
+.topbar-user:hover, .user-profile:hover {
+    background: var(--glass-bg-hover);
     border-color: rgba(255, 255, 255, 0.15);
 }
 
-.topbar-avatar {
-    width: 26px;
-    height: 26px;
+.topbar-avatar, .user-profile .avatar {
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    background: var(--primary);
     color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(255, 51, 75, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.topbar-username {
+.topbar-user-info, .user-info {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.topbar-username, .user-name {
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--white);
+    line-height: 1.2;
+}
+
+.topbar-userrole, .user-role {
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 6px rgba(255, 193, 7, 0.2);
 }
 
 .topbar-chevron {
@@ -713,4 +727,39 @@ body {
 
 .float-animation {
     animation: float 4s ease-in-out infinite;
+}
+
+/* Global Artisan Action Button (Consistent across Save Changes & Tambah Koleksi) */
+.btn-save-artisan {
+    background: #3b0b14 !important;
+    border: 1px solid rgba(255, 51, 75, 0.4) !important;
+    color: #ffffff !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    font-family: 'Inter', sans-serif !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+    text-shadow: none !important;
+}
+
+.btn-save-artisan:hover {
+    background: #4a0e1a !important;
+    border-color: rgba(255, 51, 75, 0.7) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 12px rgba(255, 51, 75, 0.2) !important;
+}
+
+.btn-save-artisan:active {
+    background: #ff334b !important;
+    border-color: #ff334b !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(255, 51, 75, 0.9) !important;
+    transform: scale(0.97) !important;
 }

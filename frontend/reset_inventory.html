@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Reset Inventory Data</title>
+<style>body{background:#0c0204;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;font-family:Inter,sans-serif;}</style>
+</head>
+<body>
+<div style="text-align:center;color:#fff">
+  <div style="font-size:48px;margin-bottom:16px;">🔄</div>
+  <h2 style="color:#ffc107;font-size:20px;">Memuat ulang data koleksi...</h2>
+  <p style="color:#aaa;font-size:13px;">localStorage sedang dibersihkan</p>
+</div>
+<script>
+    localStorage.removeItem('sianai_inventory');
+    window.location.replace('src/pages/stok.html?reset=' + Date.now());
+</script>
+</body>
+</html>

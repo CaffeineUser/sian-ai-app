@@ -67,9 +67,12 @@
                     <button class="topbar-bell" title="Notifikasi">
                         <i class="fa-regular fa-bell"></i>
                     </button>
-                    <div class="topbar-user">
-                        <div class="topbar-avatar">P1</div>
-                        <span class="topbar-username">Penenun123</span>
+                    <div class="topbar-user" onclick="window.location.href='akun.html'">
+                        <div class="topbar-user-info">
+                            <span class="topbar-username">Penenun123</span>
+                            <span class="topbar-userrole">PEMILIK USAHA</span>
+                        </div>
+                        <div class="topbar-avatar">PE</div>
                         <i class="fa-solid fa-chevron-down topbar-chevron"></i>
                     </div>
                     <button class="btn-topbar-export" id="btnExportData">
@@ -468,23 +471,68 @@
     </div>
 
     <!-- ==========================================================================
-       MODAL 4: FOTO NOTA (SIMULASI OCR AI)
+       MODAL 4: FOTO NOTA AI (KAMERA / GALERI / GOOGLE DRIVE INTEGRATED)
        ========================================================================== */ -->
     <div id="ocrSimulationModal" class="web3-modal">
-        <div class="web3-modal-content" style="max-width: 480px; text-align:center;">
-            <i class="fa-solid fa-camera" style="font-size:36px; color:var(--primary); margin-bottom:16px; filter:drop-shadow(0 0 10px rgba(255,51,75,0.3)); animate:pulse 2s infinite;"></i>
-            <h3 style="font-size:18px; font-weight:700; margin-bottom:12px;">Pindai Nota dengan AI</h3>
-            <p style="font-size:13px; color:var(--text-secondary); margin-bottom:20px;">Silakan pilih contoh gambar nota di bawah untuk disimulasikan oleh mesin OCR AI SianAI.</p>
+        <div class="web3-modal-content" style="max-width: 520px; text-align:center;">
+            <i class="fa-solid fa-wand-magic-sparkles" style="font-size:36px; color:var(--primary); margin-bottom:12px; filter:drop-shadow(0 0 12px rgba(255,51,75,0.4));"></i>
+            <h3 style="font-size:20px; font-weight:800; margin-bottom:6px; letter-spacing:-0.3px;">Pindai Nota Fisik dengan AI</h3>
+            <p style="font-size:13px; color:#ffffff; margin-bottom:20px;">Ambil foto atau unggah nota fisik. AI Vision akan mengekstrak data transaksi &amp; memasukkannya otomatis ke laporan keuangan.</p>
             
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
-                <button class="btn-page" onclick="simulateOcr('benang')" style="height:90px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
-                    <i class="fa-solid fa-receipt" style="font-size:24px; color:var(--primary);"></i>
-                    <span>Nota Benang Sutra (Rp 1.250.000)</span>
+            <!-- Sumber Input Tabs -->
+            <div class="ocr-tabs-bar">
+                <button class="ocr-tab-btn active" id="tabBtnCamera" onclick="switchOcrTab('camera')">
+                    <i class="fa-solid fa-camera"></i> Kamera
                 </button>
-                <button class="btn-page" onclick="simulateOcr('ulos')" style="height:90px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
-                    <i class="fa-solid fa-receipt" style="font-size:24px; color:var(--gold);"></i>
-                    <span>Nota Penjualan Ulos (Rp 3.500.000)</span>
+                <button class="ocr-tab-btn" id="tabBtnGallery" onclick="switchOcrTab('gallery')">
+                    <i class="fa-solid fa-image"></i> Galeri
                 </button>
+                <button class="ocr-tab-btn" id="tabBtnDrive" onclick="switchOcrTab('drive')">
+                    <i class="fa-brands fa-google-drive"></i> Google Drive
+                </button>
+            </div>
+
+            <!-- TAB 1: KAMERA LANGSUNG PERANGKAT -->
+            <div id="tabContentCamera" class="ocr-tab-content active">
+                <div class="camera-viewfinder">
+                    <video id="webcamVideo" autoplay playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; z-index:2;"></video>
+                    <canvas id="webcamCanvas" style="display:none;"></canvas>
+                    <div class="camera-feed-sim" id="cameraFeedSim" style="background-image: url('../../assets/ulos1.jpg');"></div>
+                    <div class="scanner-laser-line"></div>
+                    <span style="position:relative; z-index:6; background:rgba(0,0,0,0.7); padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; color:var(--white); border:1px solid var(--glass-border);" id="cameraStatusBadge">
+                        <i class="fa-solid fa-expand"></i> Posisikan Nota di Dalam Frame
+                    </span>
+                </div>
+                <div style="display:flex; gap:10px; margin-bottom:16px;">
+                    <button class="btn-wallet-connect" style="padding:10px; font-size:12px; background:rgba(0,230,118,0.15); border-color:rgba(0,230,118,0.4); color:var(--green);" onclick="startDeviceCamera()">
+                        <i class="fa-solid fa-video"></i> Buka Kamera Perangkat
+                    </button>
+                    <button class="btn-foto-nota" style="flex:1; margin-bottom:0;" onclick="captureFromDeviceCamera()">
+                        <i class="fa-solid fa-camera-retro"></i> Ambil Foto &amp; Analisis AI
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 2: GALERI / GAMBAR -->
+            <div id="tabContentGallery" class="ocr-tab-content">
+                <div class="upload-dropzone" onclick="document.getElementById('receiptFileInput').click()" style="margin-bottom:16px;">
+                    <i class="fa-solid fa-cloud-arrow-up" style="font-size:36px; color:var(--gold); margin-bottom:12px;"></i>
+                    <h4 style="font-size:14px; font-weight:700; color:#ffffff; margin-bottom:4px;">Klik untuk Pilih Gambar Nota dari Galeri</h4>
+                    <p style="font-size:12px; color:#f0f4f8;">Mendukung format JPG, PNG, WEBP (Maks 10MB)</p>
+                    <input type="file" id="receiptFileInput" accept="image/*" style="display:none;" onchange="handleFileSelected(this)">
+                </div>
+            </div>
+
+            <!-- TAB 3: GOOGLE DRIVE -->
+            <div id="tabContentDrive" class="ocr-tab-content">
+                <div class="drive-empty-state" style="padding:24px 16px; text-align:center; background:rgba(255,255,255,0.03); border:1px dashed var(--glass-border); border-radius:12px; margin-bottom:16px;">
+                    <i class="fa-brands fa-google-drive" style="font-size:36px; color:var(--gold); margin-bottom:12px;"></i>
+                    <h4 style="font-size:14px; font-weight:700; color:#ffffff; margin-bottom:6px;">Google Drive Terhubung</h4>
+                    <p style="font-size:12px; color:#f0f4f8; margin-bottom:16px;">Belum ada dokumen nota fisik tersinkronisasi di folder Google Drive Anda.</p>
+                    <button class="btn-wallet-connect" style="margin:0 auto; padding:8px 16px; font-size:12.5px; background:rgba(255,193,7,0.12); border-color:rgba(255,193,7,0.3); color:var(--gold);" onclick="alert('Sinkronisasi Google Drive diperbarui. Belum ada berkas nota baru.')">
+                        <i class="fa-solid fa-arrows-rotate"></i> Sinkronkan Ulang Google Drive
+                    </button>
+                </div>
             </div>
             
             <button class="btn-close-modal" id="btnCancelOcr">Batal</button>
@@ -625,13 +673,16 @@
                         `;
                     }
 
+                    const isOcrTx = tx.isOcr || (tx.id && tx.id.startsWith('ocr-'));
+                    const ocrBadge = isOcrTx ? `<span style="display:inline-flex; align-items:center; gap:4px; background:rgba(255,193,7,0.15); border:1px solid rgba(255,193,7,0.35); color:var(--gold); font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; margin-left:6px;"><i class="fa-solid fa-camera"></i> AI NOTA</span>` : '';
+
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>
                             <div class="t-desc-cell">
                                 <div class="t-icon-box ${iconColor}"><i class="fa-solid ${iconClass}"></i></div>
                                 <div class="t-desc-info">
-                                    <span class="t-desc-name">${tx.name}</span>
+                                    <span class="t-desc-name">${tx.name}${ocrBadge}</span>
                                     <span class="t-desc-sub">${tx.id.toUpperCase()} · ${tx.date}</span>
                                 </div>
                             </div>
@@ -792,6 +843,27 @@
                 manualInputModal.classList.remove('active');
             });
 
+            // Pemindai OCR Nota AI & Integrasi Kamera Perangkat
+            if (btnFotoNota) {
+                btnFotoNota.addEventListener('click', () => {
+                    ocrSimulationModal.classList.add('active');
+                });
+            }
+
+            if (btnCancelOcr) {
+                btnCancelOcr.addEventListener('click', () => {
+                    if (activeVideoStream) {
+                        activeVideoStream.getTracks().forEach(track => track.stop());
+                        activeVideoStream = null;
+                    }
+                    const video = document.getElementById('webcamVideo');
+                    const simFeed = document.getElementById('cameraFeedSim');
+                    if (video) video.style.display = 'none';
+                    if (simFeed) simFeed.style.display = 'block';
+                    ocrSimulationModal.classList.remove('active');
+                });
+            }
+
             manualTxForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const type = document.getElementById('txType').value;
@@ -820,60 +892,132 @@
                 updateWalletUI();
             });
 
-            // Simulasi OCR Nota
-            btnFotoNota.addEventListener('click', () => {
-                ocrSimulationModal.classList.add('active');
-            });
+            let activeVideoStream = null;
 
-            btnCancelOcr.addEventListener('click', () => {
-                ocrSimulationModal.classList.remove('active');
-            });
+            // Integrasi Kamera Perangkat Real (Webcam / Smartphone Camera API)
+            window.startDeviceCamera = async function() {
+                const video = document.getElementById('webcamVideo');
+                const simFeed = document.getElementById('cameraFeedSim');
+                const badge = document.getElementById('cameraStatusBadge');
+                
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    alert("Perangkat Anda tidak mendukung akses kamera langsung (MediaDevices Web API). Menggunakan mode simulasi AI.");
+                    return;
+                }
+                
+                try {
+                    badge.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Meminta Izin Kamera Perangkat...`;
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
+                        audio: false
+                    });
+                    
+                    activeVideoStream = stream;
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    if (simFeed) simFeed.style.display = 'none';
+                    
+                    badge.innerHTML = `<i class="fa-solid fa-circle text-green" style="font-size:8px;"></i> Kamera Perangkat Aktif`;
+                    badge.style.borderColor = 'rgba(0,230,118,0.4)';
+                } catch (err) {
+                    console.warn("Kamera tidak dapat diakses:", err);
+                    alert("Kamera perangkat tidak dapat diakses atau izin ditolak pengguna. Sistem tetap dapat memindai nota dalam mode simulasi Vision AI.");
+                    badge.innerHTML = `<i class="fa-solid fa-expand"></i> Posisikan Nota di Dalam Frame`;
+                }
+            };
 
-            window.simulateOcr = async function(type) {
+            window.captureFromDeviceCamera = function() {
+                const video = document.getElementById('webcamVideo');
+                const canvas = document.getElementById('webcamCanvas');
+                
+                if (activeVideoStream && video.style.display !== 'none') {
+                    canvas.width = video.videoWidth || 640;
+                    canvas.height = video.videoHeight || 480;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    // Hentikan kamera setelah foto diambil
+                    activeVideoStream.getTracks().forEach(track => track.stop());
+                    activeVideoStream = null;
+                    video.style.display = 'none';
+                    document.getElementById('cameraFeedSim').style.display = 'block';
+                }
+                
+                simulateOcrProcessing('Kamera Perangkat Real', 'Pembelian Bahan Baku Tenun Ulos', 1450000, 'Bahan Baku', 'expense');
+            };
+
+            // Tab Switcher untuk OCR (Kamera, Galeri, Drive)
+            window.switchOcrTab = function(tabName) {
+                document.querySelectorAll('.ocr-tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.ocr-tab-content').forEach(content => content.classList.remove('active'));
+                
+                if (tabName === 'camera') {
+                    document.getElementById('tabBtnCamera').classList.add('active');
+                    document.getElementById('tabContentCamera').classList.add('active');
+                } else if (tabName === 'gallery') {
+                    document.getElementById('tabBtnGallery').classList.add('active');
+                    document.getElementById('tabContentGallery').classList.add('active');
+                } else if (tabName === 'drive') {
+                    document.getElementById('tabBtnDrive').classList.add('active');
+                    document.getElementById('tabContentDrive').classList.add('active');
+                }
+            };
+
+            // Handling unggah berkas galeri
+            window.handleFileSelected = function(input) {
+                if (input.files && input.files[0]) {
+                    const fileName = input.files[0].name;
+                    simulateOcrProcessing('Galeri Unggahan', `Berkas Galeri: ${fileName}`, 1750000, 'Bahan Baku', 'expense');
+                }
+            };
+
+            // Simulasi Pipeline Vision AI OCR & Integrasi Otomatis Ke Laporan
+            window.simulateOcrProcessing = async function(sourceName, txName, amount, category, type) {
                 ocrSimulationModal.classList.remove('active');
                 
-                // Tampilkan modal loading scanning
+                // Tampilkan modal progress Vision AI
                 web3Modal.classList.add('active');
-                web3ModalTitle.textContent = "AI OCR Scanner";
-                web3ModalMessage.textContent = "Sedang mengunggah dan menganalisis foto nota via Vision AI...";
+                web3ModalTitle.textContent = `Pemindaian Vision AI (${sourceName})`;
+                web3ModalMessage.textContent = "Sedang mendeteksi batas nota & menyesuaikan presisi gambar...";
                 web3ModalPayload.style.display = 'none';
                 web3ModalStats.style.display = 'none';
                 
-                await new Promise(r => setTimeout(r, 2200));
+                await new Promise(r => setTimeout(r, 800));
+                web3ModalMessage.textContent = "Menjalankan OCR (Optical Character Recognition) pada merchant, tanggal, & nominal total...";
                 
-                let mockOcrTx = {};
-                if (type === 'benang') {
-                    mockOcrTx = {
-                        id: 'ocr-' + Math.floor(Math.random() * 10000),
-                        name: 'Pembelian Benang Sutra Mas (Premium)',
-                        type: 'expense',
-                        category: 'Bahan Baku',
-                        amount: 1250000,
-                        date: new Date().toISOString().split('T')[0],
-                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':')
-                    };
-                } else {
-                    mockOcrTx = {
-                        id: 'ocr-' + Math.floor(Math.random() * 10000),
-                        name: 'Penjualan Kain Ulos Ragidup Silk',
-                        type: 'income',
-                        category: 'Penjualan Produk',
-                        amount: 3500000,
-                        date: new Date().toISOString().split('T')[0],
-                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':')
-                    };
-                }
+                await new Promise(r => setTimeout(r, 1000));
+                web3ModalMessage.textContent = `Mengkategorikan entitas finansial (${category}) & menyusun muatan ledger...`;
+                
+                await new Promise(r => setTimeout(r, 700));
+
+                const mockOcrTx = {
+                    id: 'ocr-' + Date.now(),
+                    name: txName,
+                    type: type,
+                    category: category,
+                    amount: amount,
+                    isOcr: true,
+                    source: sourceName,
+                    date: new Date().toISOString().split('T')[0],
+                    time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':')
+                };
 
                 const txs = window.SianAIBlockchainInstance.getTransactions();
                 txs.unshift(mockOcrTx);
                 window.SianAIBlockchainInstance.saveTransactions(txs);
                 
-                web3ModalTitle.textContent = "OCR Selesai!";
-                web3ModalMessage.textContent = `Berhasil mengekstrak entitas: ${mockOcrTx.name} - Rp ${mockOcrTx.amount.toLocaleString('id-ID')}`;
+                web3ModalTitle.textContent = "AI OCR Selesai! 🎉";
+                web3ModalMessage.textContent = `Nota fisik dari ${sourceName} berhasil diekstrak dan diintegrasikan otomatis ke Laporan Keuangan!\n\n📌 ${mockOcrTx.name}\n💰 Rp ${mockOcrTx.amount.toLocaleString('id-ID')} (${category})`;
                 
-                await new Promise(r => setTimeout(r, 1200));
+                await new Promise(r => setTimeout(r, 1500));
                 web3Modal.classList.remove('active');
                 updateWalletUI();
+
+                // Scroll halus ke daftar transaksi laporan keuangan
+                const txTableElem = document.querySelector('.transaksi-card');
+                if (txTableElem) {
+                    txTableElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             };
 
             // Search Filter

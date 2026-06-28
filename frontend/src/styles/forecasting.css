@@ -1,6 +1,4 @@
-/* ==========================================================================
-   FORECASTING PAGE — Glassmorphic Styles
-   ========================================================================== */
+/*FORECASTING PAGE*/
 
 /* ---- Page Layout ---- */
 .forecasting-content {
@@ -66,6 +64,7 @@
     border-color: var(--glass-border-accent);
     box-shadow: 0 8px 32px 0 rgba(255, 51, 75, 0.08);
 }
+
 .stat-card.primary:hover {
     border-color: var(--primary);
     box-shadow: 0 12px 40px 0 rgba(255, 51, 75, 0.25);
@@ -74,6 +73,7 @@
 .stat-card.danger {
     border-color: rgba(255, 23, 68, 0.2);
 }
+
 .stat-card.danger:hover {
     border-color: var(--red);
     box-shadow: 0 12px 40px 0 rgba(255, 23, 68, 0.25);
@@ -99,8 +99,15 @@
     color: var(--text-muted);
 }
 
-.stat-card.primary .stat-icon { color: var(--primary); filter: drop-shadow(0 0 5px var(--primary)); }
-.stat-card.danger .stat-icon { color: var(--red); filter: drop-shadow(0 0 5px var(--red)); }
+.stat-card.primary .stat-icon {
+    color: var(--primary);
+    filter: drop-shadow(0 0 5px var(--primary));
+}
+
+.stat-card.danger .stat-icon {
+    color: var(--red);
+    filter: drop-shadow(0 0 5px var(--red));
+}
 
 .stat-value {
     font-size: 30px;
@@ -232,7 +239,7 @@
 
 .btn-light:hover {
     background-color: var(--glass-bg-hover);
-    border-color: rgba(255,255,255,0.2);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 /* BOTTOM GRID — Table & Banner */
@@ -257,7 +264,7 @@
 }
 
 .table-card:hover {
-    border-color: rgba(255,255,255,0.12);
+    border-color: rgba(255, 255, 255, 0.12);
 }
 
 .table-header {
@@ -314,7 +321,7 @@
     font-weight: 700;
     letter-spacing: 0.5px;
     color: var(--text-muted);
-    background-color: rgba(255,255,255,0.01);
+    background-color: rgba(255, 255, 255, 0.01);
     border-bottom: 1px solid var(--glass-border);
     text-transform: uppercase;
 }
@@ -352,10 +359,25 @@
     margin-right: 7px;
 }
 
-.dot-green { background-color: var(--green); box-shadow: 0 0 6px var(--green); }
-.dot-red { background-color: var(--red); box-shadow: 0 0 6px var(--red); }
-.dot-blue { background-color: var(--blue); box-shadow: 0 0 6px var(--blue); }
-.dot-brown { background-color: #ff9800; box-shadow: 0 0 6px #ff9800; }
+.dot-green {
+    background-color: var(--green);
+    box-shadow: 0 0 6px var(--green);
+}
+
+.dot-red {
+    background-color: var(--red);
+    box-shadow: 0 0 6px var(--red);
+}
+
+.dot-blue {
+    background-color: var(--blue);
+    box-shadow: 0 0 6px var(--blue);
+}
+
+.dot-brown {
+    background-color: #ff9800;
+    box-shadow: 0 0 6px #ff9800;
+}
 
 .table-footer {
     background-color: var(--primary);
@@ -427,7 +449,7 @@
 .btn-white:hover {
     background-color: #f5f5f5;
     transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(255,255,255,0.25);
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.25);
 }
 
 /* RESPONSIVENESS */

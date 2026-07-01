@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useBlockchain } from '../context/BlockchainContext';
+import { useData } from '../context/DataContext';
 import Topbar from '../components/Topbar';
 import '../styles/settings.css';
 
 export default function Settings() {
   const navigate = useNavigate();
-  const { wallet, disconnectWallet } = useBlockchain();
+  const { wallet, disconnectWallet } = useData();
   const [language, setLanguage] = useState(localStorage.getItem('sianai_language_preference') || 'id');
   const [darkMode, setDarkMode] = useState(true);
   const [smartContractAlerts, setSmartContractAlerts] = useState(true);
@@ -62,7 +62,7 @@ export default function Settings() {
         </div>
 
         {/* Settings Grid */}
-        <div className="settings-grid">
+        <div className="settings-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
 
           {/* CARD 1: App Preferences */}
           <div className="config-card">
@@ -99,40 +99,6 @@ export default function Settings() {
             </div>
           </div>
 
-          {/* CARD 2: Blockchain Security */}
-          <div className="config-card">
-            <div className="card-top">
-              <div className="card-title-group">
-                <i className="fa-solid fa-shield-halved"></i>
-                <h2 className="card-title">Blockchain Security</h2>
-              </div>
-              <span className="badge-verified-node">VERIFIED NODE</span>
-            </div>
-            <div className="security-content-grid">
-              <div className="security-options">
-                <div className="sec-option-card">
-                  <div className="sec-option-text">
-                    <h4>Smart Contract Alerts</h4>
-                    <p>Real-time notifications for transaction confirmations and ledger updates.</p>
-                  </div>
-                  <input type="checkbox" className="custom-checkbox" checked={smartContractAlerts} onChange={e => setSmartContractAlerts(e.target.checked)} />
-                </div>
-                <div className="sec-option-card">
-                  <div className="sec-option-text">
-                    <h4>Stealth Privacy Mode</h4>
-                    <p>Obfuscate public wallet address from analytics reports and third-party exports.</p>
-                  </div>
-                  <input type="checkbox" className="custom-checkbox" checked={stealthPrivacy} onChange={e => setStealthPrivacy(e.target.checked)} />
-                </div>
-              </div>
-              <div className="security-banner">
-                <img src="/assets/ulos1.jpg" alt="Ulos Weaving Texture" className="security-banner-bg" />
-                <div className="security-banner-overlay"></div>
-                <div className="security-banner-badge">Security Score: 98% Optimal</div>
-              </div>
-            </div>
-          </div>
-
           {/* CARD 3: AI Assistance */}
           <div className="config-card">
             <div className="card-top">
@@ -151,34 +117,9 @@ export default function Settings() {
                   <p>Enable conversational AI to provide insights on market trends and weaving demand.</p>
                 </div>
               </div>
-              <div className="ai-status-alert">
+              <div className="ai-status-alert" style={{ marginTop: '20px' }}>
                 <i className="fa-solid fa-circle-info"></i>
                 <p>AI model v4.2 'Haris' is currently active and processing historical weaving data.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* CARD 4: Critical Actions */}
-          <div className="config-card">
-            <div className="card-top">
-              <div className="card-title-group">
-                <i className="fa-solid fa-triangle-exclamation"></i>
-                <h2 className="card-title">Critical Actions</h2>
-              </div>
-            </div>
-            <div className="card-body" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-              <p className="critical-desc">Disconnecting your wallet will pause all real-time blockchain syncs and local node validations.</p>
-              <div className="critical-actions-group">
-                <button
-                  className="btn-disconnect-wallet"
-                  onClick={handleDisconnectWallet}
-                  disabled={!wallet.connected}
-                  style={{ opacity: wallet.connected ? 1 : 0.6 }}
-                >
-                  <i className="fa-solid fa-link-slash"></i>
-                  {wallet.connected ? 'Disconnect Wallet' : 'Wallet Disconnected'}
-                </button>
-                <button className="btn-export-logs" onClick={handleExportLogs}>Export System Logs</button>
               </div>
             </div>
           </div>
@@ -202,8 +143,8 @@ export default function Settings() {
             <div className="status-col-val">v2.0.4-beta</div>
           </div>
           <div className="status-col-item">
-            <span className="status-col-label">CONNECTED TO</span>
-            <div className="status-col-val">{wallet.connected ? wallet.network : 'Ethereum Mainnet'}</div>
+            <span className="status-col-label">DATABASE</span>
+            <div className="status-col-val">MySQL Connected</div>
           </div>
         </div>
 

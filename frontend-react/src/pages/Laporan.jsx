@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useBlockchain } from '../context/BlockchainContext';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useData } from '../context/DataContext';
 import Topbar from '../components/Topbar';
 import '../styles/laporan.css';
 
@@ -8,19 +8,80 @@ const KATEGORI_OPTIONS = ['Penjualan Produk', 'Bahan Baku', 'Operasional', 'Mark
 
 export default function Laporan() {
   const navigate = useNavigate();
-  const { transactions, ledger, wallet, stats, isTransactionSynced, addTransaction, writeTransaction } = useBlockchain();
+  const location = useLocation();
+  const { transactions, stats, addTransaction } = useData();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [showManualModal, setShowManualModal] = useState(false);
-  const [showWeb3Modal, setShowWeb3Modal] = useState(false);
-  const [showExplorerModal, setShowExplorerModal] = useState(false);
-  const [selectedBlock, setSelectedBlock] = useState(null);
-  const [web3ModalStatus, setWeb3ModalStatus] = useState({ title: 'Mengamankan Transaksi', message: 'Menghubungkan ke jaringan blockchain...' });
+  const [showCameraModal, setShowCameraModal] = useState(false);
+  
+  // AI OCR States
+  const [ocrProcessing, setOcrProcessing] = useState(false);
+  const [ocrStep, setOcrStep] = useState(0); // 0: idle, 1: ocr reading, 2: ner categorizing, 3: completed
+  const [ocrResult, setOcrResult] = useState(null);
 
   // Manual input form state
   const [form, setForm] = useState({ name: '', type: 'income', category: 'Penjualan Produk', amount: '', date: new Date().toISOString().split('T')[0], time: '08:00' });
 
+  // Parse open_camera from URL
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('open_camera') === 'true') {
+      setShowCameraModal(true);
+      // Clean up query param from URL bar
+      navigate('/laporan', { replace: true });
+    }
+  }, [location, navigate]);
+
   const avgDaily = stats.income > 0 ? Math.round((stats.income - stats.expense) / 30) : 0;
+
+  const categoryPercentages = (() => {
+    const totals = {};
+    let grandTotal = 0;
+    transactions.forEach(tx => {
+      grandTotal += tx.amount;
+      totals[tx.category] = (totals[tx.category] || 0) + tx.amount;
+    });
+
+    const categories = ['Penjualan Produk', 'Bahan Baku', 'Operasional', 'Pemasaran', 'Lainnya'];
+    const colors = {
+      'Penjualan Produk': 'fill-primary',
+      'Bahan Baku': 'fill-blue',
+      'Operasional': 'fill-purple',
+      'Pemasaran': 'fill-orange',
+      'Lainnya': 'fill-brown'
+    };
+
+    return categories.map(name => {
+      const amount = totals[name] || 0;
+      const pct = grandTotal > 0 ? Math.round((amount / grandTotal) * 100) : 0;
+      return { name, pct, cls: colors[name] || 'fill-primary' };
+    });
+  })();
+
+  const weeklyFlow = (() => {
+    const days = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+    const amounts = Array(7).fill(0);
+    
+    transactions.forEach(tx => {
+      if (tx.date) {
+        const d = new Date(tx.date);
+        if (!isNaN(d.getTime())) {
+          let dayIndex = d.getDay() - 1;
+          if (dayIndex < 0) dayIndex = 6;
+          amounts[dayIndex] += tx.amount;
+        }
+      }
+    });
+
+    const maxAmt = Math.max(...amounts, 1);
+    const todayIndex = new Date().getDay() - 1 < 0 ? 6 : new Date().getDay() - 1;
+    return days.map((label, index) => {
+      const amt = amounts[index];
+      const h = `${Math.round((amt / maxAmt) * 80) + 5}%`;
+      return { label, h, active: index === todayIndex };
+    });
+  })();
 
   const filteredTxs = transactions.filter(tx =>
     tx.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -37,30 +98,51 @@ export default function Laporan() {
     setShowManualModal(false);
   };
 
-  const handleSyncAll = async () => {
-    if (!wallet.connected) {
-      alert('Hubungkan dompet kripto terlebih dahulu!');
-      return;
-    }
-    const unsynced = transactions.filter(tx => !isTransactionSynced(tx.id));
-    if (unsynced.length === 0) { alert('Semua transaksi sudah tersinkronisasi!'); return; }
-    setShowWeb3Modal(true);
-    try {
-      for (const tx of unsynced.slice(0, 3)) {
-        await writeTransaction(tx, (status, data) => {
-          setWeb3ModalStatus({ title: 'Sinkronisasi Transaksi', message: data.message });
-        });
-      }
-      setShowWeb3Modal(false);
-    } catch (err) {
-      alert('Error: ' + err.message);
-      setShowWeb3Modal(false);
-    }
+  const handleOcrSimulate = (mockType) => {
+    setOcrProcessing(true);
+    setOcrStep(1);
+    
+    // Simulate OCR reading (1.2s)
+    setTimeout(() => {
+      setOcrStep(2);
+      
+      // Simulate NER categorizing (1.2s)
+      setTimeout(() => {
+        setOcrStep(3);
+        
+        let result = {};
+        if (mockType === 'benang') {
+          result = {
+            name: 'Pembelian Benang Sutra Mas (50 Roll)',
+            type: 'expense',
+            category: 'Bahan Baku',
+            amount: 850000,
+            date: new Date().toISOString().split('T')[0],
+            time: '10:30'
+          };
+        } else {
+          result = {
+            name: 'Ulos Ragidup Silk Grade A',
+            type: 'income',
+            category: 'Penjualan Produk',
+            amount: 3500000,
+            date: new Date().toISOString().split('T')[0],
+            time: '14:15'
+          };
+        }
+        
+        setOcrResult(result);
+        setOcrProcessing(false);
+      }, 1200);
+    }, 1200);
   };
 
-  const handleBlockClick = (block) => {
-    setSelectedBlock(block);
-    setShowExplorerModal(true);
+  const handleSaveOcrResult = () => {
+    if (!ocrResult) return;
+    addTransaction(ocrResult);
+    setShowCameraModal(false);
+    setOcrResult(null);
+    setOcrStep(0);
   };
 
   return (
@@ -77,13 +159,16 @@ export default function Laporan() {
         {/* Page Header */}
         <div className="page-header">
           <div className="page-header-left">
-            <h1>Laporan Keuangan &amp; Blockchain Ledger</h1>
+            <h1>Laporan Keuangan &amp; Jurnal Kas</h1>
             <p className="page-header-sub">
-              <i className="fa-regular fa-calendar"></i> Pencatatan keuangan aman, terverifikasi kriptografi on-chain.
+              <i className="fa-regular fa-calendar"></i> Pencatatan kas masuk dan kas keluar UMKM tenun Ulos secara real-time.
             </p>
           </div>
           <div className="page-header-right">
             <button className="period-selector">Juni 2026 <i className="fa-solid fa-chevron-down" style={{ fontSize: '10px' }}></i></button>
+            <button className="btn-foto-nota-laporan" onClick={() => setShowCameraModal(true)}>
+              <i className="fa-solid fa-camera"></i> Foto Nota
+            </button>
             <button className="btn-filter" onClick={() => setShowManualModal(true)}>
               <i className="fa-solid fa-plus"></i> Transaksi Manual
             </button>
@@ -98,7 +183,7 @@ export default function Laporan() {
               <i className="fa-solid fa-vault stat-icon"></i>
             </div>
             <div className="stat-value">Rp{stats.balance.toLocaleString('id-ID')}</div>
-            <div className="stat-subtext"><i className="fa-solid fa-shield-halved"></i> Sinkron dengan Local Ledger</div>
+            <div className="stat-subtext"><i className="fa-solid fa-database"></i> Terkoneksi dengan database MySQL</div>
           </div>
 
           <div className="stat-card">
@@ -127,9 +212,6 @@ export default function Laporan() {
             <div className="transaksi-header">
               <div className="transaksi-title"><i className="fa-solid fa-list-check"></i> Jurnal Keuangan Laporan</div>
               <div className="transaksi-actions">
-                <button className="icon-btn" style={{ color: 'var(--gold)', borderColor: 'var(--glass-border-gold)', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, padding: '6px 12px' }} onClick={handleSyncAll}>
-                  <i className="fa-solid fa-cloud-arrow-up"></i> Sinkronkan Semua
-                </button>
                 <button className="icon-btn" title="Filter"><i className="fa-solid fa-sliders"></i></button>
               </div>
             </div>
@@ -139,15 +221,13 @@ export default function Laporan() {
                 <tr>
                   <th>DESKRIPSI TRANSAKSI</th>
                   <th>KATEGORI</th>
-                  <th>STATUS LEDGER BLOCKCHAIN</th>
                   <th style={{ textAlign: 'right' }}>NOMINAL</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredTxs.length === 0 ? (
-                  <tr><td colSpan="4" className="text-center text-muted" style={{ padding: '32px' }}>Tidak ada transaksi ditemukan.</td></tr>
+                  <tr><td colSpan="3" className="text-center text-muted" style={{ padding: '32px' }}>Tidak ada transaksi ditemukan.</td></tr>
                 ) : filteredTxs.map(tx => {
-                  const synced = isTransactionSynced(tx.id);
                   const isExpense = tx.type === 'expense';
                   return (
                     <tr key={tx.id}>
@@ -164,13 +244,6 @@ export default function Laporan() {
                           <span className="cat-name">{tx.category}</span>
                           <span className="cat-time">{tx.date}, {tx.time || '00:00'}</span>
                         </div>
-                      </td>
-                      <td>
-                        {synced ? (
-                          <span className="badge badge-green"><i className="fa-solid fa-shield-halved"></i> SECURE ON-CHAIN</span>
-                        ) : (
-                          <span className="badge badge-red"><i className="fa-solid fa-triangle-exclamation"></i> OFFLINE LEDGER</span>
-                        )}
                       </td>
                       <td className={`text-right fw-bold ${isExpense ? 'text-red' : 'text-green'}`}>
                         {isExpense ? '-' : '+'}Rp {tx.amount.toLocaleString('id-ID')}
@@ -199,10 +272,7 @@ export default function Laporan() {
                 <span className="chart-period-badge">Bulan Ini</span>
               </div>
               <div className="bar-chart">
-                {[
-                  { label: 'Sen', h: '45%' }, { label: 'Sel', h: '30%' }, { label: 'Rab', h: '55%' },
-                  { label: 'Kam', h: '40%' }, { label: 'Jum', h: '65%' }, { label: 'Sab', h: '85%', active: true }, { label: 'Min', h: '50%' },
-                ].map(d => (
+                {weeklyFlow.map(d => (
                   <div key={d.label} className="bar-day">
                     <div className={`bar ${d.active ? 'active-bar' : 'income'}`} style={{ height: d.h }}></div>
                     <span className="bar-label">{d.label}</span>
@@ -211,7 +281,7 @@ export default function Laporan() {
               </div>
               <div className="chart-footer">
                 <div className="chart-avg">Rata-rata Harian<br /><strong>Rp{avgDaily.toLocaleString('id-ID')}</strong></div>
-                <span className="chart-trend">↑ +12%</span>
+                <span className="chart-trend">Dinamis</span>
               </div>
             </div>
 
@@ -219,12 +289,7 @@ export default function Laporan() {
             <div className="kategori-card">
               <div className="kategori-title">Kategori Keuangan</div>
               <div className="kategori-list">
-                {[
-                  { name: 'Penjualan Produk', pct: 65, cls: 'fill-primary' },
-                  { name: 'Bahan Baku', pct: 20, cls: 'fill-blue' },
-                  { name: 'Operasional', pct: 10, cls: 'fill-purple' },
-                  { name: 'Pemasaran', pct: 5, cls: 'fill-orange' },
-                ].map(k => (
+                {categoryPercentages.map(k => (
                   <div key={k.name} className="kategori-item">
                     <div className="kategori-meta">
                       <span className="kategori-name">{k.name}</span>
@@ -241,84 +306,7 @@ export default function Laporan() {
           </div>
         </div>
 
-        {/* Blockchain Ledger */}
-        <section className="transaksi-card" style={{ marginBottom: '32px' }}>
-          <div className="transaksi-header" style={{ borderBottom: '1px dashed var(--glass-border-gold)', background: 'rgba(255,193,7,0.01)' }}>
-            <div className="transaksi-title" style={{ color: 'var(--gold)' }}>
-              <i className="fa-solid fa-database"></i> Blockchain Ledger Registry (SianAI DevNet Sandbox)
-            </div>
-            <div className="transaksi-actions">
-              <span className="badge badge-green"><i className="fa-solid fa-server"></i> NODE OPERASIONAL</span>
-            </div>
-          </div>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="trans-table">
-              <thead>
-                <tr>
-                  <th>BLOK INDEX</th>
-                  <th>WAKTU BLOK</th>
-                  <th>TRANSAKSI HASH (TXHASH)</th>
-                  <th>PREVIEW DATA MUATAN</th>
-                  <th>GAS FEE</th>
-                  <th style={{ textAlign: 'right' }}>BUKTI KRIPTOGRAFI</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ledger.slice().reverse().map(block => (
-                  <tr key={block.index}>
-                    <td><span className="badge badge-blue">#{block.index}</span></td>
-                    <td style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                      {new Date(block.timestamp).toLocaleString('id-ID')}
-                    </td>
-                    <td>
-                      <span style={{ fontFamily: 'monospace', fontSize: '11px', color: 'var(--text-muted)' }}>
-                        {block.txHash ? block.txHash.substring(0, 20) + '...' : '—'}
-                      </span>
-                    </td>
-                    <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                      {block.payload?.description || block.payload?.message || JSON.stringify(block.payload).substring(0, 40) + '...'}
-                    </td>
-                    <td style={{ fontSize: '12px' }}>{block.gasUsed ? `${block.gasUsed.toLocaleString()} gas` : '0 gas'}</td>
-                    <td style={{ textAlign: 'right' }}>
-                      <button className="btn-page" style={{ cursor: 'pointer', padding: '4px 10px', fontSize: '11px' }} onClick={() => handleBlockClick(block)}>
-                        <i className="fa-solid fa-magnifying-glass"></i> Explorer
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
 
-        {/* Bottom Row */}
-        <div className="bottom-row">
-          <div className="product-card">
-            <img src="/assets/ulos1.jpg" alt="Ulos Ragidup Silk" className="product-img" />
-            <span className="product-chip certified">✦ DIGITAL AUTHENTICITY CERTIFICATE</span>
-            <div className="product-info">
-              <div className="product-name">Ulos Ragidup Silk</div>
-              <div className="product-sub">Metadata digital tercatat pada blockchain ERC-721.</div>
-            </div>
-          </div>
-          <div className="product-card">
-            <img src="/assets/ulos2.jpg" alt="Hand-Woven Process" className="product-img" />
-            <span className="product-chip heritage">🏛 WARISAN BUDAYA BATAK</span>
-            <div className="product-info">
-              <div className="product-name">Hand-Woven Process</div>
-              <div className="product-sub">Melindungi kerajinan tenun tradisional lewat desentralisasi.</div>
-            </div>
-          </div>
-          <div className="ai-card">
-            <div className="ai-card-header">
-              <div className="ai-icon"><i className="fa-solid fa-robot"></i></div>
-              <span className="ai-card-title">Rekomendasi Blockchain SianAI</span>
-            </div>
-            <div className="ai-card-body">
-              Simpan data transaksi mingguan Anda secara kolektif ke blockchain. Keabsahan pembukuan terenkripsi memudahkan verifikasi pengajuan kredit bank!
-            </div>
-          </div>
-        </div>
 
       </main>
 
@@ -326,41 +314,41 @@ export default function Laporan() {
       {showManualModal && (
         <div className="web3-modal active" onClick={(e) => { if (e.target === e.currentTarget) setShowManualModal(false); }}>
           <div className="web3-modal-content" style={{ maxWidth: '480px', textAlign: 'left' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '20px', textAlign: 'center', color: 'var(--white)', borderBottom: '1px solid var(--glass-border)', paddingBottom: '12px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '20px', textAlign: 'center', color: 'var(--text-primary)', borderBottom: '1px solid var(--glass-border)', paddingBottom: '12px' }}>
               <i className="fa-solid fa-plus-circle"></i> Tambah Transaksi Manual
             </h3>
             <form onSubmit={handleAddTransaction} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold)' }}>Deskripsi Transaksi</label>
-                <input name="name" value={form.name} onChange={handleFormChange} placeholder="Contoh: Penjualan Ulos Ragidup" required style={{ padding: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', color: 'var(--white)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }} />
+                <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold-dark)' }}>Deskripsi Transaksi</label>
+                <input name="name" value={form.name} onChange={handleFormChange} placeholder="Contoh: Penjualan Ulos Ragidup" required style={{ padding: '10px', background: 'rgba(0,0,0,0.03)', border: '1px solid var(--glass-border)', color: 'var(--text-primary)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }} />
               </div>
               <div style={{ display: 'flex', gap: '12px' }}>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold)' }}>Jenis</label>
-                  <select name="type" value={form.type} onChange={handleFormChange} style={{ padding: '10px', background: '#0c0204', border: '1px solid var(--glass-border)', color: 'var(--white)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold-dark)' }}>Jenis</label>
+                  <select name="type" value={form.type} onChange={handleFormChange} style={{ padding: '10px', background: 'var(--white)', border: '1px solid var(--glass-border)', color: 'var(--text-primary)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }}>
                     <option value="income">Pemasukan</option>
                     <option value="expense">Pengeluaran</option>
                   </select>
                 </div>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold)' }}>Kategori</label>
-                  <select name="category" value={form.category} onChange={handleFormChange} style={{ padding: '10px', background: '#0c0204', border: '1px solid var(--glass-border)', color: 'var(--white)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold-dark)' }}>Kategori</label>
+                  <select name="category" value={form.category} onChange={handleFormChange} style={{ padding: '10px', background: 'var(--white)', border: '1px solid var(--glass-border)', color: 'var(--text-primary)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }}>
                     {KATEGORI_OPTIONS.map(k => <option key={k}>{k}</option>)}
                   </select>
                 </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold)' }}>Nominal (Rp)</label>
-                <input name="amount" value={form.amount} onChange={handleFormChange} type="number" placeholder="Contoh: 3500000" required style={{ padding: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', color: 'var(--white)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }} />
+                <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold-dark)' }}>Nominal (Rp)</label>
+                <input name="amount" value={form.amount} onChange={handleFormChange} type="number" placeholder="Contoh: 3500000" required style={{ padding: '10px', background: 'rgba(0,0,0,0.03)', border: '1px solid var(--glass-border)', color: 'var(--text-primary)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }} />
               </div>
               <div style={{ display: 'flex', gap: '12px' }}>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold)' }}>Tanggal</label>
-                  <input name="date" value={form.date} onChange={handleFormChange} type="date" style={{ padding: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', color: 'var(--white)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }} />
+                  <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold-dark)' }}>Tanggal</label>
+                  <input name="date" value={form.date} onChange={handleFormChange} type="date" style={{ padding: '10px', background: 'rgba(0,0,0,0.03)', border: '1px solid var(--glass-border)', color: 'var(--text-primary)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }} />
                 </div>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold)' }}>Waktu</label>
-                  <input name="time" value={form.time} onChange={handleFormChange} type="time" style={{ padding: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', color: 'var(--white)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }} />
+                  <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--gold-dark)' }}>Waktu</label>
+                  <input name="time" value={form.time} onChange={handleFormChange} type="time" style={{ padding: '10px', background: 'rgba(0,0,0,0.03)', border: '1px solid var(--glass-border)', color: 'var(--text-primary)', borderRadius: '6px', outline: 'none', fontFamily: 'inherit' }} />
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
@@ -371,45 +359,86 @@ export default function Laporan() {
           </div>
         </div>
       )}
-
-      {/* ── Modal: Web3 Processing ── */}
-      {showWeb3Modal && (
-        <div className="web3-modal active">
-          <div className="web3-modal-content">
-            <div className="blockchain-spinner">
-              <div className="spinner-ring"></div>
-              <div className="spinner-ring"></div>
-              <div className="spinner-core"><i className="fa-solid fa-link"></i></div>
-            </div>
-            <h3 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '12px' }}>{web3ModalStatus.title}</h3>
-            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{web3ModalStatus.message}</p>
-          </div>
-        </div>
-      )}
-
-      {/* ── Modal: Block Explorer ── */}
-      {showExplorerModal && selectedBlock && (
-        <div className="web3-modal active" onClick={(e) => { if (e.target === e.currentTarget) setShowExplorerModal(false); }}>
-          <div className="web3-modal-content" style={{ maxWidth: '580px' }}>
-            <i className="fa-solid fa-circle-nodes" style={{ fontSize: '36px', color: 'var(--gold)', marginBottom: '16px', filter: 'drop-shadow(0 0 10px rgba(255,193,7,0.3))' }}></i>
-            <h3 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '4px' }}>SianAI Block Explorer</h3>
-            <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '20px' }}>Kriptografi Transaksi Terverifikasi di Blok Ledger</p>
-            <div className="explorer-modal-grid">
-              {[
-                { label: 'Blok Index', val: `#${selectedBlock.index}` },
-                { label: 'Waktu Blok', val: new Date(selectedBlock.timestamp).toLocaleString('id-ID') },
-                { label: 'Hash Transaksi (TxHash)', val: selectedBlock.txHash },
-                { label: 'Hash Blok Sebelumnya', val: selectedBlock.previousHash },
-                { label: 'Gas Digunakan', val: `${selectedBlock.gasUsed?.toLocaleString() || 0} gas` },
-                { label: 'Miner Address', val: selectedBlock.miner || '—' },
-              ].map(item => (
-                <div key={item.label} className="explorer-item">
-                  <span className="explorer-label">{item.label}</span>
-                  <span className="explorer-val hash-val" style={{ fontSize: '11.5px', wordBreak: 'break-all' }}>{item.val}</span>
+      {/* ── Modal: Foto Nota (AI OCR & NER) ── */}
+      {showCameraModal && (
+        <div className="web3-modal active" onClick={(e) => { if (e.target === e.currentTarget && !ocrProcessing) setShowCameraModal(false); }}>
+          <div className="web3-modal-content" style={{ maxWidth: '520px', textAlign: 'left' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '16px', borderBottom: '1px solid var(--glass-border)', paddingBottom: '12px', color: 'var(--text-primary)', textAlign: 'center' }}>
+              <i className="fa-solid fa-camera"></i> Foto Nota &amp; AI OCR Scanner
+            </h3>
+            
+            {!ocrResult && !ocrProcessing && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center', justifyContent: 'center', padding: '20px 10px' }}>
+                <div style={{ width: '100%', height: '180px', border: '2px dashed var(--glass-border-gold)', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(212,175,55,0.05)' }}>
+                  <i className="fa-solid fa-cloud-arrow-up" style={{ fontSize: '32px', color: 'var(--gold-dark)', marginBottom: '8px' }}></i>
+                  <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: 600 }}>Pilih Nota / Kuitansi Belanja Adat</span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>AI otomatis membaca nominal, tanggal &amp; kategori</span>
                 </div>
-              ))}
-            </div>
-            <button className="btn-close-modal" style={{ marginTop: '20px' }} onClick={() => setShowExplorerModal(false)}>Tutup Explorer</button>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
+                  <span style={{ fontSize: '11px', color: 'var(--gold-dark)', fontWeight: 700 }}>SIMULASI MOCK NOTA:</span>
+                  <button className="btn-save-artisan" style={{ width: '100%' }} onClick={() => handleOcrSimulate('benang')}>
+                    <i className="fa-solid fa-file-invoice-dollar"></i> Scan Nota: Pembelian Benang Sutra Emas (Rp850.000)
+                  </button>
+                  <button className="btn-save-artisan" style={{ width: '100%', background: 'rgba(0,200,83,0.1)', color: 'var(--green)', border: '1px solid var(--green)' }} onClick={() => handleOcrSimulate('ulos')}>
+                    <i className="fa-solid fa-file-invoice"></i> Scan Nota: Penjualan Ulos Ragidup Silk (Rp3.500.000)
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {ocrProcessing && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 10px', gap: '16px' }}>
+                <div className="blockchain-spinner">
+                  <div className="spinner-ring"></div>
+                  <div className="spinner-ring"></div>
+                  <div className="spinner-core" style={{ color: 'var(--gold-dark)' }}><i className="fa-solid fa-robot"></i></div>
+                </div>
+                <h4 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                  {ocrStep === 1 ? 'AI OCR: Membaca Gambar Kuitansi...' : 'AI NER: Mengategorikan Transaksi...'}
+                </h4>
+                <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Teknologi ekstraksi instan SianAI</p>
+              </div>
+            )}
+
+            {ocrResult && !ocrProcessing && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div style={{ background: 'rgba(0,200,83,0.06)', border: '1px solid var(--green)', padding: '12px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <i className="fa-solid fa-circle-check" style={{ color: 'var(--green)', fontSize: '18px' }}></i>
+                  <span style={{ fontSize: '13px', color: 'var(--green)', fontWeight: 600 }}>Ekstraksi AI Berhasil Divalidasi!</span>
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', background: 'rgba(0,0,0,0.02)', padding: '16px', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                    <span style={{ color: 'var(--text-secondary)' }}>Deskripsi:</span>
+                    <strong style={{ color: 'var(--text-primary)' }}>{ocrResult.name}</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                    <span style={{ color: 'var(--text-secondary)' }}>Kategori:</span>
+                    <strong style={{ color: 'var(--text-primary)' }}>{ocrResult.category}</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                    <span style={{ color: 'var(--text-secondary)' }}>Jenis:</span>
+                    <strong style={{ color: ocrResult.type === 'income' ? 'var(--green)' : 'var(--primary)' }}>
+                      {ocrResult.type === 'income' ? 'PEMASUKAN' : 'PENGELUARAN'}
+                    </strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                    <span style={{ color: 'var(--text-secondary)' }}>Total Nominal:</span>
+                    <strong style={{ color: 'var(--gold-dark)', fontSize: '15px' }}>Rp {ocrResult.amount.toLocaleString('id-ID')}</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                    <span style={{ color: 'var(--text-secondary)' }}>Tanggal &amp; Waktu:</span>
+                    <strong style={{ color: 'var(--text-primary)' }}>{ocrResult.date} {ocrResult.time}</strong>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                  <button className="btn-close-modal" style={{ flex: 1 }} onClick={() => { setOcrResult(null); setOcrStep(0); }}>Ulangi</button>
+                  <button className="btn-save-artisan" style={{ flex: 1 }} onClick={handleSaveOcrResult}>Simpan ke Database</button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -1,37 +1,80 @@
-# Dependencies
-node_modules/
-/.pnp
-.pnp.js
+# =============================================================================
+# .gitignore — Root Project (sian-ai-app)
+# =============================================================================
 
-# Testing
-/coverage
-
-# Production
-/dist
-/build
-
-# Misc
+# ── OS & System ──────────────────────────────────────────────────────────────
 .DS_Store
-*.pem
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
 
-# Local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# IDEs and editors
+# ── IDEs & Editors ───────────────────────────────────────────────────────────
 .idea/
 .vscode/
+!.vscode/extensions.json
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.swp
+*.swo
+*.code-workspace
+
+# ── Environment / Secrets ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials/
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ── Temporary / Cache ─────────────────────────────────────────────────────────
+*.tmp
+*.temp
+.cache/
+.temp/
+
+# ── Python (backend) ─────────────────────────────────────────────────────────
+backend/.venv/
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.py[cod]
+backend/**/*.pyo
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.ruff_cache/
+backend/htmlcov/
+backend/.coverage
+backend/coverage.xml
+backend/*.egg-info/
+backend/dist/
+backend/build/
+
+# ── Node / Frontend ───────────────────────────────────────────────────────────
+frontend-react/node_modules/
+frontend-react/dist/
+frontend-react/dist-ssr/
+frontend-react/build/
+frontend-react/.pnp
+frontend-react/.pnp.js
+frontend-react/coverage/
+frontend-react/.next/
+frontend-react/out/

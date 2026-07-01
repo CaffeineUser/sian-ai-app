@@ -26,7 +26,7 @@
 .stok-page-header h1 {
     font-size: 26px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
     margin-bottom: 6px;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
@@ -244,7 +244,7 @@
 .stok-product-name {
     font-size: 15px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .stok-modal-macet {
@@ -278,7 +278,7 @@
 
 .stok-ai-recom .ai-action {
     font-weight: 600;
-    color: var(--white);
+    color: var(--text-primary);
     text-decoration: underline;
     cursor: pointer;
 }
@@ -326,7 +326,7 @@
 }
 
 .ulos-cert-link {
-    color: var(--white);
+    color: var(--text-primary);
     text-decoration: underline;
     font-weight: 700;
     cursor: pointer;
@@ -357,7 +357,7 @@
 .tren-title {
     font-size: 15px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .tren-legend {
@@ -434,7 +434,7 @@
 }
 
 .tren-analysis strong {
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 /* ==========================================================================
@@ -486,7 +486,7 @@
 .insight-header-title {
     font-size: 14px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .insight-body {
@@ -538,7 +538,7 @@
     font-size: 14px;
     font-weight: 700;
     margin-bottom: 14px;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .aksi-list {
@@ -641,7 +641,7 @@
     right: 8px;
     border: none;
     background: rgba(255, 51, 75, 0.85);
-    color: var(--white);
+    color: var(--text-primary);
     border-radius: 50%;
     width: 22px;
     height: 22px;
@@ -714,13 +714,13 @@
 .inv-chart-title {
     font-size: 18px;
     font-weight: 800;
-    color: #ffffff;
+    color: var(--text-primary);
     margin-bottom: 2px;
 }
 
 .inv-chart-sub {
     font-size: 12.5px;
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .inv-toggle-btns {
@@ -737,7 +737,7 @@
     border-radius: 6px;
     background: transparent;
     border: none;
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
@@ -774,7 +774,7 @@
 .dead-stock-heading {
     font-size: 22px;
     font-weight: 900;
-    color: #ffffff;
+    color: var(--text-primary);
     line-height: 1.3;
     margin-bottom: 20px;
 }
@@ -817,7 +817,7 @@
 .catalog-title {
     font-size: 20px;
     font-weight: 800;
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .catalog-filters {
@@ -828,7 +828,7 @@
 .inv-filter-select {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    color: #ffffff;
+    color: var(--text-primary);
     padding: 8px 14px;
     border-radius: 8px;
     font-size: 12.5px;
@@ -840,7 +840,7 @@
 
 .inv-filter-select option {
     background: #0c0204;
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .stok-product-grid {
@@ -897,7 +897,7 @@
 
 .stok-product-sub {
     font-size: 11.5px;
-    color: #ffffff;
+    color: var(--text-primary);
     margin-bottom: 10px;
 }
 
@@ -914,7 +914,7 @@
     padding: 3px 8px;
     border-radius: 4px;
     font-size: 10.5px;
-    color: #ffffff;
+    color: var(--text-primary);
     font-weight: 600;
 }
 
@@ -930,7 +930,7 @@
 .stock-status-green {
     font-size: 11.5px;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: 6px;
@@ -983,14 +983,14 @@
 .inv-stat-lbl {
     font-size: 11px;
     font-weight: 800;
-    color: #ffffff;
+    color: var(--text-primary);
     letter-spacing: 0.5px;
 }
 
 .inv-stat-val {
     font-size: 24px;
     font-weight: 900;
-    color: #ffffff;
+    color: var(--text-primary);
     margin-top: 2px;
 }
 
@@ -1000,7 +1000,7 @@
     background: #4a0e1a;
     border: 1px solid #8b1e34;
     border-radius: 10px;
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -1038,7 +1038,7 @@
 }
 .stok-card-body { padding: 14px 16px; }
 .stok-card-type { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
-.stok-card-name { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 6px; line-height: 1.3; }
+.stok-card-name { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; line-height: 1.3; }
 .stok-card-price { font-size: 16px; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
 .stok-card-stock { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
 

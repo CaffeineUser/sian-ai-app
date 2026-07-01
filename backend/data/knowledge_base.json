@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ulos-ragidup",
+    "category": "Jenis Ulos",
+    "title": "Ulos Ragidup",
+    "content": "Ulos Ragidup adalah ulos yang menempati kelas tertinggi dalam hierarki ulos Batak. Nama 'Ragidup' memiliki arti 'ragi' (motif/corak) dan 'idup' (hidup), melambangkan kehidupan dan doa restu agar penerimanya diberikan umur panjang, kesehatan, dan kemakmuran oleh Sang Pencipta. Ulos ini ditenun dengan tingkat kesulitan sangat tinggi karena terdiri dari tiga bagian terpisah (dua bagian sisi/rambu dan satu bagian tengah dengan motif rumit) yang kemudian disatukan dengan teknik jahit tenun khusus. Secara adat, Ulos Ragidup tidak boleh diberikan secara sembarangan. Ulos ini diberikan oleh orang tua pengantin wanita kepada ibu pengantin pria (disebut Ulos Pansamot) pada upacara pernikahan adat Batak (Ulaon Unjuk) sebagai simbol penyerahan tanggung jawab dan restu kehidupan baru."
+  },
+  {
+    "id": "ulos-sadum",
+    "category": "Jenis Ulos",
+    "title": "Ulos Sadum",
+    "content": "Ulos Sadum adalah jenis ulos yang memiliki karakteristik warna-warni yang sangat cerah, dominan warna merah, kuning, hijau, dan putih, dihiasi dengan manik-manik (merjan) pada ujungnya. Secara filosofis, warna-warni cerah pada Ulos Sadum melambangkan keceriaan, kebahagiaan, sukacita, dan kesuksesan hidup. Ulos Sadum sering digunakan dalam suasana riang, seperti menyambut tamu kehormatan, pesta keberhasilan (wisuda, peresmian rumah), atau festival budaya. Dalam perkembangannya, Ulos Sadum sering diberikan sebagai cenderamata atau hadiah kenang-kenangan kepada tokoh penting atau kerabat sebagai tanda penghormatan dan doa agar selalu diliputi kebahagiaan."
+  },
+  {
+    "id": "ulos-sibolang",
+    "category": "Jenis Ulos",
+    "title": "Ulos Sibolang",
+    "content": "Ulos Sibolang adalah ulos berwarna dasar biru tua, hitam, atau abu-abu gelap dengan motif garis-garis putih yang melambangkan suasana duka atau ketenangan. Ulos ini memiliki fungsi utama sebagai simbol dukacita atau Ulos Pamontari dalam upacara adat kematian (Meninggal Dunia). Ulos Sibolang diberikan oleh pihak keluarga dekat kepada kerabat yang ditinggalkan (terutama kepada janda atau duda) sebagai tanda belasungkawa, penghibur lara, dan doa agar keluarga yang ditinggalkan diberikan kekuatan dan ketabahan oleh Tuhan. Namun, dalam upacara pernikahan adat Batak tertentu, Ulos Sibolang dengan variasi khusus juga dapat diberikan oleh orang tua pengantin wanita kepada menantu laki-lakinya sebagai Ulos Hela."
+  },
+  {
+    "id": "ulos-mangiring",
+    "category": "Jenis Ulos",
+    "title": "Ulos Mangiring",
+    "content": "Ulos Mangiring memiliki corak garis-garis sempit yang berjajar rapi dan saling beriringan. Secara filosofis, motif yang beriringan ini melambangkan harapan agar anak cucu (keturunan) dapat lahir secara beriringan dan membawa berkah bagi keluarga. Ulos Mangiring secara adat diberikan oleh kakek/nenek (Ompung) kepada cucu pertama yang baru lahir. Pemberian ulos ini dinamakan 'Ulos Parompa', yang berfungsi sebagai selendang untuk menggendong bayi, melambangkan kasih sayang pelindung serta doa agar sang anak tumbuh sehat, berbakti, dan kelak diikuti oleh kelahiran adik-adiknya."
+  },
+  {
+    "id": "ulos-bintang-maratur",
+    "category": "Jenis Ulos",
+    "title": "Ulos Bintang Maratur",
+    "content": "Ulos Bintang Maratur digambarkan dengan motif barisan bintang yang teratur rapi di sepanjang kain ulos. Bintang-bintang yang berjejer teratur melambangkan ketertiban, kepatuhan, keharmonisan, dan berkat yang melimpah secara turun-temurun. Ulos ini sering diberikan dalam upacara syukuran keluarga, seperti syukuran kehamilan tujuh bulanan (Mangirdak) yang diberikan oleh orang tua kepada anak perempuannya yang sedang mengandung anak pertama. Tujuannya adalah mendoakan kelancaran proses persalinan dan agar anak yang dilahirkan kelak membawa rezeki yang mengalir dengan teratur seperti barisan bintang."
+  },
+  {
+    "id": "upacara-mangulosi",
+    "category": "Upacara Adat",
+    "title": "Upacara Mangulosi",
+    "content": "Mangulosi adalah prosesi adat Batak Toba di mana sehelai kain Ulos disampirkan ke pundak atau dikalungkan kepada seseorang. Ritual ini bermakna memberikan kehangatan rohani, perlindungan, kasih sayang, dan berkat (tumpak). Dalam adat Batak, kedudukan sosial pemberi ulos haruslah lebih tinggi daripada penerima ulos berdasarkan silsilah kekerabatan Tutur/Hulahula. Sebagai contoh, orang tua boleh mangulosi anaknya, hulahula boleh mangulosi borunya, tetapi seorang anak dilarang mangulosi orang tuanya secara adat. Selama penyampiran ulos, pemberi ulos biasanya mengucapkan umpasa (pantun Batak) berisi doa berkat kemakmuran, kesehatan, dan keharmonisan keluarga."
+  },
+  {
+    "id": "ulaon-unjuk",
+    "category": "Upacara Adat",
+    "title": "Ulaon Unjuk (Pernikahan)",
+    "content": "Ulaon Unjuk adalah upacara pesta pernikahan adat Batak yang penuh dengan tata krama, musik gondang, makan bersama, pembagian jambar (jatah daging adat), dan pemberian Ulos. Dalam pernikahan adat Batak, pemberian Ulos adalah bagian inti yang tidak boleh dilewatkan. Terdapat beberapa jenis Ulos wajib yang harus diserahkan oleh pihak Hulahula (keluarga pengantin wanita) kepada pihak Pamoruon (keluarga pengantin pria). Ulos tersebut antara lain: 1) Ulos Hela (diberikan kepada kedua mempelai sebagai simbol persatuan dan restu), 2) Ulos Pansamot (diberikan kepada orang tua pengantin pria sebagai tanda kehormatan dan ikatan kekeluargaan baru), dan 3) Ulos Todoan (diberikan kepada saudara-saudara dekat pengantin pria)."
+  },
+  {
+    "id": "teknik-tenun-ulos",
+    "category": "Teknik Tenun",
+    "title": "Teknik dan Motif Tenun Ulos Batak",
+    "content": "Pembuatan kain Ulos Batak dilakukan secara tradisional menggunakan alat tenun bukan mesin yang disebut Gedogan. Benang katun ditenun helai demi helai menggunakan pewarna alami yang berasal dari tanaman hutan, seperti daun indigo (salaon) untuk warna biru/hitam, dan kayu secang atau tanaman mengkudu untuk warna merah. Warna dasar ulos Batak memiliki makna sakral tersendiri: Merah melambangkan keberanian dan kepemimpinan, Hitam melambangkan rahasia kehidupan, ketenangan, dan keabadian, sedangkan Putih melambangkan kesucian dan kebenaran. Penggabungan ketiga warna ini (disebut Tolu Bolit) melambangkan sistem kekerabatan Dalihan Na Tolu (Hulahula, Dongan Tubu, Boru) yang menjadi fondasi kehidupan sosial masyarakat Batak."
+  }
+]

@@ -1,20 +1,22 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useBlockchain } from '../context/BlockchainContext';
+import { useData } from '../context/DataContext';
 
 const navLinks = [
-  { to: '/', icon: 'fa-solid fa-house', label: 'Beranda', end: true },
+  { to: '/dashboard', icon: 'fa-solid fa-house', label: 'Beranda', end: true },
   { to: '/laporan', icon: 'fa-solid fa-chart-simple', label: 'Laporan Keuangan' },
   { to: '/stok', icon: 'fa-solid fa-box', label: 'Inventory' },
-  { to: '/akun', icon: 'fa-regular fa-user', label: 'Manajemen Akun' },
+  { to: '/chatbot', icon: 'fa-solid fa-comments', label: 'Tanya Adat (AI)' },
   { to: '/forecasting', icon: 'fa-solid fa-arrow-trend-up', label: 'Forecasting' },
-  { to: '/settings', icon: 'fa-solid fa-gear', label: 'Settings' },
+  { to: '/akun', icon: 'fa-regular fa-user', label: 'Manajemen Akun' },
 ];
 
 export default function Sidebar() {
-  const navigate = useNavigate();
-  const { wallet, connectWallet, disconnectWallet } = useBlockchain();
-
-  const handleFotoNota = () => navigate('/laporan?open_camera=true');
+  const handleSignOut = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('sianai_auth_token');
+    localStorage.removeItem('sianai_user');
+    window.location.href = '/';
+  };
 
   return (
     <aside className="sidebar">
@@ -22,7 +24,7 @@ export default function Sidebar() {
         <img src="/assets/sianailogo.png" alt="SianAI Logo" className="sidebar-logo-img" />
       </div>
 
-      <ul className="nav-menu">
+      <ul className="nav-menu" style={{ listStyle: 'none', padding: 0 }}>
         {navLinks.map(link => (
           <li key={link.to}>
             <NavLink
@@ -37,13 +39,10 @@ export default function Sidebar() {
       </ul>
 
       <div className="sidebar-bottom">
-        <button className="btn-foto-nota" onClick={handleFotoNota}>
-          <i className="fa-solid fa-camera"></i> Foto Nota
-        </button>
         <a href="#" className="nav-item">
           <i className="fa-regular fa-circle-question"></i> Support
         </a>
-        <a href="#" className="nav-item">
+        <a href="#" className="nav-item" onClick={handleSignOut}>
           <i className="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
         </a>
       </div>

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useBlockchain } from '../context/BlockchainContext';
+import { useData } from '../context/DataContext';
 import Topbar from '../components/Topbar';
 import '../styles/forecasting.css';
 
@@ -12,13 +12,17 @@ const LIQUIDITY_TABLE = [
 
 export default function Forecasting() {
   const navigate = useNavigate();
-  const { stats } = useBlockchain();
+  const { stats, inventory } = useData();
 
   // Dynamic calc based on real transactions
-  const currentKas = 42500000 + (stats.income - stats.expense);
+  const currentKas = stats.balance;
   const kasJutaan = (currentKas / 1000000).toFixed(1);
-  const gap = Math.max(0, 65000000 - currentKas);
+  const targetModal = 30000000; // Target capital of 30M
+  const gap = Math.max(0, targetModal - currentKas);
   const gapJutaan = (gap / 1000000).toFixed(1);
+
+  // Count dead stock items (age > 90 days or unsold_90_days)
+  const deadStockCount = inventory.filter(item => item.status === 'unsold_90_days' || item.status_stok === 'unsold_90_days').length;
 
   return (
     <div className="forecasting-content">
@@ -32,8 +36,21 @@ export default function Forecasting() {
         {/* Page Header */}
         <div className="page-header">
           <h1 className="page-title">Optimalkan Likuiditas Toko</h1>
-          <p className="page-subtitle">Tingkatkan likuiditas menjelang musim pesta dengan menawarkan sistem pre-order koleksi eksklusif</p>
+          <p className="page-subtitle">Tingkatkan likuiditas menjelang musim pesta dengan memprediksi arus kas berdasarkan kalender adat Batak</p>
         </div>
+
+        {/* early warning alert if dead stock exists and season is upcoming */}
+        {deadStockCount > 0 && (
+          <div style={{ background: 'rgba(255,51,75,0.08)', border: '1px solid rgba(255,51,75,0.3)', padding: '16px', borderRadius: '12px', marginBottom: '24px', display: 'flex', gap: '14px', alignItems: 'center' }}>
+            <i className="fa-solid fa-triangle-exclamation" style={{ color: '#ff334b', fontSize: '24px' }}></i>
+            <div>
+              <h4 style={{ color: '#ff334b', fontSize: '14px', fontWeight: 800, margin: 0 }}>PERINGATAN DINI LIKUIDITAS (Siklus Musim Pesta Pernikahan / Ulaon Unjuk)</h4>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '12.5px', margin: '4px 0 0 0', lineHeight: 1.5 }}>
+                Kas diprediksi kritis menjelang musim ramai akibat modal usaha sebesar <strong style={{ color: 'var(--white)' }}>{deadStockCount} produk kain premium</strong> sedang mengendap di gudang (status dead-stock &gt;90 hari). Segera cairkan aset di menu Inventory.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Stat Cards */}
         <div className="stats-grid">
@@ -42,9 +59,9 @@ export default function Forecasting() {
               <span className="stat-title">ESTIMASI MODAL MUSIM DEPAN</span>
               <i className="fa-solid fa-wallet stat-icon"></i>
             </div>
-            <div className="stat-value">IDR 65.0M</div>
+            <div className="stat-value">IDR {(targetModal / 1000000).toFixed(1)}M</div>
             <div className="stat-subtext">
-              <i className="fa-regular fa-clock"></i> Berdasarkan Proyeksi Musim Pesta Adat (Sasi Baik) Tiga Bulan ke Depan
+              <i className="fa-regular fa-clock"></i> Siklus Adat: Musim Pernikahan / Ulaon Unjuk (Bobot Pengali 1.8x)
             </div>
           </div>
 
@@ -55,7 +72,7 @@ export default function Forecasting() {
             </div>
             <div className="stat-value">IDR {kasJutaan}M</div>
             <div className="stat-subtext text-green">
-              <i className="fa-solid fa-arrow-trend-up"></i> +12% dari bulan lalu
+              <i className="fa-solid fa-arrow-trend-up"></i> Terpisah dari kas pribadi (Anti Co-Mingling)
             </div>
           </div>
 
@@ -93,8 +110,8 @@ export default function Forecasting() {
                 <h3>Diskon Stok Lama</h3>
                 <span className="badge gray">CUCI GUDANG</span>
               </div>
-              <p className="recom-desc">Likuidasi stok Ulos Sadum yang tidak bergerak lebih dari 6 bulan untuk menambah kas cepat sebesar IDR 8M.</p>
-              <button className="btn-sm btn-light" onClick={() => navigate('/stok')}>Lihat Inventori</button>
+              <p className="recom-desc">Likuidasi stok Ulos premium yang tidak bergerak lebih dari 90 hari untuk menambah kas cepat secara aman.</p>
+              <button className="btn-sm btn-light" onClick={() => navigate('/stok')}>Lihat &amp; Cairkan Stok</button>
             </div>
           </div>
         </div>
@@ -106,7 +123,7 @@ export default function Forecasting() {
             <div className="table-header">
               <div className="table-title">Rangkuman Proyeksi Likuiditas</div>
               <div className="table-meta">
-                <div className="table-date">Periode: Des 2025 – Feb 2026</div>
+                <div className="table-date">Periode: Des 2026 – Feb 2027</div>
                 <span className="badge-season">🗓️ Siklus Adat: Musim Pernikahan / Ulaon Unjuk</span>
               </div>
             </div>
@@ -136,17 +153,7 @@ export default function Forecasting() {
             </div>
           </div>
 
-          {/* KUR Banner */}
-          <div className="banner-card" style={{ backgroundImage: "url('/assets/bri.png')" }}>
-            <div className="banner-overlay"></div>
-            <div className="banner-content">
-              <h3>Kredit Usaha Rakyat (KUR)</h3>
-              <p>Ajukan pinjaman modal usaha tenun Ulos langsung di SianAI. Proses instan dengan jaminan verifikasi blockchain ledger keuangan Anda!</p>
-              <button className="btn-white" onClick={() => alert('Pengajuan KUR Berhasil Dikirim! Bank BRI akan memverifikasi Laporan Keuangan terenskripsi Anda di blockchain.')}>
-                Ajukan Sekarang <i className="fa-solid fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
+
         </div>
 
       </main>

@@ -1,289 +1,323 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useBlockchain } from '../context/BlockchainContext';
+import { useData } from '../context/DataContext';
 import Topbar from '../components/Topbar';
 import '../styles/akun.css';
 
-const TABS = [
-  { id: 'main', label: 'Overview', icon: 'fa-house' },
-  { id: 'personal', label: 'Data Pribadi', icon: 'fa-user' },
-  { id: 'keamanan', label: 'Keamanan', icon: 'fa-shield-halved' },
-  { id: 'session', label: 'Sesi', icon: 'fa-clock' },
-];
-
 export default function Akun() {
-  const navigate = useNavigate();
-  const { wallet, connectWallet, disconnectWallet, ledger, certificates } = useBlockchain();
-  const [activeTab, setActiveTab] = useState('main');
-  const [profile, setProfile] = useState({ name: 'Penenun123', email: 'penenun@sianai.id', phone: '+62 812-3456-7890', address: 'Jl. Ulos Batak No. 7, Medan Utara', bio: 'Pengusaha tenun Ulos generasi ketiga dari Toba, Sumatera Utara.' });
-  const [profileForm, setProfileForm] = useState({ ...profile });
-  const [saved, setSaved] = useState(false);
+  const { } = useData();
 
-  const handleSave = (e) => {
+  const [profile, setProfile] = useState(() => {
+    const stored = localStorage.getItem('sianai_user');
+    const u = stored ? JSON.parse(stored) : {};
+    return {
+      name: u.name || 'Penenun123',
+      email: u.email || 'penenun@sianai.id',
+      phone: u.phone || '+62 812-3456-7890',
+      address: u.store_address || 'Jl. Ulos Batak No. 7, Medan Utara',
+      storeName: u.store_name || 'Ulos Batak',
+      bio: u.bio || 'Pengusaha tenun Ulos terdaftar di ekosistem SianAI.',
+    };
+  });
+
+  const [editMode, setEditMode] = useState(false); // false | 'profile' | 'password'
+  const [profileForm, setProfileForm] = useState({ ...profile });
+  const [passwordForm, setPasswordForm] = useState({ old: '', new: '', confirm: '' });
+  const [savedMsg, setSavedMsg] = useState('');
+  const [pwError, setPwError] = useState('');
+
+  // ── Handle save profile ──
+  const handleSaveProfile = (e) => {
     e.preventDefault();
     setProfile({ ...profileForm });
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    try {
+      const stored = JSON.parse(localStorage.getItem('sianai_user') || '{}');
+      localStorage.setItem('sianai_user', JSON.stringify({
+        ...stored,
+        name: profileForm.name,
+        email: profileForm.email,
+        phone: profileForm.phone,
+        store_address: profileForm.address,
+        store_name: profileForm.storeName,
+        bio: profileForm.bio,
+      }));
+    } catch {}
+    setSavedMsg('Data berhasil disimpan!');
+    setTimeout(() => { setSavedMsg(''); setEditMode(false); }, 1800);
   };
 
-  const certCount = Object.keys(certificates).length;
-  const ledgerBlocks = ledger.length;
+  // ── Handle save password ──
+  const handleSavePassword = (e) => {
+    e.preventDefault();
+    setPwError('');
+    if (!passwordForm.old) return setPwError('Masukkan password lama.');
+    if (passwordForm.new.length < 8) return setPwError('Password baru minimal 8 karakter.');
+    if (passwordForm.new !== passwordForm.confirm) return setPwError('Konfirmasi password tidak cocok.');
+    setSavedMsg('Password berhasil diubah!');
+    setPasswordForm({ old: '', new: '', confirm: '' });
+    setTimeout(() => { setSavedMsg(''); setEditMode(false); }, 1800);
+  };
+
+  const initials = profile.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
   return (
     <div className="akun-content">
-      {/* Topbar */}
-      <Topbar
-        searchPlaceholder="Cari profil / akun..."
-        onExport={() => alert('Export data profil akun berhasil dicetak!')}
-      />
+      <Topbar searchPlaceholder="Cari data akun..." />
 
       <main className="page-content">
-        {/* Profile Banner */}
-        <section className="profile-banner-card">
-          <div className="profile-banner-left">
-            <div className="profile-avatar-container">
-              <div className="profile-avatar-empty" style={{ background: '#ff334b', color: '#fff', fontWeight: 900, fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '12px', boxShadow: '0 0 15px rgba(255,51,75,0.4)' }}>
-                {profile.name.substring(0, 2).toUpperCase()}
-              </div>
-            </div>
-            <div className="profile-info-group">
+
+        {/* ── PROFILE HERO CARD ── */}
+        <section className="profile-hero-card">
+          <div className="profile-hero-left">
+            <div className="profile-hero-avatar">{initials}</div>
+            <div>
               <h1 className="profile-name">{profile.name}</h1>
               <div className="profile-id">SianAI Ecosystem ID: #7742-WVR</div>
               <div className="profile-badges-row">
-                <span className="profile-pill-badge">Verified Weaver</span>
+                <span className="profile-pill-badge">
+                  <i className="fa-solid fa-circle-check" style={{ fontSize: '10px', color: '#4ade80' }}></i>
+                  &nbsp;Verified Weaver
+                </span>
                 <span className="profile-pill-badge">Pemilik Usaha</span>
-                <span className="profile-pill-badge">Smart Contract Enabled</span>
               </div>
             </div>
           </div>
-          <button className="btn-edit-profile" onClick={() => setActiveTab('personal')}>Edit Profile</button>
+          <div className="profile-hero-actions">
+            <button
+              className="btn-edit-profile"
+              onClick={() => { setProfileForm({ ...profile }); setEditMode('profile'); }}
+            >
+              <i className="fa-solid fa-pen-to-square"></i> Edit Profil
+            </button>
+            <button
+              className="btn-change-password"
+              onClick={() => { setPasswordForm({ old: '', new: '', confirm: '' }); setPwError(''); setEditMode('password'); }}
+            >
+              <i className="fa-solid fa-lock"></i> Ubah Password
+            </button>
+          </div>
         </section>
 
-        {/* Tabs Nav */}
-        <div className="account-tab-nav">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              className={`account-tab-btn${activeTab === tab.id ? ' active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              <i className={`fa-solid ${tab.icon}`}></i> {tab.label}
-            </button>
-          ))}
-        </div>
+        {/* ── PROFILE INFO GRID ── */}
+        <section className="profile-info-section">
 
-        {/* ── TAB: OVERVIEW ── */}
-        {activeTab === 'main' && (
-          <div>
-            <section className="account-top-grid">
-              {/* Connected Wallet Card */}
-              <div className="wallet-summary-card">
-                <div className="wallet-card-header">
-                  <div>
-                    <h3 className="wallet-card-title">Connected Wallet</h3>
-                    <div className="wallet-card-sub">
-                      {wallet.connected ? `${wallet.network} · ${wallet.address?.substring(0, 6)}...${wallet.address?.substring(wallet.address.length - 4)}` : 'Tidak terhubung'}
-                    </div>
-                  </div>
-                  <span className="badge-connected-status" style={{ background: wallet.connected ? 'rgba(0,230,118,0.1)' : 'rgba(255,23,68,0.1)', color: wallet.connected ? 'var(--green)' : 'var(--red)', border: `1px solid ${wallet.connected ? 'rgba(0,230,118,0.3)' : 'rgba(255,23,68,0.3)'}` }}>
-                    <i className="fa-solid fa-circle" style={{ fontSize: '7px' }}></i> {wallet.connected ? 'CONNECTED' : 'OFFLINE'}
-                  </span>
-                </div>
-                <div className="wallet-balance-center">
-                  <div className="balance-label">TOTAL BALANCE (IDR)</div>
-                  <div className="balance-val">{wallet.connected ? 'Rp40.500.000' : 'Rp0'}</div>
-                </div>
-
-                <div className="crypto-chips-row" style={{ marginBottom: '16px' }}>
-                  <div className="crypto-chip">
-                    <div className="crypto-chip-left">
-                      <i className="fa-brands fa-ethereum" style={{ color: 'var(--gold)', fontSize: '14px' }}></i> ETH
-                    </div>
-                    <div className="crypto-chip-val">{wallet.connected ? wallet.balance : '0.00 ETH'}</div>
-                  </div>
-                  <div className="crypto-chip">
-                    <div className="crypto-chip-left">
-                      <i className="fa-solid fa-dollar-sign" style={{ color: 'var(--green)', fontSize: '14px' }}></i> USDT
-                    </div>
-                    <div className="crypto-chip-val">{wallet.connected ? '4,200 USDT' : '0 USDT'}</div>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  {wallet.connected ? (
-                    <button className="btn-wallet-action danger" onClick={disconnectWallet}>
-                      <i className="fa-solid fa-link-slash"></i> Putuskan Koneksi
-                    </button>
-                  ) : (
-                    <button className="btn-wallet-action" onClick={connectWallet}>
-                      <i className="fa-solid fa-wallet"></i> Hubungkan Dompet
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* On-Chain Reputation */}
-              <div className="reputation-card">
-                <h3 className="reputation-title">On-Chain Reputation</h3>
-                <div className="reputation-score-ring">
-                  <div className="reputation-ring-inner">
-                    <div className="rep-score-number">94</div>
-                    <div className="rep-score-label">SCORE</div>
-                  </div>
-                </div>
-                <div className="reputation-stats-row">
-                  <div className="rep-stat">
-                    <div className="rep-stat-val text-green">{ledgerBlocks}</div>
-                    <div className="rep-stat-lbl">Blok Ledger</div>
-                  </div>
-                  <div className="rep-stat">
-                    <div className="rep-stat-val text-gold">{certCount}</div>
-                    <div className="rep-stat-lbl">Sertifikat NFT</div>
-                  </div>
-                  <div className="rep-stat">
-                    <div className="rep-stat-val text-blue">3</div>
-                    <div className="rep-stat-lbl">Tahun Aktif</div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Stats Row */}
-            <section className="account-stats-row">
-              {[
-                { icon: 'fa-box', color: 'var(--gold)', label: 'Total Produk', val: '156' },
-                { icon: 'fa-chart-line', color: 'var(--green)', label: 'Omzet Bulan Ini', val: 'Rp42.8M' },
-                { icon: 'fa-award', color: 'var(--primary)', label: 'NFT Diterbitkan', val: String(certCount) },
-                { icon: 'fa-star', color: '#ffd700', label: 'Rating Artisan', val: '4.9 / 5.0' },
-              ].map(stat => (
-                <div key={stat.label} className="account-stat-card">
-                  <div className="account-stat-icon" style={{ color: stat.color }}>
-                    <i className={`fa-solid ${stat.icon}`}></i>
-                  </div>
-                  <div className="account-stat-val">{stat.val}</div>
-                  <div className="account-stat-lbl">{stat.label}</div>
-                </div>
-              ))}
-            </section>
-          </div>
-        )}
-
-        {/* ── TAB: DATA PRIBADI ── */}
-        {activeTab === 'personal' && (
-          <div className="settings-form-section">
-            <h2 className="settings-section-title">Data Pribadi</h2>
-            <form onSubmit={handleSave} className="settings-form-grid">
-              {[
-                { label: 'Nama Pengguna', key: 'name', type: 'text', placeholder: 'Nama lengkap...' },
-                { label: 'Email', key: 'email', type: 'email', placeholder: 'Email aktif...' },
-                { label: 'No. Telepon / WhatsApp', key: 'phone', type: 'text', placeholder: '+62...' },
-                { label: 'Alamat Studio', key: 'address', type: 'text', placeholder: 'Alamat lengkap...' },
-              ].map(field => (
-                <div key={field.key} className="settings-field">
-                  <label className="settings-label">{field.label}</label>
-                  <input
-                    type={field.type}
-                    value={profileForm[field.key]}
-                    onChange={e => setProfileForm(prev => ({ ...prev, [field.key]: e.target.value }))}
-                    placeholder={field.placeholder}
-                    className="settings-input"
-                  />
-                </div>
-              ))}
-              <div className="settings-field" style={{ gridColumn: '1 / -1' }}>
-                <label className="settings-label">Bio Pengrajin</label>
-                <textarea
-                  value={profileForm.bio}
-                  onChange={e => setProfileForm(prev => ({ ...prev, bio: e.target.value }))}
-                  className="settings-input"
-                  style={{ height: '80px', resize: 'none' }}
-                />
-              </div>
-              <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end' }}>
-                <button type="submit" className="btn-save-artisan">
-                  {saved ? <><i className="fa-solid fa-circle-check"></i> Tersimpan!</> : <><i className="fa-solid fa-floppy-disk"></i> Simpan Perubahan</>}
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
-
-        {/* ── TAB: KEAMANAN ── */}
-        {activeTab === 'keamanan' && (
-          <div className="settings-form-section">
-            <h2 className="settings-section-title">Keamanan Akun</h2>
-            <div className="settings-form-grid">
-              {[
-                { label: 'Password Lama', placeholder: 'Masukkan password saat ini...' },
-                { label: 'Password Baru', placeholder: 'Minimal 8 karakter...' },
-                { label: 'Konfirmasi Password Baru', placeholder: 'Ulangi password baru...' },
-              ].map(f => (
-                <div key={f.label} className="settings-field">
-                  <label className="settings-label">{f.label}</label>
-                  <input type="password" placeholder={f.placeholder} className="settings-input" />
-                </div>
-              ))}
-              <div style={{ gridColumn: '1 / -1' }}>
-                <div className="security-toggle-row">
-                  <div>
-                    <div className="security-toggle-label">Autentikasi Dua Faktor (2FA)</div>
-                    <div className="security-toggle-sub">Gunakan Google Authenticator atau SMS OTP</div>
-                  </div>
-                  <label className="toggle-switch">
-                    <input type="checkbox" defaultChecked />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
-                <div className="security-toggle-row">
-                  <div>
-                    <div className="security-toggle-label">Notifikasi Login Baru</div>
-                    <div className="security-toggle-sub">Email notifikasi saat ada sesi login baru</div>
-                  </div>
-                  <label className="toggle-switch">
-                    <input type="checkbox" defaultChecked />
-                    <span className="toggle-slider"></span>
-                  </label>
-                </div>
-              </div>
-              <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end' }}>
-                <button className="btn-save-artisan" onClick={() => alert('Pengaturan keamanan berhasil disimpan!')}>
-                  <i className="fa-solid fa-shield-halved"></i> Simpan Keamanan
-                </button>
-              </div>
+          {/* Informasi Pribadi */}
+          <div className="profile-info-card">
+            <div className="profile-info-card-header">
+              <i className="fa-solid fa-user profile-info-icon"></i>
+              <span>Informasi Pribadi</span>
+            </div>
+            <div className="profile-info-list profile-info-grid">
+              <ProfileRow icon="fa-signature" label="Nama Pengguna" value={profile.name} />
+              <ProfileRow icon="fa-envelope" label="Email" value={profile.email} />
+              <ProfileRow icon="fa-phone" label="No. Telepon / WA" value={profile.phone} />
+              <ProfileRow icon="fa-store" label="Nama Toko" value={profile.storeName} />
+              <ProfileRow icon="fa-location-dot" label="Alamat Studio" value={profile.address} fullWidth />
             </div>
           </div>
-        )}
 
-        {/* ── TAB: SESI ── */}
-        {activeTab === 'session' && (
-          <div className="settings-form-section">
-            <h2 className="settings-section-title">Log Sesi Aktif</h2>
-            <div className="session-list">
-              {[
-                { device: 'Chrome / Windows 11', ip: '103.120.42.xx', time: 'Sekarang', active: true },
-                { device: 'Firefox / Android', ip: '202.98.xx.xx', time: '2 jam lalu', active: false },
-                { device: 'Safari / iPhone', ip: '180.245.xx.xx', time: 'Kemarin 22:15', active: false },
-              ].map((session, i) => (
-                <div key={i} className="session-item">
-                  <div className="session-icon">
-                    <i className={`fa-solid ${i === 0 ? 'fa-desktop' : i === 1 ? 'fa-mobile' : 'fa-tablet'}`}></i>
-                  </div>
-                  <div className="session-info">
-                    <div className="session-device">{session.device}</div>
-                    <div className="session-meta">IP: {session.ip} · {session.time}</div>
-                  </div>
-                  {session.active ? (
-                    <span className="badge badge-green"><i className="fa-solid fa-circle" style={{ fontSize: '7px' }}></i> Sesi Ini</span>
-                  ) : (
-                    <button className="btn-page" style={{ fontSize: '11px', padding: '4px 10px', cursor: 'pointer' }} onClick={() => alert('Sesi berhasil dihentikan!')}>Hentikan</button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        </section>
+
+
 
       </main>
+
+      {/* ══════════════════════════════════════
+          EDIT PANEL OVERLAY
+      ══════════════════════════════════════ */}
+      {editMode && (
+        <div className="edit-overlay" onClick={(e) => { if (e.target === e.currentTarget) setEditMode(false); }}>
+          <div className="edit-panel">
+
+            {/* Panel Header */}
+            <div className="edit-panel-header">
+              <div>
+                <div className="edit-panel-title">
+                  {editMode === 'profile' ? <><i className="fa-solid fa-pen-to-square"></i> Edit Data Diri</> : <><i className="fa-solid fa-lock"></i> Ubah Password</>}
+                </div>
+                <div className="edit-panel-sub">
+                  {editMode === 'profile' ? 'Perbarui informasi profil Anda' : 'Ganti password akun Anda'}
+                </div>
+              </div>
+              <button className="edit-panel-close" onClick={() => setEditMode(false)}>
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            {/* Success message */}
+            {savedMsg && (
+              <div className="edit-saved-msg">
+                <i className="fa-solid fa-circle-check"></i> {savedMsg}
+              </div>
+            )}
+
+            {/* ── FORM: EDIT PROFILE ── */}
+            {editMode === 'profile' && (
+              <form onSubmit={handleSaveProfile} className="edit-form">
+                <div className="edit-form-grid">
+                  <EditField label="Nama Pengguna" icon="fa-signature">
+                    <input
+                      type="text"
+                      value={profileForm.name}
+                      onChange={e => setProfileForm(p => ({ ...p, name: e.target.value }))}
+                      placeholder="Nama lengkap..."
+                      className="edit-input"
+                      required
+                    />
+                  </EditField>
+                  <EditField label="Email" icon="fa-envelope">
+                    <input
+                      type="email"
+                      value={profileForm.email}
+                      onChange={e => setProfileForm(p => ({ ...p, email: e.target.value }))}
+                      placeholder="Email aktif..."
+                      className="edit-input"
+                      required
+                    />
+                  </EditField>
+                  <EditField label="No. Telepon / WhatsApp" icon="fa-phone">
+                    <input
+                      type="text"
+                      value={profileForm.phone}
+                      onChange={e => setProfileForm(p => ({ ...p, phone: e.target.value }))}
+                      placeholder="+62..."
+                      className="edit-input"
+                    />
+                  </EditField>
+                  <EditField label="Nama Toko" icon="fa-store">
+                    <input
+                      type="text"
+                      value={profileForm.storeName}
+                      onChange={e => setProfileForm(p => ({ ...p, storeName: e.target.value }))}
+                      placeholder="Nama toko Anda..."
+                      className="edit-input"
+                    />
+                  </EditField>
+                  <EditField label="Alamat Studio" icon="fa-location-dot" fullWidth>
+                    <input
+                      type="text"
+                      value={profileForm.address}
+                      onChange={e => setProfileForm(p => ({ ...p, address: e.target.value }))}
+                      placeholder="Alamat lengkap..."
+                      className="edit-input"
+                    />
+                  </EditField>
+                  <EditField label="Bio Pengrajin" icon="fa-pen-nib" fullWidth>
+                    <textarea
+                      value={profileForm.bio}
+                      onChange={e => setProfileForm(p => ({ ...p, bio: e.target.value }))}
+                      className="edit-input edit-textarea"
+                      placeholder="Ceritakan tentang Anda..."
+                    />
+                  </EditField>
+                </div>
+                <div className="edit-form-actions">
+                  <button type="button" className="btn-cancel-edit" onClick={() => setEditMode(false)}>Batal</button>
+                  <button type="submit" className="btn-save-edit">
+                    <i className="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* ── FORM: CHANGE PASSWORD ── */}
+            {editMode === 'password' && (
+              <form onSubmit={handleSavePassword} className="edit-form">
+                {pwError && (
+                  <div className="edit-error-msg">
+                    <i className="fa-solid fa-triangle-exclamation"></i> {pwError}
+                  </div>
+                )}
+                <div className="edit-form-grid">
+                  <EditField label="Password Lama" icon="fa-lock" fullWidth>
+                    <input
+                      type="password"
+                      value={passwordForm.old}
+                      onChange={e => setPasswordForm(p => ({ ...p, old: e.target.value }))}
+                      placeholder="Masukkan password saat ini..."
+                      className="edit-input"
+                    />
+                  </EditField>
+                  <EditField label="Password Baru" icon="fa-key">
+                    <input
+                      type="password"
+                      value={passwordForm.new}
+                      onChange={e => setPasswordForm(p => ({ ...p, new: e.target.value }))}
+                      placeholder="Minimal 8 karakter..."
+                      className="edit-input"
+                    />
+                  </EditField>
+                  <EditField label="Konfirmasi Password Baru" icon="fa-shield-halved">
+                    <input
+                      type="password"
+                      value={passwordForm.confirm}
+                      onChange={e => setPasswordForm(p => ({ ...p, confirm: e.target.value }))}
+                      placeholder="Ulangi password baru..."
+                      className="edit-input"
+                    />
+                  </EditField>
+                </div>
+
+                {/* Security Toggles */}
+                <div className="security-toggles">
+                  <div className="security-toggle-row">
+                    <div>
+                      <div className="security-toggle-label">Autentikasi Dua Faktor (2FA)</div>
+                      <div className="security-toggle-sub">Gunakan Google Authenticator atau SMS OTP</div>
+                    </div>
+                    <label className="toggle-switch">
+                      <input type="checkbox" defaultChecked />
+                      <span className="toggle-slider"></span>
+                    </label>
+                  </div>
+                  <div className="security-toggle-row">
+                    <div>
+                      <div className="security-toggle-label">Notifikasi Login Baru</div>
+                      <div className="security-toggle-sub">Email notifikasi saat ada sesi login baru</div>
+                    </div>
+                    <label className="toggle-switch">
+                      <input type="checkbox" defaultChecked />
+                      <span className="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="edit-form-actions">
+                  <button type="button" className="btn-cancel-edit" onClick={() => setEditMode(false)}>Batal</button>
+                  <button type="submit" className="btn-save-edit">
+                    <i className="fa-solid fa-shield-halved"></i> Simpan Password
+                  </button>
+                </div>
+              </form>
+            )}
+
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Helper Components ──
+function ProfileRow({ icon, label, value, fullWidth }) {
+  return (
+    <div className={`profile-row${fullWidth ? ' profile-row-full' : ''}`}>
+      <div className="profile-row-icon"><i className={`fa-solid ${icon}`}></i></div>
+      <div className="profile-row-content">
+        <div className="profile-row-label">{label}</div>
+        <div className="profile-row-value">{value || '-'}</div>
+      </div>
+    </div>
+  );
+}
+
+
+function EditField({ label, icon, children, fullWidth }) {
+  return (
+    <div className={`edit-field${fullWidth ? ' full-width' : ''}`}>
+      <label className="edit-label">
+        <i className={`fa-solid ${icon}`}></i> {label}
+      </label>
+      {children}
     </div>
   );
 }

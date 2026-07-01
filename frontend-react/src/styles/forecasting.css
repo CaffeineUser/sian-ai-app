@@ -23,7 +23,7 @@
 .page-title {
     font-size: 26px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
     margin-bottom: 6px;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
@@ -112,7 +112,7 @@
 .stat-value {
     font-size: 30px;
     font-weight: 800;
-    color: var(--white);
+    color: var(--text-primary);
     margin-bottom: 10px;
     letter-spacing: -0.5px;
 }
@@ -131,7 +131,7 @@
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 16px;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .recom-grid {
@@ -184,7 +184,7 @@
 .recom-header h3 {
     font-size: 16px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
     line-height: 1.3;
 }
 
@@ -234,7 +234,7 @@
 .btn-light {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .btn-light:hover {
@@ -278,7 +278,7 @@
 .table-title {
     font-size: 16px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .table-date {
@@ -343,7 +343,7 @@
 
 .val-bold {
     font-weight: 600;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .val-red {
@@ -396,7 +396,7 @@
     border-radius: var(--radius-md);
     overflow: hidden;
     position: relative;
-    color: var(--white);
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

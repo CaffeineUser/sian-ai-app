@@ -26,9 +26,8 @@
 .page-header-left h1 {
     font-size: 26px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
     margin-bottom: 6px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .page-header-sub {
@@ -55,7 +54,7 @@
     padding: 8px 16px;
     font-size: 13px;
     font-weight: 600;
-    color: var(--white);
+    color: var(--text-primary);
     cursor: pointer;
     font-family: 'Inter', sans-serif;
     transition: all 0.3s;
@@ -86,6 +85,28 @@
     background-color: var(--primary-light);
     border-color: var(--primary);
     box-shadow: 0 0 10px rgba(255, 51, 75, 0.15);
+}
+
+.btn-foto-nota-laporan {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #ff334b 0%, #c1162b 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 4px 14px rgba(255, 51, 75, 0.35);
+}
+
+.btn-foto-nota-laporan:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 51, 75, 0.45);
 }
 
 .stats-grid {
@@ -166,7 +187,7 @@
 .stat-value {
     font-size: 30px;
     font-weight: 800;
-    color: var(--white);
+    color: var(--text-primary);
     margin-bottom: 10px;
     letter-spacing: -0.5px;
 }
@@ -217,7 +238,7 @@
 .transaksi-title {
     font-size: 15px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -337,7 +358,7 @@
 .t-desc-name {
     font-size: 13px;
     font-weight: 600;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .t-desc-sub {
@@ -513,7 +534,7 @@
 .chart-card-title {
     font-size: 14px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .chart-period-badge {
@@ -589,7 +610,7 @@
 .chart-avg strong {
     font-size: 14px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .chart-trend {
@@ -621,7 +642,7 @@
 .kategori-title {
     font-size: 14px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
     margin-bottom: 16px;
 }
 
@@ -652,12 +673,12 @@
 .kategori-pct {
     font-size: 12px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
 }
 
 .progress-bar {
     height: 5px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
     border-radius: 99px;
     overflow: hidden;
 }
@@ -777,7 +798,7 @@
 .product-name {
     font-size: 13px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--text-primary);
     margin-bottom: 3px;
 }
 
@@ -844,7 +865,7 @@
     gap: 12px;
     text-align: left;
     margin: 20px 0;
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.03);
     border-radius: 8px;
     padding: 16px;
     border: 1px solid var(--glass-border);
@@ -870,7 +891,7 @@
 }
 
 .explorer-val {
-    color: var(--white);
+    color: var(--text-primary);
     font-family: monospace;
     font-size: 12px;
     max-width: 250px;
@@ -890,7 +911,7 @@
 .btn-close-modal {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    color: var(--white);
+    color: var(--text-primary);
     padding: 10px 20px;
     border-radius: 8px;
     font-weight: 600;

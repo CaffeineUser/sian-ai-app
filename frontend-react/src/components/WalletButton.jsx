@@ -1,7 +1,7 @@
-import { useBlockchain } from '../context/BlockchainContext';
+import { useData } from '../context/DataContext';
 
 export default function WalletButton() {
-  const { wallet, connectWallet, disconnectWallet } = useBlockchain();
+  const { wallet, connectWallet, disconnectWallet } = useData();
 
   const handleClick = async () => {
     if (wallet.connected) {
